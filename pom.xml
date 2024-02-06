@@ -11,8 +11,13 @@
     <groupId>com.nhs.individual</groupId>
     <artifactId>ecommerce</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>Ecommerce</name>
     <description>Ecommerce</description>
+    <modules>
+        <module>nhs-app</module>
+        <module>nhs-api</module>
+    </modules>
     <properties>
         <java.version>17</java.version>
     </properties>
