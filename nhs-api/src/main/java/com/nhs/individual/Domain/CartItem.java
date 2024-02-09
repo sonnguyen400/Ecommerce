@@ -13,7 +13,7 @@ public class CartItem {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false,cascade = {CascadeType.MERGE})
     @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 

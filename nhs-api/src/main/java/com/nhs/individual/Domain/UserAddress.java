@@ -23,10 +23,10 @@ public class UserAddress {
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
-    @Column(name = "id_default")
-    private Byte idDefault;
+    @Column(name = "is_default")
+    private Boolean isDefault;
 
     @Column(name = "is_business")
-    private Byte isBusiness;
+    private Boolean isBusiness;
 
 }
