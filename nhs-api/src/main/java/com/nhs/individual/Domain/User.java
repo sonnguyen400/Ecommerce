@@ -1,13 +1,12 @@
 package com.nhs.individual.Domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.Data;
 
 import java.util.Collection;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "user")
 public class User {
@@ -17,12 +16,13 @@ public class User {
     private Integer id;
 
     @Column(name = "phone_number", length = 12)
+    @NotEmpty
     private String phoneNumber;
 
     @Column(name = "email")
     private String email;
 
-    @OneToOne(fetch = FetchType.LAZY,mappedBy = "user",cascade = {CascadeType.ALL})
+    @OneToOne(mappedBy = "user",cascade = {CascadeType.PERSIST})
     private Account account;
 
     @OneToMany(mappedBy = "user")

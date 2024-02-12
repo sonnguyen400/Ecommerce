@@ -1,15 +1,8 @@
 package com.nhs.individual.Domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
 import java.util.Collection;
@@ -36,19 +29,21 @@ public class Account {
     @Column(name = "gender", length = 10)
     private String gender;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore
+
+    @OneToOne(fetch = FetchType.LAZY, optional = false,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "username", length = 45)
+    @NotEmpty
     private String username;
 
     @Column(name = "password")
+    @NotEmpty
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.REFRESH,CascadeType.DETACH,CascadeType.MERGE})
-    @JoinTable(name = "role_has_account",
+    @JoinTable(name = "account_role",
     joinColumns = @JoinColumn(name = "account_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;

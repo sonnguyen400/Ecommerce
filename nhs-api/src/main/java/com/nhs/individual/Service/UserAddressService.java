@@ -1,7 +1,6 @@
 package com.nhs.individual.Service;
 
 import com.nhs.individual.Domain.UserAddress;
-import com.nhs.individual.Domain.UserAddressId;
 import com.nhs.individual.Repository.UserAddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,11 +31,11 @@ public class UserAddressService {
     public UserAddress update(Integer id,UserAddress userAddress) {
         return userAddressRepository.save(userAddress);
     }
-    public void delete(Integer id) {
+    public void deleteById(Integer id) {
         userAddressRepository.deleteById(id);
     }
     public void setDefaultUserAddress(UserAddress userAddress){
-        List<UserAddress> userAddressList=  findAllByUserId(userAddress.getId().getUserId()).stream().map(address->{
+        List<UserAddress> userAddressList= findAllByUserId(userAddress.getId().getUserId()).stream().map(address->{
             if(address.getId().equals( userAddress.getId())){
                 address.setIsDefault(true);
             }else{

@@ -2,7 +2,7 @@ package com.nhs.individual.Config;
 
 import com.nhs.individual.Service.AccountService;
 import com.nhs.individual.Utils.IUserDetail;
-import com.nhs.individual.Utils.JwtProvider;
+import com.nhs.individual.Utils.NewJwtProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -20,12 +20,14 @@ import org.springframework.web.util.WebUtils;
 import java.io.IOException;
 import java.util.Optional;
 
+import static com.nhs.individual.Utils.Constant.AUTH_TOKEN;
+
 @Configuration
 public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private AccountService service;
     @Autowired
-    private JwtProvider jwtProvider;
+    private NewJwtProvider jwtProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -44,7 +46,7 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request,response);
     }
     private String extractTokenFromCookie(HttpServletRequest request){
-        Cookie cookie= WebUtils.getCookie(request,"jwtToken");
+        Cookie cookie= WebUtils.getCookie(request,AUTH_TOKEN);
         return Optional.ofNullable(cookie)
                 .map((ck->jwtProvider.validate(ck.getValue())))
                 .orElse(null);

@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 
 public class ObjectUtils<T> {
 
-    public T merge(T oldObject,T mergeObject,Class<T> clazz) {
+    public static <T> T merge(T oldObject,T mergeObject,Class<T> clazz) {
         Field[] fields=clazz.getDeclaredFields();
         try {
             for(Field field:fields){
