@@ -1,22 +1,24 @@
 package com.nhs.individual.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Collection;
 
 @Entity
 @Table(name = "role")
-@Data
+@Getter
+@Setter
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "name", length = 45)
     private String name;
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.DETACH)
-    @JoinTable(name ="role_has_account",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "account_id"))
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.DETACH,mappedBy = "roles")
+    @JsonBackReference
     private Collection<Account> accounts;
 }

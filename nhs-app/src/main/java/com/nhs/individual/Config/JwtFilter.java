@@ -1,41 +1,47 @@
 package com.nhs.individual.Config;
 
+import com.nhs.individual.Exception.InvalidTokenException;
 import com.nhs.individual.Service.AccountService;
 import com.nhs.individual.Utils.IUserDetail;
-import com.nhs.individual.Utils.NewJwtProvider;
+import com.nhs.individual.Utils.RequestUtils;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import static com.nhs.individual.Utils.Constant.AUTH_TOKEN;
-
-@Configuration
+@Component
 public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private AccountService service;
     @Autowired
-    private NewJwtProvider jwtProvider;
+    private RequestUtils requestUtils;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token=extractTokenFromCookie(request);
+    protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response,@NotNull FilterChain filterChain) throws ServletException, IOException,ExpiredJwtException {
+        Claims token;
+        try{
+            token=requestUtils.extractJwtClaimFromCookie(request,AUTH_TOKEN);
+        }catch (IllegalArgumentException|InvalidTokenException|ExpiredJwtException e){
+            filterChain.doFilter(request,response);
+            return;
+        }
         if(token==null) {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
+            filterChain.doFilter(request,response);
+            return;
         }else{
-            service.findByUsername(jwtProvider.getSubject(token))
+            service.findByUsername(token.getSubject())
                     .map(IUserDetail::parseFrom)
                     .ifPresent(user->{
                         UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
@@ -44,11 +50,5 @@ public class JwtFilter extends OncePerRequestFilter {
                     });
         }
         filterChain.doFilter(request,response);
-    }
-    private String extractTokenFromCookie(HttpServletRequest request){
-        Cookie cookie= WebUtils.getCookie(request,AUTH_TOKEN);
-        return Optional.ofNullable(cookie)
-                .map((ck->jwtProvider.validate(ck.getValue())))
-                .orElse(null);
     }
 }

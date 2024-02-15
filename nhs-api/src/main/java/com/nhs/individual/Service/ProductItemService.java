@@ -1,31 +1,45 @@
 package com.nhs.individual.Service;
 
+import com.nhs.individual.Domain.Product;
 import com.nhs.individual.Domain.ProductItem;
+import com.nhs.individual.Exception.ResourceNotFoundException;
 import com.nhs.individual.Repository.ProductItemRepository;
 import com.nhs.individual.Utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Service
 public class ProductItemService {
     @Autowired
     ProductItemRepository productItemRepository;
-    private static ObjectUtils<ProductItem> objectUtils=new ObjectUtils<ProductItem>();
-    public ProductItem create(ProductItem productItem){
-        return productItemRepository.save(productItem);
+    @Autowired
+    ProductService productService;
+    public ProductItem create(Integer productId, ProductItem productItem){
+        return productService.findById(productId).map(product -> {
+            productItem.setProduct(product);
+            return productItemRepository.save(productItem);
+        }).orElseThrow(()->new ResourceNotFoundException("product with id"+productId+" not found"));
+    }
+    public Product saveAll(Integer productId, Collection<ProductItem> productItems){
+        return productService.findById(productId).map(product -> {
+            product.setProductItems(productItems);
+            return productService.save(product);
+        }).orElseThrow(()->new ResourceNotFoundException("product with id"+productId+" not found"));
     }
     public Optional<ProductItem> findById(int id){
         return productItemRepository.findById(id);
     }
+    public Collection<ProductItem> findAllByProductId(Integer productId){
+        return productItemRepository.findAllByProduct_id(productId);
+    }
     public void deleteById(int id){
         productItemRepository.deleteById(id);
     }
-    public ProductItem update(Integer id,ProductItem productItem) throws ChangeSetPersister.NotFoundException {
-        return productItemRepository.save(findById(id).map(oldProductItem->{
-            return objectUtils.merge(oldProductItem,productItem, ProductItem.class);
-        }).orElseThrow(ChangeSetPersister.NotFoundException::new));
+    public ProductItem update(Integer id,ProductItem productItem){
+        return productItemRepository.save(findById(id).map(oldProductItem-> ObjectUtils.merge(oldProductItem,productItem, ProductItem.class)).orElseThrow(()->new ResourceNotFoundException("Product item with id " + id+" not found")));
     }
+
 }

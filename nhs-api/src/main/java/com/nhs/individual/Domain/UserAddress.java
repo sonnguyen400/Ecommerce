@@ -1,14 +1,14 @@
 package com.nhs.individual.Domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 
 @Entity
 @Table(name = "user_address")
-@Data
+@Getter
+@Setter
 public class UserAddress {
     @EmbeddedId
     private UserAddressId id;

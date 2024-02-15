@@ -1,0 +1,23 @@
+package com.nhs.individual.Exception;
+
+import org.springframework.http.HttpStatus;
+
+public class ResponseException extends RuntimeException{
+    protected String message;
+    protected Integer errorCode;
+    protected HttpStatus httpStatus;
+    public  ResponseException(String message){
+        super(message);
+    }
+    public  ResponseException(String message,Throwable throwable){
+        super(message,throwable);
+    }
+    public  ResponseException(String message,Integer errorCode){
+        super(message);
+        this.errorCode=errorCode;
+    }
+    public  ResponseException(String message,Throwable throwable,Integer errorCode){
+        super(message,throwable);
+        this.errorCode=errorCode;
+    }
+}

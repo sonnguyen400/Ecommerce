@@ -1,7 +1,9 @@
 package com.nhs.individual.Exception;
 
-public class IllegalInputException extends APIException {
+import org.springframework.http.HttpStatus;
 
+public class IllegalInputException extends ResponseException {
+    protected HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
     public IllegalInputException(String message) {
         super(message);
     }

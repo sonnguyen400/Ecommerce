@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Collection;
+
 @Getter
 @Setter
 @Entity
@@ -18,6 +20,7 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
+
     @Column(name = "name", length = 45)
     private String name;
 
@@ -26,5 +29,9 @@ public class Product {
 
     @Column(name = "product_image", length = 512)
     private String productImage;
+
+    @OneToMany(mappedBy = "product",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private Collection<ProductItem> productItems;
+
 
 }

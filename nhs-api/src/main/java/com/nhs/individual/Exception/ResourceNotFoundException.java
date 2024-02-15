@@ -1,6 +1,9 @@
 package com.nhs.individual.Exception;
 
-public class ResourceNotFoundException extends APIException{
+import org.springframework.http.HttpStatus;
+
+public class ResourceNotFoundException extends ResponseException{
+    protected HttpStatus httpStatus=HttpStatus.NOT_FOUND;
 
     public ResourceNotFoundException(String message) {
         super(message);

@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,26 +21,43 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.nhs.individual.Utils.Constant.AUTH_TOKEN;
+import static com.nhs.individual.Utils.Constant.REFRESH_AUTH_TOKEN;
+
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
     @Autowired
     AccountService service;
     @Bean
-    public JwtFilter getFilter() {
+    public JwtFilter jwtFilter(){
         return new JwtFilter();
     }
+//    @Bean
+//    public TokenExceptionFilter tokenExceptionFilter(){
+//        return new TokenExceptionFilter();
+//    }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+
         httpSecurity
+                .logout(logout->{
+                    logout.deleteCookies(AUTH_TOKEN,REFRESH_AUTH_TOKEN)
+                            .logoutUrl("/logout")
+                            .permitAll()
+                            .clearAuthentication(true);
+                })
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(req->{
-                    req.requestMatchers("/test**").permitAll()
-                            .requestMatchers("/login**").permitAll()
-                            .requestMatchers("/register**").permitAll()
+                    req.requestMatchers("/test").permitAll()
+                            .requestMatchers("/login").permitAll()
+                            .requestMatchers("/register").permitAll()
                             .anyRequest().authenticated();
                 })
-                .addFilterBefore(getFilter(), UsernamePasswordAuthenticationFilter.class);
+                .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+
+//                .addFilterBefore(tokenExceptionFilter(), JwtFilter.class);
         return httpSecurity.build();
     }
     @Bean
