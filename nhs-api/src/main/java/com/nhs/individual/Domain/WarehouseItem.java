@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "product_item_in_warehouse")
-public class ProductItemInWarehouse {
+public class WarehouseItem {
     @EmbeddedId
     private ProductItemInWarehouseId id;
 
@@ -21,5 +21,11 @@ public class ProductItemInWarehouse {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "warehouse_id", nullable = false)
     private Warehouse warehouse;
+
+    @Column(name = "SKU")
+    private String SKU;
+    @Column(name = "quantity")
+    private Integer quantity;
+
 
 }

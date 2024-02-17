@@ -39,7 +39,6 @@ public class SecurityConfig {
 //    }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-
         httpSecurity
                 .logout(logout->{
                     logout.deleteCookies(AUTH_TOKEN,REFRESH_AUTH_TOKEN)
@@ -50,8 +49,8 @@ public class SecurityConfig {
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(req->{
                     req.requestMatchers("/test").permitAll()
-                            .requestMatchers("/login").permitAll()
-                            .requestMatchers("/register").permitAll()
+                            .requestMatchers("/login").anonymous()
+                            .requestMatchers("/register").anonymous()
                             .anyRequest().authenticated();
                 })
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

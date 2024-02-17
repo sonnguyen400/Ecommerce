@@ -2,7 +2,9 @@ package com.nhs.individual.Domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
@@ -12,6 +14,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductItemInWarehouseId implements Serializable {
     private static final long serialVersionUID = -7683595233898852023L;
     @Column(name = "product_item_id", nullable = false)
@@ -19,6 +23,7 @@ public class ProductItemInWarehouseId implements Serializable {
 
     @Column(name = "warehouse_id", nullable = false)
     private Integer warehouseId;
+
 
     @Override
     public boolean equals(Object o) {

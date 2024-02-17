@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
+import java.time.Instant;
 import java.util.Collection;
 
 @Data
@@ -14,6 +15,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+
+    @Column(name = "firstname", length = 45)
+    private String firstname;
+
+    @Column(name = "lastname", length = 45)
+    private String lastname;
+
+    @Column(name = "date_of_birth")
+    private Instant dateOfBirth;
+
+    @Column(name = "gender", length = 10)
+    private String gender;
 
     @Column(name = "phone_number", length = 12)
     @NotEmpty

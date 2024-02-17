@@ -24,19 +24,9 @@ public class ProductItem {
     @JoinColumn(name = "variation_option_id")
     private VariationOption variationOption;
 
-    @Column(name = "SKU", length = 20)
-    private String sku;
-
-    @Column(name = "qty")
-    private Integer qty;
-
     @Column(name = "product_image", length = 512)
     private String productImage;
 
     @Column(name = "price", precision = 2)
     private BigDecimal price;
-
-    @Column(name = "warehouse_id")
-    private Integer warehouseId;
-
 }

@@ -20,7 +20,10 @@ public class ResponseMessage {
         return new ResponseMessageBuilder();
     }
     public static class ResponseMessageBuilder{
-        private final ResponseMessage responseMessage=new ResponseMessage();
+        private ResponseMessage responseMessage;
+        public ResponseMessageBuilder(){
+            responseMessage=new ResponseMessage();
+        }
         public ResponseMessageBuilder message(String message){
             responseMessage.setMessage(message);
             return this;

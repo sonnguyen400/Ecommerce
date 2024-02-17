@@ -16,6 +16,7 @@ public class ProductService {
     ProductRepository productRepository;
     @Autowired
     CategoryService categoryService;
+
     public Product save(Product product){
         return productRepository.save(product);
     }
@@ -33,6 +34,9 @@ public class ProductService {
     }
     public Collection<Product> findAllByCategoryId(Integer categoryId){
         return productRepository.findAllByCategory_id(categoryId);
+    }
+    public Collection<Product> findAllByWarehouseId(Integer warehouseId){
+        return productRepository.findAllByWarehouseId(warehouseId);
     }
     public Product update(Integer id,Product product){
         return productRepository.findById(id).map(oldProduct-> ObjectUtils.merge(oldProduct,product,Product.class)).orElseThrow(()->new RuntimeException("Product not found"));

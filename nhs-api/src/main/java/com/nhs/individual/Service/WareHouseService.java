@@ -2,6 +2,7 @@ package com.nhs.individual.Service;
 
 import com.nhs.individual.Domain.ProductItem;
 import com.nhs.individual.Domain.Warehouse;
+import com.nhs.individual.Exception.ResourceNotFoundException;
 import com.nhs.individual.Repository.WareHouseRepository;
 import com.nhs.individual.Utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,10 @@ public class WareHouseService {
     public void deleteById(int id){
         wareHouseRepository.deleteById(id);
     }
-    public Warehouse update(Integer id,Warehouse wareHouse) throws ChangeSetPersister.NotFoundException {
+    public Warehouse update(Integer id,Warehouse wareHouse){
         return wareHouseRepository.save(findById(id).map(oldWareHouse->{
             return ObjectUtils.merge(oldWareHouse,wareHouse, Warehouse.class);
-        }).orElseThrow(ChangeSetPersister.NotFoundException::new));
+        }).orElseThrow(()->new ResourceNotFoundException("warehouse not found")));
     }
     public void transport(ProductItem productItem,Warehouse origin,Warehouse destination,int qty){
 

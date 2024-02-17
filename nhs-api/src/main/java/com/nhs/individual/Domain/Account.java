@@ -17,17 +17,7 @@ public class Account {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "firstname", length = 45)
-    private String firstname;
 
-    @Column(name = "lastname", length = 45)
-    private String lastname;
-
-    @Column(name = "date_of_birth")
-    private Instant dateOfBirth;
-
-    @Column(name = "gender", length = 10)
-    private String gender;
 
 
     @OneToOne(fetch = FetchType.LAZY, optional = false,cascade = {CascadeType.PERSIST,CascadeType.MERGE})

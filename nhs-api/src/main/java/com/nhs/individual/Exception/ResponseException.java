@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 public class ResponseException extends RuntimeException{
     protected String message;
     protected Integer errorCode;
-    protected HttpStatus httpStatus;
     public  ResponseException(String message){
         super(message);
     }

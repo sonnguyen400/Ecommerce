@@ -20,7 +20,9 @@ public class UserService {
     public User create(User user){
         return userRepository.save(user);
     }
-
+    public void deleteById(Integer id){
+        userRepository.deleteById(id);
+    }
 
 
 }
