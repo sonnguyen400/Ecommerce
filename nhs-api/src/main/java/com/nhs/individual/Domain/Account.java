@@ -1,10 +1,9 @@
 package com.nhs.individual.Domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import java.time.Instant;
 import java.util.Collection;
 
 
@@ -17,19 +16,16 @@ public class Account {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-
-
-
     @OneToOne(fetch = FetchType.LAZY, optional = false,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "username", length = 45)
-    @NotEmpty
+    @NotBlank
     private String username;
 
     @Column(name = "password")
-    @NotEmpty
+    @NotBlank
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.REFRESH,CascadeType.DETACH,CascadeType.MERGE})
@@ -37,4 +33,7 @@ public class Account {
     joinColumns = @JoinColumn(name = "account_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
+
+    @OneToOne(mappedBy = "account",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private RefreshToken refreshToken;
 }

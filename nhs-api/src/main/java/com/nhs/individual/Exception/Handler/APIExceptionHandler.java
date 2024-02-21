@@ -4,9 +4,8 @@ import com.nhs.individual.Exception.DuplicateElementException;
 import com.nhs.individual.Exception.InvalidTokenException;
 import com.nhs.individual.Exception.ResourceNotFoundException;
 import com.nhs.individual.ResponseMessage.ResponseMessage;
-import com.nhs.individual.Utils.NewJwtProvider;
+import com.nhs.individual.Utils.JwtProvider;
 import com.nhs.individual.Utils.RequestUtils;
-import org.hibernate.NonUniqueObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,7 @@ public class APIExceptionHandler {
     @Autowired
     RequestUtils requestUtils;
     @Autowired
-    NewJwtProvider jwtProvider;
+    JwtProvider jwtProvider;
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

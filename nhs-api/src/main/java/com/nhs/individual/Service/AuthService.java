@@ -1,64 +1,92 @@
 package com.nhs.individual.Service;
 
 import com.nhs.individual.Domain.Account;
+import com.nhs.individual.Domain.RefreshToken;
+import com.nhs.individual.Exception.InvalidTokenException;
 import com.nhs.individual.ResponseMessage.ResponseMessage;
-import com.nhs.individual.Utils.NewJwtProvider;
+import com.nhs.individual.Utils.IUserDetail;
+import com.nhs.individual.Utils.JwtProvider;
+import com.nhs.individual.Utils.RequestUtils;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.WebUtils;
 
-import java.util.HashMap;
-
-import static com.nhs.individual.Utils.Constant.*;
+import static com.nhs.individual.Utils.Constant.AUTH_TOKEN;
+import static com.nhs.individual.Utils.Constant.REFRESH_AUTH_TOKEN;
 
 @Service
 public class AuthService {
+    @Value("${nhs.token.refreshTokenms}")
+    private long REFRESH_TOKEN_EXPIRED;
+    @Value("${nhs.token.accessTokenms}")
+    private long ACCESS_TOKEN_EXPIRED;
     @Autowired
     AccountService accountService;
     @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
-    NewJwtProvider jwtProvider;
+    JwtProvider jwtProvider;
+    @Autowired
+    RefreshTokenService refreshTokenService;
+    @Autowired
+    RequestUtils requestUtils;
+    Logger log= LoggerFactory.getLogger(AuthService.class);
 
     public ResponseEntity<ResponseMessage> signIn(Account account){
         Authentication authentication=new UsernamePasswordAuthenticationToken(account.getUsername(),account.getPassword());
-        Authentication auth = null;
-        auth=authenticationManager.authenticate(authentication);
-        HttpHeaders headers=new HttpHeaders();
-        headers.add(HttpHeaders.SET_COOKIE,getAuthCookie(account.getUsername()).toString());
-        headers.add(HttpHeaders.SET_COOKIE,getRefreshCookie(account.getUsername()).toString());
+        Authentication auth = authenticationManager.authenticate(authentication);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        IUserDetail userDetail= (IUserDetail) auth.getPrincipal();
         return ResponseEntity.ok()
-                .headers(headers)
-                .body(ResponseMessage.builder().message("Login success").ok());
+                .header(HttpHeaders.SET_COOKIE,accessTokenCookie(account.getUsername()).toString(),refreshTokenCookie(userDetail.getId()).toString())
+                .body(ResponseMessage.builder().message("Login success")
+                        .ok());
     }
     public Account register(Account account){
         return accountService.create(account);
     }
-    public ResponseCookie getAuthCookie(String name,String value,int maxAge){
-         return ResponseCookie.from(name,value)
-                .secure(true)
-                .httpOnly(true)
-                .maxAge((int) REFRESH_TOKEN_AGE)
-                .build();
+    public ResponseEntity<ResponseMessage> refresh(HttpServletRequest request){
+        Cookie cookie= WebUtils.getCookie(request,REFRESH_AUTH_TOKEN);
+        if(cookie!=null){
+            return refreshTokenService.findByToken(cookie.getValue())
+                    .map(token-> {
+                        if(!refreshTokenService.verify(token)) return null;
+                        return ResponseEntity.ok()
+                            .header(HttpHeaders.SET_COOKIE,accessTokenCookie(token.getAccount().getUsername()).toString(),refreshTokenCookie(token.getAccount().getId()).toString())
+                            .body(ResponseMessage.builder().message("Refresh token")
+                                    .ok());
+                    })
+                    .orElseThrow(()->new InvalidTokenException("Refresh token is invalid"));
+        }
+        return ResponseEntity.noContent().build();
     }
-    public ResponseCookie getAuthCookie(String subject){
+    public ResponseCookie accessTokenCookie(String subject){
         return ResponseCookie.from(AUTH_TOKEN,jwtProvider.generateToken(subject))
                 .secure(true)
                 .httpOnly(true)
-                .maxAge((int) REFRESH_TOKEN_AGE)
+                .maxAge((int) ACCESS_TOKEN_EXPIRED)
                 .build();
     }
-    public ResponseCookie getRefreshCookie(String subject){
-        return ResponseCookie.from(REFRESH_AUTH_TOKEN,jwtProvider.generateRefreshToken(new HashMap<>(),subject))
-              .secure(true)
-              .httpOnly(true)
-              .maxAge((int) REFRESH_TOKEN_AGE)
-              .build();
+    public ResponseCookie refreshTokenCookie(Integer accountId){
+        Account account=new Account();
+        account.setId(accountId);
+        RefreshToken refreshToken= refreshTokenService.generateRefreshToken(account);
+        return ResponseCookie.from(REFRESH_AUTH_TOKEN,refreshToken.getToken())
+                .secure(true)
+                .httpOnly(true)
+                .maxAge(REFRESH_TOKEN_EXPIRED)
+                .build();
     }
-
 }

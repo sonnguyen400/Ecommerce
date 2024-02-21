@@ -10,14 +10,13 @@ import org.springframework.web.util.WebUtils;
 @Component
 public class RequestUtils {
     @Autowired
-    private NewJwtProvider jwtProvider;
+    private JwtProvider jwtProvider;
 
     public Claims extractJwtClaimFromCookie(HttpServletRequest request, String cookieName) throws InvalidTokenException, ExpiredJwtException {
         Cookie cookie= WebUtils.getCookie(request,cookieName);
         if(cookie != null){
             return jwtProvider.validate(cookie.getValue());
-        }else{
-            throw new IllegalArgumentException("Cookie with name " +cookieName+"not found");
         }
+        return null;
     }
 }

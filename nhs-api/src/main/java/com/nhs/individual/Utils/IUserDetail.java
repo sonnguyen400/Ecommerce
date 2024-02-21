@@ -12,6 +12,7 @@ import java.util.List;
 
 @Data
 public class IUserDetail implements UserDetails {
+    private Integer id;
     private String username;
     private String password;
     private Collection<SimpleGrantedAuthority> authorities;
@@ -56,6 +57,7 @@ public class IUserDetail implements UserDetails {
     public static IUserDetail parseFrom(Account account){
         IUserDetail userDetail=new IUserDetail();
         userDetail.setUsername(account.getUsername());
+        userDetail.setId(account.getId());
         userDetail.setPassword(account.getPassword());
         if(account.getRoles() != null&&account.getRoles().size()>0){
             userDetail.setAuthorities(account.getRoles().stream().map(e->new SimpleGrantedAuthority(e.getName())).toList());

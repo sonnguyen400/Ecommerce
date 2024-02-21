@@ -51,6 +51,7 @@ public class SecurityConfig {
                     req.requestMatchers("/test").permitAll()
                             .requestMatchers("/login").anonymous()
                             .requestMatchers("/register").anonymous()
+                            .requestMatchers("/refresh").anonymous()
                             .anyRequest().authenticated();
                 })
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
