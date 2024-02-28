@@ -19,4 +19,9 @@ public class RequestUtils {
         }
         return null;
     }
+    public Cookie getExpiredCookie(String cookie){
+        Cookie expiredCookie=new Cookie(cookie,"");
+        expiredCookie.setMaxAge(0);
+        return expiredCookie;
+    }
 }
