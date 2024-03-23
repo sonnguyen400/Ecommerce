@@ -2,7 +2,9 @@ package com.nhs.individual.Service;
 
 import com.nhs.individual.Domain.Account;
 import com.nhs.individual.Domain.RefreshToken;
+import com.nhs.individual.Domain.User;
 import com.nhs.individual.Exception.InvalidTokenException;
+import com.nhs.individual.Exception.ResourceNotFoundException;
 import com.nhs.individual.ResponseMessage.ResponseMessage;
 import com.nhs.individual.Utils.IUserDetail;
 import com.nhs.individual.Utils.JwtProvider;
@@ -71,6 +73,12 @@ public class AuthService {
                     .orElseThrow(()->new InvalidTokenException("Refresh token is invalid"));
         }
         return ResponseEntity.noContent().build();
+    }
+    public Account getAuthenticatedAccount(){
+        int id=((IUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        return accountService
+                .findById(id)
+                .orElseThrow(()->new ResourceNotFoundException("Account not found"));
     }
     public ResponseCookie accessTokenCookie(String subject){
         return ResponseCookie.from(AUTH_TOKEN,jwtProvider.generateToken(subject))

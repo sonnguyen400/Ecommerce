@@ -1,6 +1,7 @@
 package com.nhs.individual.Controller;
 
 import com.nhs.individual.Domain.Account;
+import com.nhs.individual.Domain.User;
 import com.nhs.individual.ResponseMessage.ResponseMessage;
 import com.nhs.individual.Service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,5 +33,9 @@ public class AuthenticationAPI {
     @RequestMapping(value = "/testauth", method = RequestMethod.GET)
     public String testAuth(){
         return "testauth ok";
+    }
+    @RequestMapping(value = "/auth/user",method = RequestMethod.GET)
+    public Account getcurrentAccount(){
+        return authService.getAuthenticatedAccount();
     }
 }
