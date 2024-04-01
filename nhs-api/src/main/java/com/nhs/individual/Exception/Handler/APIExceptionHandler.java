@@ -1,6 +1,7 @@
 package com.nhs.individual.Exception.Handler;
 
 import com.nhs.individual.Exception.DuplicateElementException;
+import com.nhs.individual.Exception.IllegalInputException;
 import com.nhs.individual.Exception.InvalidTokenException;
 import com.nhs.individual.Exception.ResourceNotFoundException;
 import com.nhs.individual.ResponseMessage.ResponseMessage;
@@ -22,7 +23,6 @@ public class APIExceptionHandler {
     RequestUtils requestUtils;
     @Autowired
     JwtProvider jwtProvider;
-
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseMessage handleResourceNotFoundException(ResourceNotFoundException e){
@@ -43,7 +43,7 @@ public class APIExceptionHandler {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseMessage handleSqlException(SQLException e){
+    public ResponseMessage handleSqlException(IllegalArgumentException e){
         return ResponseMessage
                 .builder()
                 .message(e.getMessage())

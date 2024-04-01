@@ -8,5 +8,4 @@ import java.util.Collection;
 
 @Repository
 public interface ProductItemRepository extends JpaRepository<ProductItem,Integer> {
-    Collection<ProductItem> findAllByProduct_id(Integer productId);
 }

@@ -2,8 +2,7 @@ package com.nhs.individual.Config;
 
 import com.nhs.individual.Service.AccountService;
 import com.nhs.individual.Utils.IUserDetail;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import io.netty.handler.codec.http.HttpMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +14,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,15 +22,24 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import static com.nhs.individual.Utils.Constant.AUTH_TOKEN;
-import static com.nhs.individual.Utils.Constant.REFRESH_AUTH_TOKEN;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static java.util.Collections.singletonList;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
     @Autowired
     AccountService service;
+
     @Bean
     public JwtFilter jwtFilter(){
         return new JwtFilter();
@@ -48,6 +55,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .cors(c->{
+                    c.configurationSource(corsConfigurationSource());
+                    c.configure(httpSecurity);
+
+                })
                 .logout(logout->logout.addLogoutHandler(logoutHandler()))
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(req->{
@@ -55,7 +67,8 @@ public class SecurityConfig {
                             .requestMatchers("/login").anonymous()
                             .requestMatchers("/register").anonymous()
                             .requestMatchers("/refresh").anonymous()
-                            .anyRequest().authenticated();
+                            .requestMatchers("/api/v1/product").permitAll()
+                            .anyRequest().permitAll();
                 })
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -93,4 +106,28 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+//    @Bean
+//    public WebMvcConfigurer configure(){
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**")
+//                        .allowedOrigins("http://localhost:3000")
+//                        .allowCredentials(true)
+//                        .allowedHeaders("*")
+//                        .allowedMethods("*");
+//            }
+//        };
+//    }
+@Bean
+public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(List.of("http://127.0.0.1:3000")); //or add * to allow all origins
+    configuration.setAllowedMethods(List.of("*")); //to set allowed http methods
+    configuration.setAllowedHeaders(Arrays.asList("*"));
+    configuration.setAllowCredentials(true);
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
+}
 }

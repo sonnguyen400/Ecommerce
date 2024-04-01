@@ -20,9 +20,14 @@ public class ProductService {
     public Product save(Product product){
         return productRepository.save(product);
     }
-    public Product create(Integer categoryId, Product product){
+    public Product create(Product product){
+        if(product.getCategory()==null) throw new IllegalArgumentException("Product must be dependent on a category");
+        Integer categoryId = product.getCategory().getId();
         return categoryService.findById(categoryId).map(category->{
             product.setCategory(category);
+            if(product.getProductItems()!=null){
+                product.getProductItems().forEach((productItem -> productItem.setProduct_(product)));
+            }
             return productRepository.save(product);
         }).orElseThrow(()->new ResourceNotFoundException("Category with id " + categoryId+" not found"));
     }

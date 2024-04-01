@@ -75,7 +75,7 @@ public class AuthService {
         return ResponseEntity.noContent().build();
     }
     public Account getAuthenticatedAccount(){
-        int id=((IUserDetail)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        int id=((IUserDetail)SecurityContextHolder.getContext().getAuthentication().getDetails()).getId();
         return accountService
                 .findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Account not found"));
@@ -84,6 +84,8 @@ public class AuthService {
         return ResponseCookie.from(AUTH_TOKEN,jwtProvider.generateToken(subject))
                 .secure(true)
                 .httpOnly(true)
+                .sameSite("None")
+                .domain("127.0.0.1")
                 .maxAge((int) ACCESS_TOKEN_EXPIRED)
                 .build();
     }
@@ -92,8 +94,9 @@ public class AuthService {
         account.setId(accountId);
         RefreshToken refreshToken= refreshTokenService.generateRefreshToken(account);
         return ResponseCookie.from(REFRESH_AUTH_TOKEN,refreshToken.getToken())
-                .secure(true)
-                .httpOnly(true)
+                .sameSite("None")
+                .path("/login")
+                .domain("127.0.0.1")
                 .maxAge(REFRESH_TOKEN_EXPIRED)
                 .build();
     }

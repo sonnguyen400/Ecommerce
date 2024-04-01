@@ -37,5 +37,9 @@ public class VariationController {
     ) {
         return variationOptionService.findAllByVariationId(variationId);
     }
+    @RequestMapping(method = RequestMethod.POST)
+    public Variation create(@RequestBody Variation variation) {
+        return variationService.create(variation.getCategory().getId(),variation);
+    }
 
 }

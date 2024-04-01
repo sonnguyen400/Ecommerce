@@ -51,7 +51,7 @@ public class CategoryService {
         categoryRepository.deleteAllByParentId(parentId);
     }
     public void validateCategory(Category category){
-        if(Optional.ofNullable(category.getParent().getId()).isPresent()){
+        if(Optional.ofNullable(category.getParent()).isPresent()){
             categoryRepository.findById(category.getParent().getId()).map(parent->{
                 if (parent.getChildren().stream().anyMatch(sib->sib.getName().equals(category.getName()))) {
                     throw new DuplicateElementException("The category's name can not be the same as its siblings : "+String.valueOf(parent.getId()));
@@ -59,7 +59,7 @@ public class CategoryService {
                 return category;
             }).orElseThrow(()->new IllegalArgumentException("Parent category does not exist. Parent id: "+category.getParent().getId()));
         }else{
-            throw new IllegalInputException("Missing parent category information (parent category id)");
+            throw new IllegalArgumentException("Missing parent category information (parent category id)");
         }
         if(category.getChildren()!=null){
             for(int i=0;i<category.getChildren().size();i++){

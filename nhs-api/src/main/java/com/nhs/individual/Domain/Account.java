@@ -1,5 +1,8 @@
 package com.nhs.individual.Domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -16,7 +19,7 @@ public class Account {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @OneToOne(fetch = FetchType.EAGER, optional = false,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -32,8 +35,10 @@ public class Account {
     @JoinTable(name = "account_role",
     joinColumns = @JoinColumn(name = "account_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonIgnoreProperties("accounts")
     private Collection<Role> roles;
 
     @OneToOne(mappedBy = "account",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("account")
     private RefreshToken refreshToken;
 }

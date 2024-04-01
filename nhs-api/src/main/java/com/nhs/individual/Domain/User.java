@@ -1,5 +1,7 @@
 package com.nhs.individual.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -35,10 +37,9 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @OneToOne(mappedBy = "user",cascade = {CascadeType.PERSIST})
-    private Account account;
 
     @OneToMany(mappedBy = "user")
     private Collection<UserAddress> userAddresses;
+
 
 }

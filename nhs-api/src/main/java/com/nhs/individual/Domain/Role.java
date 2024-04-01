@@ -1,6 +1,7 @@
 package com.nhs.individual.Domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -19,6 +20,6 @@ public class Role {
     @Column(name = "name", length = 45)
     private String name;
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.DETACH,mappedBy = "roles")
-    @JsonBackReference
+    @JsonIgnoreProperties("roles")
     private Collection<Account> accounts;
 }

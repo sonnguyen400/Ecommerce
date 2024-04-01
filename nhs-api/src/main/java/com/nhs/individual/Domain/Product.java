@@ -1,5 +1,7 @@
 package com.nhs.individual.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,8 +18,12 @@ public class Product {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Column(name = "category_id",insertable = false,updatable = false)
+    private Integer categoryId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
+    @JsonBackReference
     private Category category;
 
 
@@ -30,7 +36,8 @@ public class Product {
     @Column(name = "product_image", length = 512)
     private String productImage;
 
-    @OneToMany(mappedBy = "product",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product_",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("product_")
     private Collection<ProductItem> productItems;
 
 

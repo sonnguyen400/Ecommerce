@@ -1,5 +1,6 @@
 package com.nhs.individual.Domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,6 +42,4 @@ public class Address {
     @JoinColumn(name = "country_id")
     private Country country;
 
-    @OneToMany(mappedBy = "address")
-    private Collection<UserAddress> userAddresses;
 }

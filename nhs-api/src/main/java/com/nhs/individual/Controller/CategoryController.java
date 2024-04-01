@@ -28,10 +28,10 @@ public class CategoryController {
     public Collection<Category> findAll(){
         return categoryService.findAll();
     }
-    @RequestMapping(value ="/{parent_id}",method = RequestMethod.GET)
-    public Collection<Category> findAllByParentId(@PathVariable(name = "parent_id") Integer id){
-        return categoryService.findAllByParentId(id);
-    }
+//    @RequestMapping(value ="/{parent_id}",method = RequestMethod.GET)
+//    public Collection<Category> findAllByParentId(@PathVariable(name = "parent_id") Integer id){
+//        return categoryService.findAllByParentId(id);
+//    }
     @RequestMapping(value = "/{category_id}",method = RequestMethod.GET)
     public Category findById(@PathVariable(name = "category_id") Integer id){
         return categoryService.findById(id).orElseThrow(()->  new ResourceNotFoundException("Could not find category with id: "+id));
@@ -69,7 +69,10 @@ public class CategoryController {
     @RequestMapping(value="/category/{category_id}/product",method = RequestMethod.POST)
     public Product createProductInCategory(@PathVariable(name = "category_id") Integer categoryId,
                                            @RequestBody Product product){
-        return productService.create(categoryId,product);
+        Category category=new Category();
+        category.setId(categoryId);
+        product.setCategory(category);
+        return productService.create(product);
     }
 
 
@@ -80,6 +83,10 @@ public class CategoryController {
             @RequestBody Variation variation,
             @PathVariable(name = "category_id") Integer categoryId){
         return variationService.create(categoryId,variation);
+    }
+    @RequestMapping(value = "/{category_id}/variation",method = RequestMethod.GET)
+    public Collection<Variation> findAll(@PathVariable(name = "category_id") Integer categoryId){
+        return variationService.findAllByCategoryId(categoryId);
     }
     @RequestMapping(value = "/{category_id}/variation/{variation_id}",method = RequestMethod.GET)
     public Variation getById(@PathVariable(name = "category_id",required = false) Integer categoryId,

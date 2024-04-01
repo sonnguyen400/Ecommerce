@@ -1,5 +1,6 @@
 package com.nhs.individual.Domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nhs.individual.Exception.InvalidTokenException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -25,6 +26,7 @@ public class RefreshToken {
     private Instant expiredDate;
     @OneToOne(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
+    @JsonIgnoreProperties("refreshToken")
     private Account account;
 
     public static class Builder{
