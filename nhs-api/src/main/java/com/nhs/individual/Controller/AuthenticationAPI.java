@@ -32,7 +32,7 @@ public class AuthenticationAPI {
         return "testauth ok";
     }
     @RequestMapping(value = "/auth/user",method = RequestMethod.GET)
-    public Account getcurrentAccount(){
-        return authService.getAuthenticatedAccount();
+    public String getcurrentAccount(){
+        return "Authok";
     }
 }

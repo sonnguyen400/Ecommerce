@@ -25,10 +25,11 @@ public class Category {
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinColumn(name = "parent_category_id")
-    @JsonIgnoreProperties("children")
+    @JsonIgnoreProperties({"children","variations"})
     private Category parent;
 
     @OneToMany(mappedBy = "parent",fetch = FetchType.LAZY,cascade = {CascadeType.MERGE,CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REMOVE})
+    @JsonIgnoreProperties({"parent"})
     private List<Category> children;
 
     @OneToMany(mappedBy = "category",fetch = FetchType.LAZY,cascade = CascadeType.ALL)

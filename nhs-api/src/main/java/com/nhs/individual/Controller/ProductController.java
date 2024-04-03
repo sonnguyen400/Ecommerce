@@ -66,11 +66,13 @@ public class ProductController {
         return productItemService.saveAll(productId,productItem);
     }
 
-    @RequestMapping(value = "/{product_id}/item",method = RequestMethod.POST)
+    @RequestMapping(value = "/{product_id}/item",method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ProductItem addProductVariation(@PathVariable(name = "product_id") Integer productId,
-                                           @RequestPart(name="image") MultipartFile image,
+                                           @RequestPart(name="image",required = false) MultipartFile image,
                                            @RequestPart(name="productItem") ProductItem item){
-        item.setProductImage((String) cloudinaryService.upload(image).get("url"));
+        if(image!=null&&!image.isEmpty()){
+            item.setProductImage((String) cloudinaryService.upload(image).get("url"));
+        }
         return productItemService.create(productId,item);
     }
 

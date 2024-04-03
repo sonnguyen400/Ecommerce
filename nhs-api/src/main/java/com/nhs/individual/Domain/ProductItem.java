@@ -29,7 +29,7 @@ public class ProductItem {
     joinColumns = @JoinColumn(name = "product_item_id"),
     inverseJoinColumns = @JoinColumn(name = "variation_option_id"))
     @JsonIgnoreProperties("productItems")
-    private Collection<VariationOption> variationOption;
+    private Collection<VariationOption> options;
 
     @Column(name = "product_image", length = 512)
     private String productImage;

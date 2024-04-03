@@ -51,8 +51,13 @@ public class AuthService {
         Authentication auth = authenticationManager.authenticate(authentication);
         SecurityContextHolder.getContext().setAuthentication(auth);
         IUserDetail userDetail= (IUserDetail) auth.getPrincipal();
+        HttpHeaders headers=new HttpHeaders();
+        headers.add(HttpHeaders.ORIGIN,"127.0.0.1");
+        headers.add(HttpHeaders.SET_COOKIE,accessTokenCookie(account.getUsername()).toString());
+        headers.add(HttpHeaders.SET_COOKIE,refreshTokenCookie(userDetail.getId()).toString());
+        headers.add("Withcredentials","true");
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE,accessTokenCookie(account.getUsername()).toString(),refreshTokenCookie(userDetail.getId()).toString())
+                .headers(headers)
                 .body(ResponseMessage.builder().message("Login success")
                         .ok());
     }
@@ -75,7 +80,7 @@ public class AuthService {
         return ResponseEntity.noContent().build();
     }
     public Account getAuthenticatedAccount(){
-        int id=((IUserDetail)SecurityContextHolder.getContext().getAuthentication().getDetails()).getId();
+        int id=((IUserDetail)SecurityContextHolder.getContext().getAuthentication()).getId();
         return accountService
                 .findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Account not found"));
@@ -83,9 +88,10 @@ public class AuthService {
     public ResponseCookie accessTokenCookie(String subject){
         return ResponseCookie.from(AUTH_TOKEN,jwtProvider.generateToken(subject))
                 .secure(true)
-                .httpOnly(true)
+                .path("/")
                 .sameSite("None")
-                .domain("127.0.0.1")
+                .httpOnly(true)
+                .domain(".127.0.0.1")
                 .maxAge((int) ACCESS_TOKEN_EXPIRED)
                 .build();
     }
@@ -95,9 +101,10 @@ public class AuthService {
         RefreshToken refreshToken= refreshTokenService.generateRefreshToken(account);
         return ResponseCookie.from(REFRESH_AUTH_TOKEN,refreshToken.getToken())
                 .sameSite("None")
-                .path("/login")
-                .domain("127.0.0.1")
+                .path("/")
+                .httpOnly(true)
                 .maxAge(REFRESH_TOKEN_EXPIRED)
                 .build();
     }
+
 }
