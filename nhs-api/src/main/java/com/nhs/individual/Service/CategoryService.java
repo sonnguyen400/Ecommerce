@@ -68,6 +68,7 @@ public class CategoryService {
                         throw new DuplicateElementException("The category's name can not be the same as its siblings" + category.getChildren().get(j).getName());
                     }
                 }
+                category.getChildren().get(i).setParent(category);
             }
         }
     }

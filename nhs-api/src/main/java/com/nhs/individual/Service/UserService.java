@@ -23,7 +23,9 @@ public class UserService {
     public void deleteById(Integer id){
         userRepository.deleteById(id);
     }
-
+    public User findByAccountId(Integer accountId){
+        return userRepository.findByAccount_id(accountId);
+    }
 
 
 }

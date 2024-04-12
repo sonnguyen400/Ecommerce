@@ -24,7 +24,7 @@ public class RefreshToken {
     private String token;
     @NotNull
     private Instant expiredDate;
-    @OneToOne(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+    @ManyToOne( cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     @JsonIgnoreProperties("refreshToken")
     private Account account;

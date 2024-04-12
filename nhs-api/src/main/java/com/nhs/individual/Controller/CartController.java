@@ -2,6 +2,7 @@ package com.nhs.individual.Controller;
 
 import com.nhs.individual.Domain.Cart;
 import com.nhs.individual.Domain.CartItem;
+import com.nhs.individual.Service.AuthService;
 import com.nhs.individual.Service.CartItemService;
 import com.nhs.individual.Service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +10,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
-@RestController(value = "/api/v1/cart")
+@RestController
+@RequestMapping(value = "/api/v1/cart")
 public class CartController {
     @Autowired
     CartService cartService;
     @Autowired
     CartItemService cartItemService;
-    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public Collection<CartItem> findAllByUserId(@RequestParam(value = "id",required=true) Integer userId){
-        return cartItemService.findAllByCartId(userId);
+    @Autowired
+    AuthService authService;
+    @RequestMapping(method = RequestMethod.GET)
+    public Collection<Cart> getUserCarts(){
+        return cartService.findAllByUserId(authService.getCurrentUser().getId());
+    }
+    @RequestMapping(method = RequestMethod.POST)
+    public Cart create(@RequestBody Cart cart){
+        return cartService.saveCart(cart);
     }
     @RequestMapping(value = "/{id}",method = RequestMethod.PUT)
     public Cart updateById(@PathVariable(value = "id") Integer id,
@@ -25,10 +33,13 @@ public class CartController {
     ){
         return cartService.update(id,cart);
     }
+
     @RequestMapping(value="/{id}",method = RequestMethod.DELETE)
     public void deleteById(@PathVariable(value = "id") Integer id){
         cartService.deleteById(id);
     }
+
+
     //CartItem
     @RequestMapping(value = "/{cart_id}/item",method = RequestMethod.POST)
     public CartItem create(@RequestBody CartItem cartItem,
@@ -41,9 +52,4 @@ public class CartController {
         cartItemService.deleteById(item_id);
     }
 
-//    @RequestMapping(value = "/",method = RequestMethod.PUT)
-//    public CartItem update(@RequestBody CartItem cartItem,
-//                             @RequestParam(value = "ud",required=true) Integer id){
-//        return cartItemService.update(id,cartItem);
-//    }
 }

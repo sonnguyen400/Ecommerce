@@ -23,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -33,6 +34,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.nhs.individual.Utils.Constant.AUTH_TOKEN;
+import static com.nhs.individual.Utils.Constant.REFRESH_AUTH_TOKEN;
 import static java.util.Collections.singletonList;
 
 @EnableWebSecurity
@@ -54,6 +57,10 @@ public class SecurityConfig {
         return new LogoutHandlerCustomize();
     }
     @Bean
+    public LogoutSuccessHandler logoutSuccessHandler(){
+        return  new LogoutSuccessHandlerCustomize();
+    }
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .cors(c->{
@@ -61,15 +68,25 @@ public class SecurityConfig {
                     c.configure(httpSecurity);
 
                 })
-                .logout(logout->logout.addLogoutHandler(logoutHandler()))
+                .logout(logout-> {
+                    logout.addLogoutHandler(logoutHandler());
+                    logout.logoutSuccessHandler(logoutSuccessHandler());
+                    try {
+                        logout.configure(httpSecurity);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+
+
+                })
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(req->{
                     req.requestMatchers("/test").permitAll()
                             .requestMatchers("/login").anonymous()
                             .requestMatchers("/register").anonymous()
                             .requestMatchers("/refresh").anonymous()
-                            .requestMatchers("/api/v1/product").permitAll()
-                            .anyRequest().permitAll();
+                            .requestMatchers("/logout").permitAll()
+                            .anyRequest().authenticated();
                 })
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -123,10 +140,12 @@ public class SecurityConfig {
 @Bean
 public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(List.of("http://127.0.0.1:3000")); //or add * to allow all origins
+    configuration.setAllowedOrigins(List.of("http://localhost:3000","http://127.0.0.1:3000")); //or add * to allow all origins
     configuration.setAllowedMethods(List.of("*")); //to set allowed http methods
-    configuration.setAllowedHeaders(Arrays.asList("*"));
+    configuration.setAllowedHeaders(List.of("*"));
     configuration.setAllowCredentials(true);
+    configuration.setAllowPrivateNetwork(true);
+    configuration.setExposedHeaders(List.of("*"));
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;

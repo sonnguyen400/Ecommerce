@@ -16,6 +16,7 @@ public class VariationService {
     VariationRepository variationRepository;
     @Autowired
     CategoryService categoryService;
+
     public Variation create(int categoryId,Variation variation){
         return categoryService.findById(categoryId).map(category->{
             variation.setCategory(category);
@@ -36,5 +37,8 @@ public class VariationService {
     }
     public Collection<Variation> findAllByCategoryId(int categoryId){
         return variationRepository.findAllByCategory_Id(categoryId);
+    }
+    public Collection<Variation> saveAll(Collection<Variation> variants){
+        return variationRepository.saveAll(variants);
     }
 }

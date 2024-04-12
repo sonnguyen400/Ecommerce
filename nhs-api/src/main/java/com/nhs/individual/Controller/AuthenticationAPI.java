@@ -4,9 +4,11 @@ import com.nhs.individual.Domain.Account;
 import com.nhs.individual.Domain.User;
 import com.nhs.individual.ResponseMessage.ResponseMessage;
 import com.nhs.individual.Service.AuthService;
+import com.nhs.individual.Utils.IUserDetail;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,7 +34,8 @@ public class AuthenticationAPI {
         return "testauth ok";
     }
     @RequestMapping(value = "/auth/user",method = RequestMethod.GET)
-    public String getcurrentAccount(){
-        return "Authok";
+    public IUserDetail getcurrentAccount(){
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        return authService.getCurrentAccount();
     }
 }

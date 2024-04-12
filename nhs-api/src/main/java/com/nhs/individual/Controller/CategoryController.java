@@ -9,6 +9,8 @@ import com.nhs.individual.Service.ProductService;
 import com.nhs.individual.Service.VariationOptionService;
 import com.nhs.individual.Service.VariationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -43,7 +45,6 @@ public class CategoryController {
     @RequestMapping(value = "/{parent_id}",method = RequestMethod.POST)
     public Category createChild(@RequestBody Category category,
                                 @PathVariable(name = "parent_id") Integer id){
-        System.out.println("createChild");
         return categoryService.addChild(id,category);
     }
 
@@ -62,11 +63,11 @@ public class CategoryController {
     }
 
     //Category-products
-    @RequestMapping(value = "/category/{category_id}/product", method = RequestMethod.GET)
+    @RequestMapping(value = "/{category_id}/product", method = RequestMethod.GET)
     public Collection<Product> getProductByCategory(@PathVariable(name = "category_id") Integer id) {
         return productService.findAllByCategoryId(id);
     }
-    @RequestMapping(value="/category/{category_id}/product",method = RequestMethod.POST)
+    @RequestMapping(value="/{category_id}/product",method = RequestMethod.POST)
     public Product createProductInCategory(@PathVariable(name = "category_id") Integer categoryId,
                                            @RequestBody Product product){
         Category category=new Category();

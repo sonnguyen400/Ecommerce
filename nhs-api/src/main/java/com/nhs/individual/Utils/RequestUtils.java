@@ -12,7 +12,7 @@ public class RequestUtils {
     @Autowired
     private JwtProvider jwtProvider;
 
-    public Claims extractJwtClaimFromCookie(HttpServletRequest request, String cookieName) throws InvalidTokenException, ExpiredJwtException {
+    public Claims extractJwtClaimFromCookie(HttpServletRequest request, String cookieName)  {
         Cookie cookie= WebUtils.getCookie(request,cookieName);
         if(cookie != null){
             return jwtProvider.validate(cookie.getValue());

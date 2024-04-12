@@ -38,7 +38,7 @@ public class Account {
     @JsonIgnoreProperties("accounts")
     private Collection<Role> roles;
 
-    @OneToOne(mappedBy = "account",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "account",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JsonIgnoreProperties("account")
-    private RefreshToken refreshToken;
+    private Collection<RefreshToken> refreshToken;
 }

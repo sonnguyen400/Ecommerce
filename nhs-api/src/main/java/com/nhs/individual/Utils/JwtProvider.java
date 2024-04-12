@@ -24,7 +24,7 @@ public class JwtProvider {
         return Keys.hmacShaKeyFor(PRIVATE_KEY.getBytes());
     }
     public String generateToken(String subject){
-        Date date=new Date(new Date().getTime()+ACCESS_TOKEN_EXPIRED);
+        Date date=new Date(new Date().getTime()+ACCESS_TOKEN_EXPIRED* 10L);
         Map<String,Object> headers = new HashMap<String,Object>();
         headers.put("alg", "HS256");
         return Jwts.builder()

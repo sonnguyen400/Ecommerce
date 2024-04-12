@@ -30,7 +30,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private RequestUtils requestUtils;
     private static final Logger log=LoggerFactory.getLogger(JwtFilter.class);
     @Override
-    protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response,@NotNull FilterChain filterChain) throws ServletException, IOException,ExpiredJwtException {
+    protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response,@NotNull FilterChain filterChain) throws ServletException, IOException {
         Claims token= requestUtils.extractJwtClaimFromCookie(request,AUTH_TOKEN);
         if(token!=null&&token.getSubject()!=null&&!token.getSubject().equals("")){
             try {

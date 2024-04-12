@@ -44,6 +44,8 @@ public class AuthService {
     RefreshTokenService refreshTokenService;
     @Autowired
     RequestUtils requestUtils;
+    @Autowired
+    UserService userService;
     Logger log= LoggerFactory.getLogger(AuthService.class);
 
     public ResponseEntity<ResponseMessage> signIn(Account account){
@@ -91,7 +93,6 @@ public class AuthService {
                 .path("/")
                 .sameSite("None")
                 .httpOnly(true)
-                .domain(".127.0.0.1")
                 .maxAge((int) ACCESS_TOKEN_EXPIRED)
                 .build();
     }
@@ -103,8 +104,15 @@ public class AuthService {
                 .sameSite("None")
                 .path("/")
                 .httpOnly(true)
+                .secure(true)
                 .maxAge(REFRESH_TOKEN_EXPIRED)
                 .build();
     }
 
+    public IUserDetail getCurrentAccount(){
+        return (IUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+    public User getCurrentUser(){
+        return userService.findByAccountId(getCurrentAccount().getId());
+    }
 }
