@@ -16,5 +16,9 @@ public class Warehouse {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     private Address address;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "detail")
+    private String detail;
 
 }

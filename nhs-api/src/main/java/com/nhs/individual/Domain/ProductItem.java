@@ -3,8 +3,6 @@ package com.nhs.individual.Domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -34,6 +32,8 @@ public class ProductItem {
     @Column(name = "product_image", length = 512)
     private String productImage;
 
-    @Column(name = "price", precision = 2)
+    @Column(name = "price",scale = 9,precision = 2)
     private BigDecimal price;
+    @Column(name = "original_price",scale = 9,precision = 2)
+    private BigDecimal originalPrice;
 }

@@ -1,5 +1,6 @@
 package com.nhs.individual.Domain;
 
+import com.nhs.individual.Domain.EmbeddedId.ProductItemInWarehouseId;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

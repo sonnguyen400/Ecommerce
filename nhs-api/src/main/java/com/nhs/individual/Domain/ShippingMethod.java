@@ -19,7 +19,7 @@ public class ShippingMethod {
     @Column(name = "name", length = 45)
     private String name;
 
-    @Column(name = "price", precision = 2)
+    @Column(name = "price",scale = 9, precision = 2)
     private BigDecimal price;
 
 }

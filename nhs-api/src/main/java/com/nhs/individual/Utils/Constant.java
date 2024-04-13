@@ -7,5 +7,6 @@ public class Constant {
     public static final long REFRESH_TOKEN_AGE=604800000L;
     public static final int REFRESH_STATUS=1000;
     public static final String ADMIN_NAME="admin";
+    public static final Integer ORDER_PENDING=1;
 
 }
