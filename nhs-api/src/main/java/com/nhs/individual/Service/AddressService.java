@@ -18,7 +18,7 @@ public class AddressService {
                 .map(oldAddress-> ObjectUtils.merge(oldAddress,address,Address.class))
                 .orElseThrow(RuntimeException::new));
     }
-    public Address create(Address address){
+    public Address save(Address address){
         return repository.save(address);
     }
     public Optional<Address> findById(Integer id){
@@ -27,4 +27,8 @@ public class AddressService {
     public Collection<Address> findAll(){
         return repository.findAll();
     }
+    public void deleteById(int id){
+        repository.deleteById(id);
+    }
 }
+

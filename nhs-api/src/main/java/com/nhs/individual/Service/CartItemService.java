@@ -31,7 +31,9 @@ public class CartItemService {
                     cartItemRepository.updateQty(cartItem1.getId(),cartItem1.getQty()+cartItem.getQty());
                     cartItem1.setQty(cartItem.getQty()+cartItem1.getQty());
                     return cartItem1;
-                }).orElse(cartItemRepository.save(cartItem));
+                }).orElseGet(()->{
+                    return cartItemRepository.save(cartItem);
+                });
     }
 
     public Optional<CartItem> findById(Integer id){

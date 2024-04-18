@@ -15,19 +15,22 @@ public class UserAddress {
     private UserAddressId id;
 
     @MapsId("userId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User user;
 
     @MapsId("addressId")
-    @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE,CascadeType.REMOVE})
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
+
 
     @Column(name = "is_default")
     private Boolean isDefault;
 
     @Column(name = "is_business")
     private Boolean isBusiness;
+
 
 }
