@@ -10,7 +10,6 @@ import java.util.Collection;
 @Data
 @Entity
 @Table(name = "product_item")
-
 public class ProductItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,19 +20,17 @@ public class ProductItem {
     @JoinColumn(name = "product_id")
     @JsonIgnoreProperties("productItems")
     private Product product_;
-
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinTable(name = "product_item_options",
     joinColumns = @JoinColumn(name = "product_item_id"),
     inverseJoinColumns = @JoinColumn(name = "variation_option_id"))
     @JsonIgnoreProperties("productItems")
     private Collection<VariationOption> options;
-
     @Column(name = "product_image", length = 512)
     private String productImage;
-
     @Column(name = "price",scale = 9,precision = 2)
     private BigDecimal price;
     @Column(name = "original_price",scale = 9,precision = 2)
     private BigDecimal originalPrice;
+
 }
