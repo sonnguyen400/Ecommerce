@@ -1,6 +1,8 @@
 package com.nhs.individual.Service;
 
 import com.nhs.individual.Domain.EmbeddedId.ProductItemInWarehouseId;
+import com.nhs.individual.Domain.ProductItem;
+import com.nhs.individual.Domain.Warehouse;
 import com.nhs.individual.Domain.WarehouseItem;
 import com.nhs.individual.Exception.ResourceNotFoundException;
 import com.nhs.individual.Repository.WarehouseItemRepository;
@@ -29,7 +31,14 @@ public class WareHouseItemService {
     }
     public WarehouseItem importNewItem(Integer warehouseId,Integer itemId,WarehouseItem warehouseItem){
         warehouseItem.setId(new ProductItemInWarehouseId(itemId,warehouseId));
-        return repository.save(warehouseItem);
+        ProductItem productItem=new ProductItem();
+        productItem.setId(itemId);
+        warehouseItem.setProductItem(productItem);
+        Warehouse warehouse=new Warehouse();
+        warehouse.setId(warehouseId);
+        warehouseItem.setWarehouse(warehouse);
+        WarehouseItem warehouseItem1=repository.save(warehouseItem);
+        return warehouseItem1;
     }
 
 }

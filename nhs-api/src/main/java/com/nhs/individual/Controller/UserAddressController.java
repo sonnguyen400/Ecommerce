@@ -24,10 +24,10 @@ public class UserAddressController {
         return userAddressService.create(user, userAddress);
     }
 
-
     @RequestMapping(value="/{id}/default",method = RequestMethod.GET)
     public UserAddress getById(@PathVariable Integer id,
                         @RequestParam(name = "user") Integer user) {
+        System.out.println("update");
         return userAddressService.setDefaultAddress(user,id);
     }
     @RequestMapping(value="/{id}",method = RequestMethod.DELETE)

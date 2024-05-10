@@ -55,6 +55,7 @@ public class UserAddressService {
     public void setBusinessAddress(Integer userAddressId){
         userAddressRepository.updateBusinessAddress(userAddressId);
     }
+    @Transactional
     public UserAddress setDefaultAddress(Integer userId,Integer  addressId){
         return  userAddressRepository.updateDefaultAddressByAddressId(userId,addressId);
     }

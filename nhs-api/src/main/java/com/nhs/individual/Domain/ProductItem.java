@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity
@@ -32,5 +33,7 @@ public class ProductItem {
     private BigDecimal price;
     @Column(name = "original_price",scale = 9,precision = 2)
     private BigDecimal originalPrice;
-
+    @OneToMany(mappedBy = "productItem")
+    @JsonIgnoreProperties("productItem")
+    private List<WarehouseItem> warehouses;
 }

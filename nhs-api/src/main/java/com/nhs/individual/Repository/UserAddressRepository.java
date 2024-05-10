@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -16,7 +17,7 @@ public interface UserAddressRepository extends JpaRepository<UserAddress, UserAd
     Collection<UserAddress> findAllByUser_id(Integer userid);
     Optional<UserAddress> findAllByUser_idAndAddress_id(Integer userId,Integer addressId);
 
-    @Procedure(name = "setDefaultUserAddress")
+    @Procedure(procedureName = "setDefaultUserAddress")
     UserAddress updateDefaultAddressByAddressId(Integer userId,Integer addressId);
 
     @Modifying
