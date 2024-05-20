@@ -35,7 +35,6 @@ public class AuthenticationAPI {
     }
     @RequestMapping(value = "/auth/user",method = RequestMethod.GET)
     public IUserDetail getcurrentAccount(){
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return authService.getCurrentAccount();
     }
 }

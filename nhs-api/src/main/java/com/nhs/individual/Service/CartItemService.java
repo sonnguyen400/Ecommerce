@@ -13,27 +13,16 @@ import java.util.Optional;
 public class CartItemService {
     @Autowired
     private CartItemRepository cartItemRepository;
-    private CartService cartService;
     private static final ObjectUtils<CartItem> objectM=new ObjectUtils<CartItem>();
 
-    public CartItem addItem(Integer cartId,CartItem item) {
-        return cartService.findById(cartId).map(cart->{
-            if(Optional.ofNullable(item.getCart().getId()).isEmpty()) {
-                item.setCart(cart);
-            }
-            return cartItemRepository.save(item);
-        }).orElseThrow(
-            () -> new RuntimeException("Cart not found")
-        );
+    public CartItem save(CartItem item) {
+        return cartItemRepository.save(item);
     }
-    public Optional<CartItem> findById(Integer id){
-        return cartItemRepository.findById(id);
-    }
-    public Collection<CartItem> findAllByCartId(Integer id){
-        return cartItemRepository.findAllByCart_id(id);
+    public Collection<CartItem> findAllByUserId(Integer userId){
+        return cartItemRepository.findAllByUser_id(userId);
     }
     public CartItem update(Integer id, CartItem item) {
-        return findById(id).map(oldItem->{
+        return cartItemRepository.findById(id).map(oldItem->{
             return cartItemRepository.save(objectM.merge(oldItem,item, CartItem.class));
         }).orElseThrow(() -> new RuntimeException("Cart not found"));
     }

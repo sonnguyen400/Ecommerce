@@ -16,9 +16,9 @@ public class CartItem {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_item_id")

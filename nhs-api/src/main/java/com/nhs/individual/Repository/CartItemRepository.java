@@ -7,5 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Collection;
 
 public interface CartItemRepository extends JpaRepository<CartItem,Integer> {
-    Collection<CartItem> findAllByCart_id(Integer id);
+    Collection<CartItem> findAllByUser_id(Integer userId);
+    Collection<CartItem> deleteAllByUser_id(Integer userId);
+
+
 }
