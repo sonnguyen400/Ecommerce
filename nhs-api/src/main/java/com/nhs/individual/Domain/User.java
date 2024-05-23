@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
+import java.sql.Date;
 import java.time.Instant;
 import java.util.Collection;
 
@@ -24,7 +25,7 @@ public class User {
     private String lastname;
 
     @Column(name = "date_of_birth")
-    private Instant dateOfBirth;
+    private Date dateOfBirth;
 
     @Column(name = "gender", length = 10)
     private String gender;

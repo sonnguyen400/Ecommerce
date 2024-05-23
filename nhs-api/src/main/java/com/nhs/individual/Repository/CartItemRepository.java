@@ -16,4 +16,7 @@ public interface CartItemRepository extends JpaRepository<CartItem,Integer> {
 
     @Query(value = "select * from cart_item where user_id=?1 and product_item_id=?2",nativeQuery = true)
     Optional<CartItem> findByUser_idAndProduct_item_id(Integer userId,Integer productItemId);
+    @Modifying
+    @Query(value = "update cart_item set qty=?2 , product_item_id=?3 where id=?1",nativeQuery = true)
+    void update(Integer id,Integer qty, Integer productItemId);
 }

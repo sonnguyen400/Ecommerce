@@ -16,7 +16,6 @@ public class ProductItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_id")
     @JsonIgnoreProperties("productItems")
@@ -29,9 +28,9 @@ public class ProductItem {
     private Collection<VariationOption> options;
     @Column(name = "product_image", length = 512)
     private String productImage;
-    @Column(name = "price",scale = 9,precision = 2)
+    @Column(name = "price")
     private BigDecimal price;
-    @Column(name = "original_price",scale = 9,precision = 2)
+    @Column(name = "original_price")
     private BigDecimal originalPrice;
     @OneToMany(mappedBy = "productItem")
     @JsonIgnoreProperties("productItem")

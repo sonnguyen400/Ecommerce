@@ -33,7 +33,7 @@ public class ShopOrder {
     @Column(name = "order_date",insertable = false,columnDefinition = "DATETIME default now()")
     private Instant orderDate;
 
-    @Column(name = "total",scale = 9, precision = 2)
+    @Column(name = "total",scale = 2, precision = 9)
     private BigDecimal total;
 
     @ManyToOne(fetch = FetchType.LAZY)

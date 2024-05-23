@@ -1,7 +1,9 @@
 package com.nhs.individual.Service;
 
 import com.nhs.individual.Domain.CartItem;
+import com.nhs.individual.Domain.ProductItem;
 import com.nhs.individual.Domain.User;
+import com.nhs.individual.Exception.ResourceNotFoundException;
 import com.nhs.individual.Repository.CartItemRepository;
 import com.nhs.individual.Utils.ObjectUtils;
 import jakarta.transaction.Transactional;
@@ -15,6 +17,8 @@ import java.util.Optional;
 public class CartItemService {
     @Autowired
     private CartItemRepository cartItemRepository;
+    @Autowired
+    private ProductItemService productItemService;
     @Autowired
     AuthService authService;
     private static final ObjectUtils<CartItem> objectM= new ObjectUtils<>();
@@ -31,9 +35,22 @@ public class CartItemService {
                     cartItemRepository.updateQty(cartItem1.getId(),cartItem1.getQty()+cartItem.getQty());
                     cartItem1.setQty(cartItem.getQty()+cartItem1.getQty());
                     return cartItem1;
-                }).orElseGet(()->{
-                    return cartItemRepository.save(cartItem);
+                }).orElse(cartItemRepository.save(cartItem));
+    }
+    @Transactional
+    public CartItem update(Integer id,CartItem cartItem){
+        return cartItemRepository.findById(id).map(item->{
+            if(cartItem.getQty()!=null){
+                item.setQty(cartItem.getQty());
+            }
+            if(cartItem.getProductItem()!=null&&cartItem.getProductItem().getId()!=null){
+                productItemService.findById(cartItem.getProductItem().getId()).ifPresent(productItem->{
+                    item.setProductItem(productItem);
                 });
+            }
+            cartItemRepository.update(item.getId(), item.getQty(), item.getProductItem().getId());
+            return item;
+        }).orElseThrow(()->new ResourceNotFoundException("Could not find cart item with id " + cartItem.getId()));
     }
 
     public Optional<CartItem> findById(Integer id){

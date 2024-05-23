@@ -23,4 +23,14 @@ public class CartController {
     public CartItem create(@RequestBody CartItem cart){
         return cartItemService.save(cart);
     }
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public CartItem updateById(@PathVariable Integer id, @RequestBody CartItem cart){
+        cart.setId(id);
+        return cartItemService.update(id,cart);
+    }
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public Integer deleteById(@PathVariable Integer id){
+        cartItemService.deleteById(id);
+        return id;
+    }
 }

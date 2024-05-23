@@ -14,10 +14,11 @@ public class UserService {
     UserRepository userRepository;
     @Autowired
     AddressService service;
+
     public Optional<User> findById(int id){
         return userRepository.findById(id);
     }
-    public User create(User user){
+    public User save(User user){
         return userRepository.save(user);
     }
     public void deleteById(Integer id){
