@@ -1,4 +1,4 @@
-package com.nhs.individual.Domain;
+package com.nhs.individual.Domain.EmbeddedId;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,6 +18,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductItemInWarehouseId implements Serializable {
+    @Serial
     private static final long serialVersionUID = -7683595233898852023L;
     @Column(name = "product_item_id", nullable = false)
     private Integer productItemId;

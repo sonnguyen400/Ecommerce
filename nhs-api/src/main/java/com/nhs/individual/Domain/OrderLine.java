@@ -12,21 +12,19 @@ import java.math.BigDecimal;
 @Table(name = "order_line")
 public class OrderLine {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_item_id")
     private ProductItem productItem;
 
     @Column(name = "qty")
     private Integer qty;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private ShopOrder order;
-
     @Column(name = "total", precision = 2)
     private BigDecimal total;
 
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @JoinColumn(name = "order_id")
+    private ShopOrder order;
 }

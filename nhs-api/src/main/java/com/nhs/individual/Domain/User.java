@@ -1,11 +1,11 @@
 package com.nhs.individual.Domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
+import java.sql.Date;
 import java.time.Instant;
 import java.util.Collection;
 
@@ -25,7 +25,7 @@ public class User {
     private String lastname;
 
     @Column(name = "date_of_birth")
-    private Instant dateOfBirth;
+    private Date dateOfBirth;
 
     @Column(name = "gender", length = 10)
     private String gender;
@@ -38,7 +38,8 @@ public class User {
     private String email;
 
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("user")
     private Collection<UserAddress> userAddresses;
 
 

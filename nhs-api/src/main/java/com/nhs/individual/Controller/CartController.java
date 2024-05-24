@@ -20,18 +20,17 @@ public class CartController {
         return cartItemService.findAllByUserId(authService.getCurrentUser().getId());
     }
     @RequestMapping(method = RequestMethod.POST)
-    public CartItem create(@RequestBody CartItem cartItem){
-        return cartItemService.save(cartItem);
+    public CartItem create(@RequestBody CartItem cart){
+        return cartItemService.save(cart);
     }
-    @RequestMapping(value = "/{id}",method = RequestMethod.PUT)
-    public void updateById(@PathVariable(value = "id") Integer id,
-                                           @RequestBody CartItem cart
-    ){
-        cartItemService.update(id,cart);
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public CartItem updateById(@PathVariable Integer id, @RequestBody CartItem cart){
+        cart.setId(id);
+        return cartItemService.update(id,cart);
     }
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteById(@PathVariable(value = "id") Integer id){
+    public Integer deleteById(@PathVariable Integer id){
         cartItemService.deleteById(id);
+        return id;
     }
-
 }

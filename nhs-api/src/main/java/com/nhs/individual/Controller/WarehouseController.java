@@ -22,7 +22,7 @@ public class WarehouseController {
     ProductService productService;
     @Autowired
     WareHouseItemService wareHouseItemService;
-    @RequestMapping(value = "/",method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public Collection<Warehouse> findAll(){
         return wareHouseService.findAll();
     }
@@ -30,8 +30,8 @@ public class WarehouseController {
     public Warehouse findById(@PathVariable(name = "warehouse_id") Integer id){
         return wareHouseService.findById(id).orElseThrow(()->new ResourceNotFoundException("Warehouse not found"));
     }
-    @RequestMapping(value = "/",method = RequestMethod.POST)
-    public Warehouse create(Warehouse wareHouse){
+    @RequestMapping(method = RequestMethod.POST)
+    public Warehouse create(@RequestBody  Warehouse wareHouse){
         return wareHouseService.create(wareHouse);
     }
     @RequestMapping(value = "/{warehouse_id}",method = RequestMethod.PUT)

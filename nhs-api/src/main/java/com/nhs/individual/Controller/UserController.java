@@ -12,10 +12,15 @@ public class UserController {
     private UserService userService;
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public User register(@RequestBody User user) {
-        return userService.create(user);
+        return userService.save(user);
     }
     @RequestMapping(value = "/{id}",method=RequestMethod.DELETE)
     public void delete(@PathVariable(value = "id") Integer id) {
         userService.deleteById(id);
+    }
+    @RequestMapping(value = "/{id}",method=RequestMethod.PUT)
+    public User update(@PathVariable(value = "id") Integer id, @RequestBody User user) {
+        user.setId(id);
+        return userService.save(user);
     }
 }

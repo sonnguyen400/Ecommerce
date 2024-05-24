@@ -1,5 +1,9 @@
 package com.nhs.individual.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.nhs.individual.Domain.EmbeddedId.ProductItemInWarehouseId;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,22 +14,25 @@ import lombok.Setter;
 @Table(name = "product_item_in_warehouse")
 public class WarehouseItem {
     @EmbeddedId
+    @JsonIgnore
     private ProductItemInWarehouseId id;
 
     @MapsId("productItemId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "product_item_id", nullable = false)
+    @JsonIgnoreProperties("warehouses")
     private ProductItem productItem;
 
     @MapsId("warehouseId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "warehouse_id", nullable = false)
+    @JsonBackReference
     private Warehouse warehouse;
 
     @Column(name = "SKU")
     private String SKU;
     @Column(name = "quantity")
-    private Integer quantity;
+    private Integer qty;
 
 
 }

@@ -1,8 +1,12 @@
 package com.nhs.individual.Domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,10 +17,15 @@ public class Warehouse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name")
-    private String name;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "detail")
+    private String detail;
+    @OneToMany(mappedBy = "warehouse")
+    @JsonManagedReference
+    public Collection<WarehouseItem> warehouseItems;
 
 }
