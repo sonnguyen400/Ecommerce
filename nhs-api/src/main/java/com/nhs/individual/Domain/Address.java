@@ -38,8 +38,11 @@ public class Address {
     @Column(name = "address_line_2", length = 45)
     private String addressLine2;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinColumn(name = "country_id")
     private Country country;
+
+
+
 
 }

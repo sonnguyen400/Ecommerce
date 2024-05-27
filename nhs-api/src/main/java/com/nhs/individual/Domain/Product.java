@@ -3,6 +3,7 @@ package com.nhs.individual.Domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,10 +25,12 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     @JsonBackReference
+    @NotNull(message = "Category's identify is required")
     private Category category;
 
 
     @Column(name = "name", length = 45)
+    @NotNull(message = "Product's name is required")
     private String name;
 
     @Column(name = "description")
@@ -39,6 +42,5 @@ public class Product {
     @OneToMany(mappedBy = "product_",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonIgnoreProperties("product_")
     private Collection<ProductItem> productItems;
-
 
 }

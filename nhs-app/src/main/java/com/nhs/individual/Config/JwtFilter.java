@@ -35,7 +35,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if(token!=null&&token.getSubject()!=null&&!token.getSubject().equals("")){
             try {
                 service.findByUsername(token.getSubject())
-                        .map(IUserDetail::parseFrom)
+                        .map(IUserDetail::new)
                         .ifPresent(user->{
                             UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
                             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

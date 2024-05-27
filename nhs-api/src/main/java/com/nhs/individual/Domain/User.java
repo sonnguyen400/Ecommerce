@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import java.sql.Date;
 import java.time.Instant;
@@ -19,9 +20,12 @@ public class User {
     private Integer id;
 
     @Column(name = "firstname", length = 45)
+    @Length(min=1,max = 45,message = "First name is between 1 and 45 characters in length")
     private String firstname;
 
     @Column(name = "lastname", length = 45)
+    @Length(min=1,max = 45,message = "Last name is between 1 and 45 characters in length")
+
     private String lastname;
 
     @Column(name = "date_of_birth")
@@ -31,7 +35,6 @@ public class User {
     private String gender;
 
     @Column(name = "phone_number", length = 12)
-    @NotEmpty
     private String phoneNumber;
 
     @Column(name = "email")

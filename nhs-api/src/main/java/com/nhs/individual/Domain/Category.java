@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +22,7 @@ public class Category {
     private Integer id;
 
     @Column(name = "name", length = 45)
+    @NotBlank(message = "Category name is required")
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)

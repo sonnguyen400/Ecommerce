@@ -86,6 +86,7 @@ public class SecurityConfig {
                             .requestMatchers("/register").anonymous()
                             .requestMatchers("/refresh").anonymous()
                             .requestMatchers("/logout").permitAll()
+                            .requestMatchers("/swagger-ui**").permitAll()
                             .anyRequest().authenticated();
                 })
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -104,7 +105,7 @@ public class SecurityConfig {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
                 return service.findByUsername(username)
-                        .map(IUserDetail::parseFrom)
+                        .map(IUserDetail::new)
                         .orElseThrow(()->{
                             System.out.println("Find 0 match");
                             return new UsernameNotFoundException(username+"Not found");

@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 public class IUserDetail implements UserDetails {
     private Integer id;
+    private Integer userId;
     private String username;
     private String password;
     private Collection<SimpleGrantedAuthority> authorities;
@@ -54,14 +55,15 @@ public class IUserDetail implements UserDetails {
         return true;
     }
 
-    public static IUserDetail parseFrom(Account account){
-        IUserDetail userDetail=new IUserDetail();
-        userDetail.setUsername(account.getUsername());
-        userDetail.setId(account.getId());
-        userDetail.setPassword(account.getPassword());
+
+    public  IUserDetail(Account account){
+        this.username=account.getUsername();
+        this.id=account.getId();
+        this.password=account.getPassword();
+        this.userId=account.getUser().getId();
         if(account.getRoles() != null&&account.getRoles().size()>0){
-            userDetail.setAuthorities(account.getRoles().stream().map(e->new SimpleGrantedAuthority(e.getName())).toList());
+            this.setAuthorities(account.getRoles().stream().map(e->new SimpleGrantedAuthority(e.getName())).toList());
         }
-        return userDetail;
     }
+
 }

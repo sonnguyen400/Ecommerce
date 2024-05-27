@@ -1,6 +1,8 @@
 package com.nhs.individual.Domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,11 +19,13 @@ public class OrderLine {
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_item_id")
+    @NotNull(message = "Product item information is required")
     private ProductItem productItem;
 
     @Column(name = "qty")
     private Integer qty;
     @Column(name = "total", precision = 2)
+    @Min(value = 1,message = "Total value is in valid! Total value can't be negative")
     private BigDecimal total;
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
