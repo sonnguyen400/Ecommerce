@@ -22,6 +22,8 @@ public class ProductItem {
     @JsonIgnoreProperties("productItems")
     @NotNull(message = "Product Information is required")
     private Product product_;
+    @Column(name = "product_id", insertable = false,updatable = false)
+    private Integer productId;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "product_item_options",
             joinColumns = @JoinColumn(name = "product_item_id"),

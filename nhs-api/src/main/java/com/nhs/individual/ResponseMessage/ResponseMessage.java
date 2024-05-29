@@ -12,6 +12,9 @@ public class ResponseMessage {
     private int statusCode;
     @Getter
     @Setter
+    private String exceptionType;
+    @Getter
+    @Setter
     private Boolean isError=false;
     @Getter
     @Setter
@@ -30,6 +33,10 @@ public class ResponseMessage {
         }
         public ResponseMessageBuilder statusCode(int statusCode){
             responseMessage.setStatusCode(statusCode);
+            return this;
+        }
+        public ResponseMessageBuilder exceptionType(String exceptionType){
+            responseMessage.setExceptionType(exceptionType);
             return this;
         }
         public ResponseMessageBuilder error(){
