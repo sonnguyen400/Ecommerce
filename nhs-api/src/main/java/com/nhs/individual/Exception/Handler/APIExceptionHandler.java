@@ -7,6 +7,7 @@ import com.nhs.individual.Exception.ResourceNotFoundException;
 import com.nhs.individual.ResponseMessage.ResponseMessage;
 import com.nhs.individual.Utils.JwtProvider;
 import com.nhs.individual.Utils.RequestUtils;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,17 @@ public class APIExceptionHandler {
     RequestUtils requestUtils;
     @Autowired
     JwtProvider jwtProvider;
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseMessage handleGeneralException(RuntimeException e){
+        e.printStackTrace();
+        return ResponseMessage
+                .builder()
+                .message(e.getMessage())
+                .error()
+                .exceptionType(e.getClass().getSimpleName())
+                .ok();
+    }
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseMessage handleResourceNotFoundException(ResourceNotFoundException e){
@@ -32,12 +44,23 @@ public class APIExceptionHandler {
               .error()
               .ok();
     }
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    public ResponseMessage handleConstraintViolationException(ConstraintViolationException e){
+        return ResponseMessage
+               .builder()
+               .message(e.getLocalizedMessage())
+                .exceptionType(e.getClass().getSimpleName())
+               .error()
+               .ok();
+    }
     @ExceptionHandler(DuplicateElementException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseMessage handleNonUniqueObjectException(DuplicateElementException e){
         return ResponseMessage
                 .builder()
                 .message(e.getMessage())
+                .exceptionType(e.getClass().getSimpleName())
                 .error()
                 .ok();
     }
@@ -47,17 +70,19 @@ public class APIExceptionHandler {
         return ResponseMessage
                 .builder()
                 .message(e.getMessage())
+                .exceptionType(e.getClass().getSimpleName())
                 .error()
                 .ok();
     }
     @ExceptionHandler(BadCredentialsException.class)
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public ResponseEntity<ResponseMessage> handleAuthenticationException(BadCredentialsException e){
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(ResponseMessage
                         .builder()
                         .message(e.getMessage())
+                        .exceptionType(e.getClass().getSimpleName())
                         .error()
                         .ok());
     }

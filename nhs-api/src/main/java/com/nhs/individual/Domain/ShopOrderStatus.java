@@ -1,28 +1,30 @@
 package com.nhs.individual.Domain;
 
-import com.nhs.individual.Domain.EmbeddedId.ShopOrderStatusId;
+import com.nhs.individual.Constant.OrderStatus;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.time.Instant;
+import java.sql.Date;
 
 @Entity
 @Table(name = "shop_order_status")
+@Getter
+@Setter
 public class ShopOrderStatus {
-    @EmbeddedId
-    private ShopOrderStatusId id;
-    @MapsId("shopOrderId")
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", insertable = false)
+    private Integer id;
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shop_order_id")
     private ShopOrder order;
-
-    @MapsId("orderStatusId")
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "order_status_id")
-    private OrderStatus orderStatus;
-    @Column(name = "update_at",columnDefinition = "Datetime default now()",insertable = false)
-    private Instant updateAt;
-    @Column(name="detail")
+    @Column(name = "update_at", columnDefinition = "Datetime default now()", insertable = false)
+    private Date updateAt;
+    @Column(name = "detail")
     private String detail;
     @Column(name = "note")
     private String note;
+    @Column(name = "status")
+    private OrderStatus status;
 }
