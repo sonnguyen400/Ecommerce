@@ -9,6 +9,8 @@ begin
     insert into shop_order_status(shop_order_id,order_status_id) value(new.id,purchasing_id);
 end//
 Delimiter //
+use ecommerce;
+drop trigger if exists initial_order;
 CREATE PROCEDURE setDefaultUserAddress(
     IN user_id_param INT,
     IN address_id_param INT

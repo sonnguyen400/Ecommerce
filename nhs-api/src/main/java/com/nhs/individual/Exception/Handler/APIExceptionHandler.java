@@ -7,6 +7,8 @@ import com.nhs.individual.Exception.ResourceNotFoundException;
 import com.nhs.individual.ResponseMessage.ResponseMessage;
 import com.nhs.individual.Utils.JwtProvider;
 import com.nhs.individual.Utils.RequestUtils;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,17 @@ public class APIExceptionHandler {
     RequestUtils requestUtils;
     @Autowired
     JwtProvider jwtProvider;
+    @ExceptionHandler(ValidationException.class)
+        @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+        public ResponseMessage handleSqlException(SQLException e){
+        return ResponseMessage
+                .builder()
+                .message(e.getMessage())
+                .details(e.getNextException().getMessage())
+                .statusCode(e.getErrorCode())
+                .error()
+                .ok();
+    }
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseMessage handleResourceNotFoundException(ResourceNotFoundException e){

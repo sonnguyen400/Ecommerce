@@ -23,6 +23,7 @@ public class ShopOrder {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @NotNull(message = "User Information is required")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
