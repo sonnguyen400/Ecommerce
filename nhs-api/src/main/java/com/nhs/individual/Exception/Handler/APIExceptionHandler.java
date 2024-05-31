@@ -25,7 +25,7 @@ public class APIExceptionHandler {
     RequestUtils requestUtils;
     @Autowired
     JwtProvider jwtProvider;
-    @ExceptionHandler(ValidationException.class)
+    @ExceptionHandler(ConstraintViolationException.class)
         @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
         public ResponseMessage handleSqlException(SQLException e){
         return ResponseMessage

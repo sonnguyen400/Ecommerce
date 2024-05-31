@@ -1,6 +1,5 @@
 package com.nhs.individual.Controller;
 
-import com.nhs.individual.Constant.SQLOrder;
 import com.nhs.individual.Domain.ShopOrder;
 import com.nhs.individual.Service.ShopOrderService;
 import org.hibernate.query.SortDirection;
@@ -38,6 +37,6 @@ public class ShopOrderController {
         }
         if(sort!=null)  pageRequest=PageRequest.of(page,size,sort);
         else pageRequest=PageRequest.of(page,size);
-        return shopOrderService.findAllByUserId(userId,(Pageable) pageRequest);
+        return shopOrderService.findAllByUserId(userId,pageRequest);
     }
 }

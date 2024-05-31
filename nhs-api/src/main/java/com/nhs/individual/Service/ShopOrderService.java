@@ -5,6 +5,7 @@ import com.nhs.individual.Domain.ShopOrder;
 import com.nhs.individual.Domain.ShopOrderStatus;
 import com.nhs.individual.Repository.ShopOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -24,8 +25,8 @@ public class ShopOrderService {
         return orderRepository.save(order);
     }
 
-    public Collection<ShopOrder> findAllByUserId(int userId) {
-        return orderRepository.findAllByUser_id(userId);
+    public Collection<ShopOrder> findAllByUserId(int userId, Pageable pageable) {
+        return orderRepository.findAllByUser_Id(userId,pageable);
     }
 
 }

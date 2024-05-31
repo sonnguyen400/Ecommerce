@@ -20,12 +20,10 @@ public class OrderLine {
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_item_id")
-    @Hidden
+    @NotNull(message = "Product item information is required")
     private ProductItem productItem;
 
-    @NotNull(message = "Product item information is required")
-    @Column(name = "product_item_id",insertable = false,updatable = false)
-    private Integer productItemId;
+
 
     @Column(name = "qty")
     private Integer qty;
