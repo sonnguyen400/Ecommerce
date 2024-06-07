@@ -31,7 +31,7 @@ public class OrderLine {
     @Min(value = 1,message = "Total value is in valid! Total value can't be negative")
     private BigDecimal total;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
     private ShopOrder order;
 }

@@ -25,6 +25,9 @@ public class Category {
     @NotBlank(message = "Category name is required")
     private String name;
 
+    @Column(name = "description")
+    @NotBlank(message = "Category description is required")
+    private String description;
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinColumn(name = "parent_category_id")
     @JsonIgnoreProperties({"children","variations"})
@@ -34,9 +37,6 @@ public class Category {
     @JsonIgnoreProperties({"parent"})
     private List<Category> children;
 
-    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("category")
-    private List<Variation> variations;
 
     @OneToMany(mappedBy = "category",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JsonIgnore

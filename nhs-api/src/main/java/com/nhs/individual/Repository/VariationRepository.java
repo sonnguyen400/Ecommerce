@@ -8,5 +8,4 @@ import java.util.Collection;
 
 @Repository
 public interface VariationRepository extends JpaRepository<Variation,Integer> {
-    public Collection<Variation> findAllByCategory_Id(Integer categoryId);
 }

@@ -23,7 +23,7 @@ public class VariationOptionService {
                 .map(Variation::getOptions)
                 .orElseThrow(()->new ResourceNotFoundException("Variation with id " + variationId + " does not exist"));
     }
-    public VariationOption create(VariationOption variationOption){
+    public VariationOption save(VariationOption variationOption){
         return variationOptionRepository.save(variationOption);
     }
     public Optional<VariationOption> findById(int id){

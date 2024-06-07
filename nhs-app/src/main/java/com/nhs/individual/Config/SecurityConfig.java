@@ -86,7 +86,7 @@ public class SecurityConfig {
                             .requestMatchers("/register").anonymous()
                             .requestMatchers("/refresh").anonymous()
                             .requestMatchers("/logout").permitAll()
-                            .requestMatchers("/swagger-ui**").permitAll()
+                            .requestMatchers("/swagger-ui/**").permitAll()
                             .anyRequest().authenticated();
                 })
                 .sessionManagement(manager->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

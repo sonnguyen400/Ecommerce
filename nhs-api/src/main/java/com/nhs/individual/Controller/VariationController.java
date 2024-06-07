@@ -17,6 +17,14 @@ public class VariationController {
     VariationService variationService;
     @Autowired
     VariationOptionService variationOptionService;
+    @RequestMapping(method=RequestMethod.GET)
+    public Collection<Variation> getAll() {
+        return variationService.findAll();
+    }
+    @RequestMapping(method = RequestMethod.POST)
+    public Variation create(@RequestBody Variation variation) {
+        return variationService.save(variation);
+    }
     @RequestMapping(value = "/{variation_id}", method = RequestMethod.GET)
     public Variation getById(@PathVariable(name = "variation_id") Integer variationId) {
         return variationService.findById(variationId).orElseThrow(()->new ResourceNotFoundException("Could not find variation"));
@@ -37,9 +45,15 @@ public class VariationController {
     ) {
         return variationOptionService.findAllByVariationId(variationId);
     }
-    @RequestMapping(method = RequestMethod.POST)
-    public Variation create(@RequestBody Variation variation) {
-        return variationService.create(variation.getCategory().getId(),variation);
+    @RequestMapping(value = "/{variation_id}/option",method = RequestMethod.POST)
+    public VariationOption createVariationOption(
+            @RequestBody VariationOption variationOption,
+            @PathVariable(name = "variation_id") Integer variationId){
+        Variation variation=new Variation();
+        variation.setId(variationId);
+        variationOption.setVariation(variation);
+        return variationOptionService.save(variationOption);
     }
+
 
 }

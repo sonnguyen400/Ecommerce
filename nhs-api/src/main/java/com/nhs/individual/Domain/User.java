@@ -1,6 +1,7 @@
 package com.nhs.individual.Domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -41,8 +42,8 @@ public class User {
     private String email;
 
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Collection<UserAddress> userAddresses;
 
 

@@ -21,8 +21,6 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
     @Autowired
-    private VariationService variationService;
-    @Autowired
     VariationOptionService variationOptionService;
     @Autowired
     ProductService productService;
@@ -76,33 +74,6 @@ public class CategoryController {
         return productService.create(product);
     }
 
-
-    //Variation methods
-
-    @RequestMapping(value = "/{category_id}/variation",method = RequestMethod.POST)
-    public Variation createVariation(
-            @RequestBody Variation variation,
-            @PathVariable(name = "category_id") Integer categoryId){
-        return variationService.create(categoryId,variation);
-    }
-    @RequestMapping(value = "/{category_id}/variation",method = RequestMethod.GET)
-    public Collection<Variation> findAll(@PathVariable(name = "category_id") Integer categoryId){
-        return variationService.findAllByCategoryId(categoryId);
-    }
-    @RequestMapping(value = "/{category_id}/variation/{variation_id}",method = RequestMethod.GET)
-    public Variation getById(@PathVariable(name = "category_id",required = false) Integer categoryId,
-                             @PathVariable(name = "variation_id") Integer variationId){
-        return variationService.findById(variationId).orElseThrow(()->new ResourceNotFoundException("Could not find variation"));
-    }
-    @RequestMapping(value = "/variation/{variation_id}",method = RequestMethod.PUT)
-    public Variation updateById(@PathVariable(name = "variation_id",required = false) Integer variationId,
-                                @RequestBody Variation variation){
-        return variationService.updateById(variationId,variation);
-    }
-    @RequestMapping(value = "/variation/{variation_id}",method = RequestMethod.DELETE)
-    public void deleteVariationById(@PathVariable(name = "variation_id") Integer variationId){
-        variationService.deleteById(variationId);
-    }
 
 
 

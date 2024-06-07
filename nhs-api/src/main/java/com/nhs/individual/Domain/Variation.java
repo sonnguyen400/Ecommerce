@@ -20,10 +20,6 @@ public class Variation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
-    @JoinColumn(name = "category_id")
-    @JsonBackReference
-    private Category category;
 
     @OneToMany(mappedBy = "variation",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonIgnoreProperties("variation")

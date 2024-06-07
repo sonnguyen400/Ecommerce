@@ -27,7 +27,7 @@ public class ProductItem {
     @Column(name = "product_id", insertable = false,updatable = false)
     private Integer productId;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = "product_item_options",
             joinColumns = @JoinColumn(name = "product_item_id"),
             inverseJoinColumns = @JoinColumn(name = "variation_option_id"))

@@ -1,12 +1,12 @@
 package com.nhs.individual.Domain;
 
 import com.nhs.individual.Constant.OrderStatus;
-import com.nhs.individual.Domain.EmbeddedId.ShopOrderStatusId;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.sql.Date;
 
 @Entity
 @Table(name = "shop_order_status")
@@ -21,8 +21,12 @@ public class ShopOrderStatus {
     @JoinColumn(name = "shop_order_id")
     private ShopOrder order;
 
+    @Column(name = "shop_order_id",updatable = false,insertable = false)
+    @Hidden
+    private Integer shopOrderId;
+
     @Column(name = "update_at",columnDefinition = "Datetime default now()",insertable = false)
-    private Instant updateAt;
+    private Date updateAt;
     @Column(name="detail")
     private String detail;
     @Column(name = "note")

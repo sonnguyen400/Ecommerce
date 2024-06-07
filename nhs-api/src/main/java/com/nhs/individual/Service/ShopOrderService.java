@@ -22,6 +22,7 @@ public class ShopOrderService {
         shopOrderStatus.setStatus(OrderStatus.PENDING);
         shopOrderStatus.setOrder(order);
         order.setStatus(List.of(shopOrderStatus));
+        order.getOrderLines().forEach(line->line.setOrder(order));
         return orderRepository.save(order);
     }
 

@@ -25,29 +25,43 @@ public class APIExceptionHandler {
     RequestUtils requestUtils;
     @Autowired
     JwtProvider jwtProvider;
+
     @ExceptionHandler(ConstraintViolationException.class)
-        @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-        public ResponseMessage handleSqlException(SQLException e){
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseMessage validateException(ConstraintViolationException e) {
+        return ResponseMessage
+                .builder()
+                .message(e.getLocalizedMessage())
+                .details(e.getClass().getName())
+                .error()
+                .ok();
+    }
+    @ExceptionHandler(SQLException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseMessage sqlExceptionHandler(SQLException e) {
         return ResponseMessage
                 .builder()
                 .message(e.getMessage())
-                .details(e.getNextException().getMessage())
+                .details(e.getClass().getName())
                 .statusCode(e.getErrorCode())
                 .error()
                 .ok();
     }
+
+
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseMessage handleResourceNotFoundException(ResourceNotFoundException e){
+    public ResponseMessage handleResourceNotFoundException(ResourceNotFoundException e) {
         return ResponseMessage
-              .builder()
-              .message(e.getMessage())
-              .error()
-              .ok();
+                .builder()
+                .message(e.getMessage())
+                .error()
+                .ok();
     }
+
     @ExceptionHandler(DuplicateElementException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ResponseMessage handleNonUniqueObjectException(DuplicateElementException e){
+    public ResponseMessage handleNonUniqueObjectException(DuplicateElementException e) {
         return ResponseMessage
                 .builder()
                 .message(e.getMessage())
@@ -56,16 +70,18 @@ public class APIExceptionHandler {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseMessage handleSqlException(IllegalArgumentException e){
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseMessage handleSqlException(IllegalArgumentException e) {
         return ResponseMessage
                 .builder()
                 .message(e.getMessage())
                 .error()
                 .ok();
     }
+
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public ResponseEntity<ResponseMessage> handleAuthenticationException(BadCredentialsException e){
+    public ResponseEntity<ResponseMessage> handleAuthenticationException(BadCredentialsException e) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(ResponseMessage
@@ -74,15 +90,16 @@ public class APIExceptionHandler {
                         .error()
                         .ok());
     }
+
     @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<ResponseMessage> handleInvalidTokenException(InvalidTokenException e){
+    public ResponseEntity<ResponseMessage> handleInvalidTokenException(InvalidTokenException e) {
         return ResponseEntity
-               .status(HttpStatus.NOT_ACCEPTABLE)
-               .body(ResponseMessage
-                       .builder()
-                       .message(e.getMessage())
-                       .error()
-                       .ok());
+                .status(HttpStatus.NOT_ACCEPTABLE)
+                .body(ResponseMessage
+                        .builder()
+                        .message(e.getMessage())
+                        .error()
+                        .ok());
     }
 //    @ExceptionHandler({ExpiredJwtException.class})
 //    public ResponseEntity<ResponseMessage> handleRefreshTokenException(ExpiredJwtException e, HttpServletRequest req, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

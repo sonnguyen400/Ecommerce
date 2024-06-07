@@ -17,11 +17,11 @@ public class VariationService {
     @Autowired
     CategoryService categoryService;
 
-    public Variation create(int categoryId,Variation variation){
-        return categoryService.findById(categoryId).map(category->{
-            variation.setCategory(category);
-            return variationRepository.save(variation);
-        }).orElseThrow(()->new ResourceNotFoundException("Could not find category"));
+    public Variation save(Variation variation){
+        return variationRepository.save(variation);
+    }
+    public Collection<Variation> findAll(){
+        return variationRepository.findAll();
     }
     public Variation updateById(int variationId,Variation variation){
         return variationRepository.save(findById(variationId).map(oldVariation->{
@@ -34,9 +34,6 @@ public class VariationService {
     }
     public void deleteById(int id){
         variationRepository.deleteById(id);
-    }
-    public Collection<Variation> findAllByCategoryId(int categoryId){
-        return variationRepository.findAllByCategory_Id(categoryId);
     }
     public Collection<Variation> saveAll(Collection<Variation> variants){
         return variationRepository.saveAll(variants);

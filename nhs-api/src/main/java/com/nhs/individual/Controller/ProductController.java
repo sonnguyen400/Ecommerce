@@ -84,8 +84,7 @@ public class ProductController {
     }
     @RequestMapping(value = "/{product_id}/item/{item_id}",method = RequestMethod.DELETE)
     public void deleteProductItemById(@PathVariable(name = "product_id",required = false) Integer productId,
-                                         @PathVariable(name = "item_id") Integer itemId,
-                                         @RequestBody ProductItem productItem){
+                                         @PathVariable(name = "item_id") Integer itemId){
         productItemService.deleteById(itemId);
     }
 
