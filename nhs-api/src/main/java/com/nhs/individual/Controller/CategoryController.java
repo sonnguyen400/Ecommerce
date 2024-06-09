@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/category")
@@ -41,7 +42,7 @@ public class CategoryController {
         return categoryService.create(category);
     }
     @RequestMapping(value = "/{parent_id}",method = RequestMethod.POST)
-    public Category createChild(@RequestBody Category category,
+    public List<Category> createChild(@RequestBody List<Category> category,
                                 @PathVariable(name = "parent_id") Integer id){
         return categoryService.addChild(id,category);
     }

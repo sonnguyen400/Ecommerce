@@ -27,13 +27,19 @@ public interface IShopOrderDAO extends Specification<ShopOrder> {
 //    }
 
     static Specification<ShopOrder> withStatus(OrderStatus status){
-        return (shopOrder,cp,cq)->{
-            Subquery<Integer> orderStatusSubquery=cp.subquery(Integer.class);
-            Root<ShopOrderStatus> shoporderStatusRoot=orderStatusSubquery.from(ShopOrderStatus.class);
-            orderStatusSubquery.select(shoporderStatusRoot.get(ShopOrderStatus_.STATUS))
-                    .where(cq.equal(shopOrder.get(ShopOrder_.ID),shoporderStatusRoot.get(ShopOrderStatus_.SHOP_ORDER_ID)),
-                            cq.equal(shoporderStatusRoot.get(ShopOrderStatus_.STATUS),status));
-            return cq.exists(orderStatusSubquery);
+        return (shopOrder,cq,cb)->{
+            Subquery<Integer> orderStatusSubquery=cb.createQuery().subquery(Integer.class);
+            Root<ShopOrderStatus> orderStatusRoot=orderStatusSubquery.from(ShopOrderStatus.class);
+            orderStatusSubquery.select(cb.max(orderStatusRoot.get(ShopOrderStatus_.ID)))
+                    .where(cb.equal(orderStatusRoot.get(ShopOrderStatus_.SHOP_ORDER_ID),shopOrder.get(ShopOrder_.ID)));
+
+            Subquery<Integer> orderStatusSubquery1=cq.subquery(Integer.class);
+            Root<ShopOrderStatus> orderStatusRoot1=orderStatusSubquery1.from(ShopOrderStatus.class);
+            orderStatusSubquery1
+                    .select(orderStatusRoot1.get(ShopOrderStatus_.ID))
+                    .where(cb.equal(orderStatusRoot1.get(ShopOrderStatus_.STATUS),status),
+                            orderStatusRoot1.get(ShopOrderStatus_.ID).in(orderStatusSubquery));
+            return cb.exists(orderStatusSubquery1);
         };
     }
     static Specification<ShopOrder> byUser(Integer userId){

@@ -50,6 +50,7 @@ public class ShopOrderDAO{
             else if(direction==Sort.Direction.DESC) order=cb.desc(shopOrder.get(orderBy));
         }
         if(order!=null) cq.orderBy(order);
-        return entityManager.createQuery(cq).setFirstResult(page).setMaxResults(size).getResultList();
+        return entityManager.createQuery(cq).setFirstResult(page*size
+        ).setMaxResults(size).getResultList();
     }
 }

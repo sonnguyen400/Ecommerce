@@ -4,8 +4,10 @@ import com.nhs.individual.Constant.OrderStatus;
 import com.nhs.individual.DAO.DAOImp.ShopOrderDAO;
 import com.nhs.individual.DAO.IShopOrderDAO;
 import com.nhs.individual.Domain.ShopOrder;
+import com.nhs.individual.Domain.ShopOrderStatus;
 import com.nhs.individual.Domain.ShopOrder_;
 import com.nhs.individual.Service.ShopOrderService;
+import com.nhs.individual.Service.ShopOrderStatusService;
 import jakarta.servlet.ServletRequest;
 import org.hibernate.query.SortDirection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class ShopOrderController {
     ShopOrderService shopOrderService;
     @Autowired
     ShopOrderDAO shopOrderDAO;
+    @Autowired
+    ShopOrderStatusService shopOrderStatusService;
 
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("#order.userId==authentication.principal.userId")
@@ -43,5 +47,13 @@ public class ShopOrderController {
                                                  @RequestParam(name="status",required = false) OrderStatus orderStatus
                                                  ) {
         return shopOrderDAO.findAll(userId,from,to,page,size,orderStatus,sortBy,direction);
+    }
+
+
+//    ShopOrderStatus control
+    @RequestMapping(value = "/{orderId}/status",method = RequestMethod.POST)
+    public ShopOrderStatus updateStatus(@PathVariable(name = "orderId") Integer orderId,
+            @RequestBody ShopOrderStatus shopOrderStatus){
+        return shopOrderStatusService.updateOrderStatus(orderId,shopOrderStatus);
     }
 }

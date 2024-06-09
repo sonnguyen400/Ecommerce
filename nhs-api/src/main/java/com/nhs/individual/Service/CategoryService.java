@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,12 +21,14 @@ public class CategoryService {
         validateCategory(category);
         return categoryRepository.save(category);
     }
-    public Category addChild(int parentId,Category category){
+    public List<Category> addChild(int parentId, List<Category> categories){
         Category parent = new Category();
         parent.setId(parentId);
-        category.setParent(parent);
-        validateCategory(category);
-        return categoryRepository.save(category);
+        categories.forEach(caregory->{
+            caregory.setParent(parent);
+           validateCategory(caregory);
+        });
+        return categoryRepository.saveAll(categories);
     }
     public Optional<Category> findById(int id){
         return categoryRepository.findById(id);
