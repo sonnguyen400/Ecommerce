@@ -110,6 +110,7 @@ public class AuthService {
     }
 
     public IUserDetail getCurrentAccount(){
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return (IUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
     public User getCurrentUser(){

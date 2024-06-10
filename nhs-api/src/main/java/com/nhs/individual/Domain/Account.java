@@ -21,6 +21,7 @@ public class Account {
 
     @OneToOne(fetch = FetchType.EAGER, optional = false,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties("account")
     private User user;
 
     @Column(name = "username", length = 45)

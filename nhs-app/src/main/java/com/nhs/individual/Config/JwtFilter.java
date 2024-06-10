@@ -4,7 +4,6 @@ import com.nhs.individual.Service.AccountService;
 import com.nhs.individual.Utils.IUserDetail;
 import com.nhs.individual.Utils.RequestUtils;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,12 +33,14 @@ public class JwtFilter extends OncePerRequestFilter {
         Claims token= requestUtils.extractJwtClaimFromCookie(request,AUTH_TOKEN);
         if(token!=null&&token.getSubject()!=null&&!token.getSubject().equals("")){
             try {
+                System.out.print("FIlter");
                 service.findByUsername(token.getSubject())
                         .map(IUserDetail::new)
                         .ifPresent(user->{
                             UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
                             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                            System.out.println(SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
                         });
             } catch (Exception e) {
                 log.atError().log("Could not set Authentication");
