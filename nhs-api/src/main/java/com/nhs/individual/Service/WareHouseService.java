@@ -6,7 +6,6 @@ import com.nhs.individual.Exception.ResourceNotFoundException;
 import com.nhs.individual.Repository.WareHouseRepository;
 import com.nhs.individual.Utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;

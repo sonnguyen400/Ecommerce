@@ -1,7 +1,5 @@
 package com.nhs.individual.Controller;
 
-import com.nhs.individual.Domain.Address;
-import com.nhs.individual.Domain.User;
 import com.nhs.individual.Domain.UserAddress;
 import com.nhs.individual.Service.AddressService;
 import com.nhs.individual.Service.UserAddressService;

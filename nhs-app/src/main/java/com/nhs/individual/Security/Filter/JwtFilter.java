@@ -1,4 +1,4 @@
-package com.nhs.individual.Config;
+package com.nhs.individual.Security.Filter;
 
 import com.nhs.individual.Service.AccountService;
 import com.nhs.individual.Utils.IUserDetail;
@@ -33,14 +33,12 @@ public class JwtFilter extends OncePerRequestFilter {
         Claims token= requestUtils.extractJwtClaimFromCookie(request,AUTH_TOKEN);
         if(token!=null&&token.getSubject()!=null&&!token.getSubject().equals("")){
             try {
-                System.out.print("FIlter");
                 service.findByUsername(token.getSubject())
                         .map(IUserDetail::new)
                         .ifPresent(user->{
                             UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
                             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                            System.out.println(SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
                         });
             } catch (Exception e) {
                 log.atError().log("Could not set Authentication");

@@ -1,33 +1,23 @@
 package com.nhs.individual.Controller;
 
 import com.nhs.individual.Constant.OrderStatus;
-import com.nhs.individual.DAO.DAOImp.ShopOrderDAO;
-import com.nhs.individual.DAO.IShopOrderDAO;
 import com.nhs.individual.Domain.ShopOrder;
 import com.nhs.individual.Domain.ShopOrderStatus;
 import com.nhs.individual.Domain.ShopOrder_;
 import com.nhs.individual.Service.ShopOrderService;
 import com.nhs.individual.Service.ShopOrderStatusService;
-import jakarta.servlet.ServletRequest;
-import org.hibernate.query.SortDirection;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
-import java.net.http.HttpRequest;
 import java.util.Collection;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/order")
 public class ShopOrderController {
     @Autowired
     ShopOrderService shopOrderService;
-    @Autowired
-    ShopOrderDAO shopOrderDAO;
     @Autowired
     ShopOrderStatusService shopOrderStatusService;
 
@@ -46,7 +36,7 @@ public class ShopOrderController {
                                                  @RequestParam(name = "order",defaultValue = "ASC") Sort.Direction direction,
                                                  @RequestParam(name="status",required = false) OrderStatus orderStatus
                                                  ) {
-        return shopOrderDAO.findAll(userId,from,to,page,size,orderStatus,sortBy,direction);
+        return shopOrderService.findAll(userId,from,to,page,size,orderStatus,sortBy,direction);
     }
 
 

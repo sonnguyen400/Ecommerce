@@ -4,6 +4,7 @@ import com.nhs.individual.Domain.CartItem;
 import com.nhs.individual.Service.AuthService;
 import com.nhs.individual.Service.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -15,9 +16,11 @@ public class CartController {
     CartItemService cartItemService;
     @Autowired
     AuthService authService;
-    @RequestMapping(method = RequestMethod.GET)
-    public Collection<CartItem> getUserCarts(){
-        return cartItemService.findAllByUserId(authService.getCurrentUser().getId());
+
+    @RequestMapping( method = RequestMethod.GET)
+    @PreAuthorize("#userId==authentication.principal.userId or hasRole('ADMIN')")
+    public Collection<CartItem> getUserCarts(@RequestParam Integer userId){
+        return cartItemService.findAllByUserId(userId);
     }
     @RequestMapping(method = RequestMethod.POST)
     public CartItem create(@RequestBody CartItem cart){

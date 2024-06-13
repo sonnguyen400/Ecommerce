@@ -1,7 +1,6 @@
 package com.nhs.individual.Service;
 
 import com.nhs.individual.Domain.CartItem;
-import com.nhs.individual.Domain.ProductItem;
 import com.nhs.individual.Domain.User;
 import com.nhs.individual.Exception.ResourceNotFoundException;
 import com.nhs.individual.Repository.CartItemRepository;

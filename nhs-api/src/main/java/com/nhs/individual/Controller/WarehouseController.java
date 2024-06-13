@@ -1,7 +1,6 @@
 package com.nhs.individual.Controller;
 
 import com.nhs.individual.Domain.Product;
-import com.nhs.individual.Domain.ProductItem;
 import com.nhs.individual.Domain.Warehouse;
 import com.nhs.individual.Domain.WarehouseItem;
 import com.nhs.individual.Exception.ResourceNotFoundException;

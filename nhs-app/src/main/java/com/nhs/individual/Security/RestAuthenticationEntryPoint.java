@@ -1,4 +1,4 @@
-package com.nhs.individual.Config;
+package com.nhs.individual.Security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -7,12 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
-
-import static com.nhs.individual.Utils.Constant.AUTH_TOKEN;
 
 @Slf4j
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {

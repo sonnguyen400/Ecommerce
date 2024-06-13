@@ -1,4 +1,4 @@
-package com.nhs.individual.Config;
+package com.nhs.individual.Security;
 
 import com.nhs.individual.Service.RefreshTokenService;
 import com.nhs.individual.Utils.RequestUtils;

@@ -1,10 +1,12 @@
 package com.nhs.individual.Domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,6 +21,11 @@ public class VariationOption {
     @JoinColumn(name = "variation_id", nullable = false)
     @JsonIgnoreProperties("options")
     private Variation variation;
+
+    @ManyToMany(mappedBy = "options")
+    @JsonIgnore
+    private List<ProductItem> productItems;
+
 
     @Column(name = "value", length = 45)
     private String value;

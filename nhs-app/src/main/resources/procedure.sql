@@ -1,4 +1,13 @@
 DELIMITER //
+CREATE TRIGGER setupNewUser
+    after insert on user
+    for each row
+    begin
+        insert into user_payment(payment_type_id,user_id) value (1,NEW.id);
+    end //
+
+
+DELIMITER //
 CREATE PROCEDURE setDefaultUserAddress(
     IN user_id_param INT,
     IN address_id_param INT

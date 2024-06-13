@@ -1,7 +1,6 @@
 package com.nhs.individual.Utils;
-import com.nhs.individual.Exception.InvalidTokenException;
+
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

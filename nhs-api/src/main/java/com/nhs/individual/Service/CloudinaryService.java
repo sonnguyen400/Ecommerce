@@ -1,7 +1,6 @@
 package com.nhs.individual.Service;
 
 import com.cloudinary.Cloudinary;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

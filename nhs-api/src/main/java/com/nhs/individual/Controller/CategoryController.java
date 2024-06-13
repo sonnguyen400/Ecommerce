@@ -2,15 +2,11 @@ package com.nhs.individual.Controller;
 
 import com.nhs.individual.Domain.Category;
 import com.nhs.individual.Domain.Product;
-import com.nhs.individual.Domain.Variation;
 import com.nhs.individual.Exception.ResourceNotFoundException;
 import com.nhs.individual.Service.CategoryService;
 import com.nhs.individual.Service.ProductService;
 import com.nhs.individual.Service.VariationOptionService;
-import com.nhs.individual.Service.VariationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;

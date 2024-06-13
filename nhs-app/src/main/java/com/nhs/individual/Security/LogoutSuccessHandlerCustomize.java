@@ -1,4 +1,4 @@
-package com.nhs.individual.Config;
+package com.nhs.individual.Security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,14 +1,13 @@
 package com.nhs.individual.Exception.Handler;
 
 import com.nhs.individual.Exception.DuplicateElementException;
-import com.nhs.individual.Exception.IllegalInputException;
 import com.nhs.individual.Exception.InvalidTokenException;
 import com.nhs.individual.Exception.ResourceNotFoundException;
 import com.nhs.individual.ResponseMessage.ResponseMessage;
 import com.nhs.individual.Utils.JwtProvider;
 import com.nhs.individual.Utils.RequestUtils;
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.ValidationException;
+import org.hibernate.NonUniqueObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +28,16 @@ public class APIExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseMessage validateException(ConstraintViolationException e) {
+        return ResponseMessage
+                .builder()
+                .message(e.getLocalizedMessage())
+                .details(e.getClass().getName())
+                .error()
+                .ok();
+    }
+    @ExceptionHandler(NonUniqueObjectException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseMessage handleNonUniqueObjectException(NonUniqueObjectException e) {
         return ResponseMessage
                 .builder()
                 .message(e.getLocalizedMessage())

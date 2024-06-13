@@ -1,7 +1,5 @@
 package com.nhs.individual.Exception;
 
-import org.springframework.http.HttpStatus;
-
 public class ResponseException extends RuntimeException{
     protected String message;
     protected Integer errorCode;

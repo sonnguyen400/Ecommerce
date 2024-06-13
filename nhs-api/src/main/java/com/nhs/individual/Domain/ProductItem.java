@@ -22,7 +22,7 @@ public class ProductItem {
     @JoinColumn(name = "product_id")
     @JsonIgnoreProperties("productItems")
     @NotNull(message = "Product Information is required")
-    private Product product_;
+    private Product product;
 
     @Column(name = "product_id", insertable = false,updatable = false)
     private Integer productId;
@@ -34,14 +34,14 @@ public class ProductItem {
     @JsonIgnoreProperties("productItems")
     private Collection<VariationOption> options;
 
-    @Column(name = "product_image", length = 512)
-    private String productImage;
+    @Column(name = "picture", length = 512)
+    private String picture;
 
-    @Column(name = "price")
-    @NotNull(message = "Price is required!")
+    @Column(name = "price",nullable = true)
     private BigDecimal price;
 
     @Column(name = "original_price")
+    @NotNull(message = "ORIGINAL is required!")
     private BigDecimal originalPrice;
 
     @OneToMany(mappedBy = "productItem")

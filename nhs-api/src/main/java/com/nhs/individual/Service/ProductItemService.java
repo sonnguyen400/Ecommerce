@@ -1,13 +1,16 @@
 package com.nhs.individual.Service;
 
-import com.nhs.individual.Domain.*;
+import com.nhs.individual.Domain.Product;
+import com.nhs.individual.Domain.ProductItem;
 import com.nhs.individual.Exception.ResourceNotFoundException;
 import com.nhs.individual.Repository.ProductItemRepository;
 import com.nhs.individual.Utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
 
 @Service
 public class ProductItemService {
@@ -21,7 +24,7 @@ public class ProductItemService {
     VariationService variationService;
     public ProductItem create(Integer productId, ProductItem productItem){
         return productService.findById(productId).map(product -> {
-            productItem.setProduct_(product);
+            productItem.setProduct(product);
             return productItemRepository.save(productItem);
         }).orElseThrow(()->new ResourceNotFoundException("product with id"+productId+" not found"));
     }
@@ -29,7 +32,7 @@ public class ProductItemService {
         return productService.findById(productId).map(product -> {
             product.setProductItems(productItems);
             productItems.forEach(productItem ->{
-                productItem.setProduct_(product);
+                productItem.setProduct(product);
                 productItemRepository.save(productItem);
             });
             return product;

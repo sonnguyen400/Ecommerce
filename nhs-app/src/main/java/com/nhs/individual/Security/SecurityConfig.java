@@ -1,5 +1,6 @@
-package com.nhs.individual.Config;
+package com.nhs.individual.Security;
 
+import com.nhs.individual.Security.Filter.JwtFilter;
 import com.nhs.individual.Security.Oauth2.Oauth2Service;
 import com.nhs.individual.Security.Oauth2.Oauth2SuccessHandler;
 import com.nhs.individual.Service.AccountService;
@@ -21,8 +22,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -39,8 +38,6 @@ import java.util.List;
 public class SecurityConfig {
     @Autowired
     AccountService service;
-
-
     @Bean
     public JwtFilter jwtFilter(){
         return new JwtFilter();
@@ -94,9 +91,9 @@ public class SecurityConfig {
                             .requestMatchers("/auth/**").permitAll()
                             .anyRequest().authenticated();
                 })
-//                .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {
-//                    httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(new RestAuthenticationEntryPoint());
-//                })
+                .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {
+                    httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(new RestAuthenticationEntryPoint());
+                })
                 .oauth2Login(customize->{
                     customize
                             .authorizationEndpoint(authorizationEndpointConfig -> {

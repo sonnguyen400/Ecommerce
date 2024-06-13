@@ -3,14 +3,11 @@ package com.nhs.individual.Domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import java.sql.Date;
-import java.time.Instant;
 import java.util.Collection;
 
 @Getter

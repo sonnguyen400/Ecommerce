@@ -36,10 +36,10 @@ public class Product {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "product_image", length = 512)
-    private String productImage;
+    @Column(name = "picture", length = 512)
+    private String picture;
 
-    @OneToMany(mappedBy = "product_",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonIgnoreProperties("product_")
     private Collection<ProductItem> productItems;
 
