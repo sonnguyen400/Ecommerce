@@ -36,7 +36,7 @@ public interface IProductSpecification extends GeneralSpecification<Product> {
             for(int i=1;i<predicates.length;i++){
                 predicates[i]=criteriaBuilder.like(root.get(Product_.NAME),"%"+extract[i-1]+"%");
             }
-            return criteriaBuilder.and(predicates);
+            return criteriaBuilder.or(predicates);
         };
     }
     //    select distinct pia.product_id from product_item pia

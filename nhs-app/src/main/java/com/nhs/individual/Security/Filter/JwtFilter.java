@@ -1,7 +1,7 @@
 package com.nhs.individual.Security.Filter;
 
 import com.nhs.individual.Service.AccountService;
-import com.nhs.individual.Utils.IUserDetail;
+import com.nhs.individual.Secure.IUserDetail;
 import com.nhs.individual.Utils.RequestUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;

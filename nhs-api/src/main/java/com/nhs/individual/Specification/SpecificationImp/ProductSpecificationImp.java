@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ProductSpecificationImp  {
+public class ProductSpecificationImp{
     @PersistenceContext
     private EntityManager entityManager;
     public List<Product> findProductAdvance(String name,Integer categoryId, List<Integer> optionIds, BigDecimal[] priceRange, Integer page, Integer size){
@@ -36,7 +36,8 @@ public class ProductSpecificationImp  {
         if(priceRange!=null&&priceRange.length==2) predicateList.add(IProductSpecification.priceLimit(priceRange[0],priceRange[1]).toPredicate(rootProduct,criteriaQuery,criteriaBuilder));
         Predicate[] predicates=new Predicate[predicateList.size()];
 
-        criteriaQuery.where(predicateList.toArray(predicates));
+        criteriaQuery.where(criteriaBuilder.or(predicateList.toArray(predicates)));
         return entityManager.createQuery(criteriaQuery).setFirstResult(page*size).setMaxResults(size).getResultList();
     }
+
 }

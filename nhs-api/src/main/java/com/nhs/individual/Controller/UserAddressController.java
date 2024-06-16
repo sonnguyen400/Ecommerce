@@ -1,6 +1,7 @@
 package com.nhs.individual.Controller;
 
 import com.nhs.individual.Domain.UserAddress;
+import com.nhs.individual.Domain.UserAddressId;
 import com.nhs.individual.Service.AddressService;
 import com.nhs.individual.Service.UserAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,10 @@ public class UserAddressController {
     public Collection<UserAddress> findAllByUserId( @PathVariable(name = "userId") Integer userId) {
         return userAddressService.findAllByUserId(userId);
     }
-    @RequestMapping(value = "/{userId}/address", method = RequestMethod.POST)
-    @PreAuthorize("userId==authentication.principal.userId or hasRole('ROLE_ADMIN')")
-    public UserAddress createUserAddress(
-            @PathVariable(name = "userId") Integer userId,
-            @RequestBody UserAddress userAddress) {
-
-        return userAddressService.create(userId,userAddress);
+    @RequestMapping(value = "/address", method = RequestMethod.POST)
+    @PreAuthorize("#userAddress.user.id==authentication.principal.userId or hasRole('ROLE_ADMIN')")
+    public UserAddress createUserAddress( @RequestBody UserAddress userAddress) {
+        return userAddressService.create(userAddress);
     }
     @RequestMapping(value="/{userId}/address/{id}/default",method = RequestMethod.PUT)
     @PreAuthorize("userId==authentication.principal.userId or hasRole('ROLE_ADMIN')")
@@ -35,11 +33,12 @@ public class UserAddressController {
                         @PathVariable(name = "userId") Integer userId) {
         return userAddressService.setDefaultAddress(userId,id);
     }
-    @RequestMapping(value="/{id}/address/{userId}",method = RequestMethod.DELETE)
+
+    @RequestMapping(value="/{userId}/address/{id}",method = RequestMethod.DELETE)
     @PreAuthorize("userId==authentication.principal.userId or hasRole('ROLE_ADMIN')")
-    public void deleteUserAddress(@PathVariable Integer id,
+    public UserAddressId deleteUserAddress(@PathVariable Integer id,
                                   @PathVariable(name = "userId") Integer userId) {
-        userAddressService.deleteById(userId,id);
+        return userAddressService.deleteById(new UserAddressId(userId,id));
     }
 
 }

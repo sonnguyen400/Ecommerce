@@ -1,4 +1,4 @@
-package com.nhs.individual.Utils;
+package com.nhs.individual.Constant;
 
 public enum OrderStatusId {
     CANCEL,PURCHASING,PENDING,PREPARING,DELIVERING,DELIVERED,RETURN,EXCHANGE,REFUNDED;

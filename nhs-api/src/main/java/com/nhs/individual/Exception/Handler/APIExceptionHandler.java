@@ -4,14 +4,16 @@ import com.nhs.individual.Exception.DuplicateElementException;
 import com.nhs.individual.Exception.InvalidTokenException;
 import com.nhs.individual.Exception.ResourceNotFoundException;
 import com.nhs.individual.ResponseMessage.ResponseMessage;
-import com.nhs.individual.Utils.JwtProvider;
+import com.nhs.individual.Secure.JwtProvider;
 import com.nhs.individual.Utils.RequestUtils;
 import jakarta.validation.ConstraintViolationException;
 import org.hibernate.NonUniqueObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -24,6 +26,27 @@ public class APIExceptionHandler {
     RequestUtils requestUtils;
     @Autowired
     JwtProvider jwtProvider;
+    @ExceptionHandler(InsufficientAuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseMessage handlerException(AccessDeniedException e){
+        return ResponseMessage
+               .builder()
+               .message(e.getLocalizedMessage())
+               .details(e.getClass().getName())
+               .error()
+               .ok();
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseMessage handleAccessDeniedException(AccessDeniedException e) {
+        return ResponseMessage
+               .builder()
+               .message(e.getLocalizedMessage())
+               .details(e.getClass().getName())
+               .error()
+               .ok();
+    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

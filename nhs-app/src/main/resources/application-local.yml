@@ -15,5 +15,3 @@ spring:
                 scope:
                   - email
                   - profile
-management:
-  .e

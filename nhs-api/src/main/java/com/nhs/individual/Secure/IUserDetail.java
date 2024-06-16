@@ -1,15 +1,14 @@
-package com.nhs.individual.Utils;
+package com.nhs.individual.Secure;
 
 import com.nhs.individual.Domain.Account;
 import lombok.Data;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 @Data
@@ -18,6 +17,7 @@ public class IUserDetail implements UserDetails,OAuth2User {
     private Integer userId;
     private String username;
     private String password;
+    @Setter
     private Collection<SimpleGrantedAuthority> authorities;
     private OAuth2User oAuth2User;
 
@@ -33,9 +33,7 @@ public class IUserDetail implements UserDetails,OAuth2User {
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> gran=new ArrayList<>();
-        gran.add(new SimpleGrantedAuthority("ROLE_USER"));
-        return gran;
+        return authorities;
     }
     public IUserDetail(){
 
@@ -67,6 +65,7 @@ public class IUserDetail implements UserDetails,OAuth2User {
     }
 
 
+
     @Override
     public boolean isEnabled() {
         return true;
@@ -78,7 +77,7 @@ public class IUserDetail implements UserDetails,OAuth2User {
         this.id=account.getId();
         this.password=account.getPassword();
         this.userId=account.getUser().getId();
-        if(account.getRoles() != null&&account.getRoles().size()>0){
+        if(account.getRoles() != null&& !account.getRoles().isEmpty()){
             this.setAuthorities(account.getRoles().stream().map(e->new SimpleGrantedAuthority(e.getName())).toList());
         }
     }

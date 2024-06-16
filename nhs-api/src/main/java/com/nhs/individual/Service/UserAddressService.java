@@ -26,13 +26,14 @@ public class UserAddressService {
     }
 
     @Transactional
-    public UserAddress create(Integer userId,UserAddress userAddress) {
+    public UserAddress create(UserAddress userAddress) {
         Address address=addressService.save(userAddress.getAddress());
-        userAddressRepository.deSelectDefaultAddress(userId);
-        return userService.findById(userId).map((user)->{
-            UserAddressId userAddressId=new UserAddressId(userId,address.getId());
+        userAddressRepository.deSelectDefaultAddress(userAddress.getUser().getId());
+        return userService.findById(userAddress.getUser().getId()).map((user)->{
+            UserAddressId userAddressId=new UserAddressId(userAddress.getUser().getId(),address.getId());
             userAddress.setId(userAddressId);
             userAddress.setUser(user);
+            userAddress.setIsDefault(true);
             userAddress.setAddress(address);
             return userAddressRepository.save(userAddress);
         }).orElseThrow(()->new RuntimeException("Could not find user"));
@@ -43,8 +44,9 @@ public class UserAddressService {
     public UserAddress update(Integer id,UserAddress userAddress) {
         return userAddressRepository.save(userAddress);
     }
-    public void deleteById(Integer userId,Integer addressid) {
-        userAddressRepository.deleteById(new UserAddressId(userId,addressid));
+    public UserAddressId deleteById(UserAddressId userAddressId) {
+        userAddressRepository.deleteById(userAddressId);
+        return userAddressId;
     }
     public void setDefaultUserAddress(UserAddress userAddress){
         List<UserAddress> userAddressList= findAllByUserId(userAddress.getId().getUserId()).stream().peek(address->{

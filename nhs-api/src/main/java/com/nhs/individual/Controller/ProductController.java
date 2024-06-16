@@ -120,7 +120,7 @@ public class ProductController {
         return productItemService.create(productId,item);
     }
 
-    @RequestMapping(value = "/{product_id}/item/{item_id}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/item/{item_id}",method = RequestMethod.PUT)
     public ProductItem updateProductItem(@PathVariable(name = "product_id",required = false) Integer productId,
                                           @PathVariable(name = "item_id") Integer itemId,
                                           @RequestBody ProductItem productItem){

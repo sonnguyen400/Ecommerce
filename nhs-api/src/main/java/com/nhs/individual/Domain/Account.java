@@ -1,6 +1,9 @@
 package com.nhs.individual.Domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.nhs.individual.Constant.AccountProvider;
+import com.nhs.individual.Constant.AccountStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -29,7 +32,10 @@ public class Account {
     @Column(name = "password")
     @NotBlank
     private String password;
-
+    @Column(name="status")
+    AccountStatus status;
+    @Column(name = "provider")
+    AccountProvider provider;
     @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.REFRESH,CascadeType.DETACH,CascadeType.MERGE})
     @JoinTable(name = "account_role",
     joinColumns = @JoinColumn(name = "account_id"),
@@ -38,6 +44,6 @@ public class Account {
     private Collection<Role> roles;
 
     @OneToMany(mappedBy = "account",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("account")
+    @JsonIgnore
     private Collection<RefreshToken> refreshToken;
 }

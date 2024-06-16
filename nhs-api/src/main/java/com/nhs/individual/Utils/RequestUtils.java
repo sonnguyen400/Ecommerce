@@ -1,5 +1,6 @@
 package com.nhs.individual.Utils;
 
+import com.nhs.individual.Secure.JwtProvider;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

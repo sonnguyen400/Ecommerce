@@ -3,9 +3,10 @@ package com.nhs.individual.Controller;
 import com.nhs.individual.Domain.Account;
 import com.nhs.individual.Domain.User;
 import com.nhs.individual.ResponseMessage.ResponseMessage;
+import com.nhs.individual.Secure.CurrentUser;
 import com.nhs.individual.Service.AuthService;
 import com.nhs.individual.Service.UserService;
-import com.nhs.individual.Utils.IUserDetail;
+import com.nhs.individual.Secure.IUserDetail;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,17 +35,13 @@ public class AuthenticationAPI {
     public ResponseEntity<ResponseMessage> refreshToken(HttpServletRequest request){
         return authService.refresh(request);
     }
-    @RequestMapping(value = "/testauth", method = RequestMethod.GET)
-    public String testAuth(){
-        return "testauth ok";
-    }
     @RequestMapping(value = "/auth/account",method = RequestMethod.GET)
     public IUserDetail getcurrentAccount(){
         return authService.getCurrentAccount();
     }
     @RequestMapping(value = "/auth/user",method = RequestMethod.GET)
-    public User getcurrentUser(){
-        return userService.findByAccountId(authService.getCurrentAccount().getId());
+    public User getcurrentUser(@CurrentUser IUserDetail userDetail){
+        return userService.findById(userDetail.getId()).get();
     }
 
 }

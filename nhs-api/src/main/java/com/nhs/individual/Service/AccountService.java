@@ -1,5 +1,7 @@
 package com.nhs.individual.Service;
 
+import com.nhs.individual.Constant.AccountProvider;
+import com.nhs.individual.Constant.AccountRole;
 import com.nhs.individual.Domain.Account;
 import com.nhs.individual.Domain.Role;
 import com.nhs.individual.Repository.AccountRepository;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,10 +21,14 @@ public class AccountService {
 
     public Account create(Account account){
         Role role=new Role();
+        role.setId(AccountRole.USER.id);
         account.setPassword(passwordEncoder.encode(account.getPassword()));
+        account.setProvider(AccountProvider.SYSTEM);
         findByUsername(account.getUsername()).ifPresent((account1)->{
             throw new NonUniqueObjectException("Account's username already exists",account.getUsername());
         });
+
+        account.setRoles(List.of(role));
         return repository.save(account);
     }
     public Optional<Account> findById(int id){

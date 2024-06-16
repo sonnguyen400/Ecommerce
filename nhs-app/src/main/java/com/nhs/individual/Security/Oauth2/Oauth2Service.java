@@ -1,11 +1,12 @@
 package com.nhs.individual.Security.Oauth2;
 
+import com.nhs.individual.Constant.AccountProvider;
 import com.nhs.individual.Domain.Account;
 import com.nhs.individual.Domain.Role;
 import com.nhs.individual.Domain.User;
 import com.nhs.individual.Service.AccountService;
 import com.nhs.individual.Service.AuthService;
-import com.nhs.individual.Utils.IUserDetail;
+import com.nhs.individual.Secure.IUserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -24,11 +25,13 @@ public class Oauth2Service extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         IUserDetail oAuth2User=new IUserDetail(super.loadUser(userRequest));
+        System.out.println(super.loadUser(userRequest));
         Account account_=accountService.findByUsername(oAuth2User.getName()).orElseGet(()->{
             //Setup new account
             Account account=new Account();
             account.setUsername(oAuth2User.getName());
             account.setPassword(UUID.randomUUID().toString());
+            account.setProvider(AccountProvider.valueOf((String) oAuth2User.getAttributes().get("provider")));
             Role role=new Role();
             role.setId(1);
             account.setRoles(List.of(role));

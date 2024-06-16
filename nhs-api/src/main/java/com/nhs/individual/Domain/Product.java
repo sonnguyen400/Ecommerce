@@ -2,6 +2,7 @@ package com.nhs.individual.Domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.nhs.individual.Constant.ProductStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -42,5 +43,10 @@ public class Product {
     @OneToMany(mappedBy = "product",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonIgnoreProperties("product_")
     private Collection<ProductItem> productItems;
+    @Column(name = "status")
+    ProductStatus status;
+
+    @Column(name = "manufacturer", length =512)
+    private String manufacturer;
 
 }

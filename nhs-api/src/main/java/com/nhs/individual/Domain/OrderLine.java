@@ -1,5 +1,6 @@
 package com.nhs.individual.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +18,7 @@ public class OrderLine {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_item_id")
     @NotNull(message = "Product item information is required")
     private ProductItem productItem;
@@ -32,5 +33,6 @@ public class OrderLine {
 
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
+    @JsonBackReference
     private ShopOrder order;
 }

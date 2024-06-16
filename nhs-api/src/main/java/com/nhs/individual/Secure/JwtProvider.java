@@ -1,4 +1,4 @@
-package com.nhs.individual.Utils;
+package com.nhs.individual.Secure;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

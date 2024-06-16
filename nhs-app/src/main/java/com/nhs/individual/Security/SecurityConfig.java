@@ -4,7 +4,7 @@ import com.nhs.individual.Security.Filter.JwtFilter;
 import com.nhs.individual.Security.Oauth2.Oauth2Service;
 import com.nhs.individual.Security.Oauth2.Oauth2SuccessHandler;
 import com.nhs.individual.Service.AccountService;
-import com.nhs.individual.Utils.IUserDetail;
+import com.nhs.individual.Secure.IUserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

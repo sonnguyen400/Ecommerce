@@ -8,15 +8,17 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Date;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "shop_order")
-public class ShopOrder {
+public class ShopOrder implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +32,7 @@ public class ShopOrder {
     @Column(name = "user_id",insertable = false,updatable = false)
     @Hidden
     private Integer userId;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
     @NotNull(message = "Address Information is required")
     private Address address;
@@ -39,7 +41,7 @@ public class ShopOrder {
     private Integer paymentId;
 
     @Column(name = "order_date",insertable = false,columnDefinition = "DATETIME default now()")
-    private Instant orderDate;
+    private Date orderDate;
 
     @Column(name = "total",scale = 2, precision = 18)
     @Min(value = 1,message = "Total value can not be negative or equal to 0")
@@ -58,7 +60,7 @@ public class ShopOrder {
     private Collection<ShopOrderStatus> status;
 
     @OneToMany(mappedBy = "order",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("order")
+    @JsonIgnoreProperties({"order","hibernateLazyInitializer", "handler"})
     private Collection<OrderLine> orderLines;
 
 }
