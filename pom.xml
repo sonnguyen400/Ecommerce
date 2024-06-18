@@ -17,6 +17,7 @@
     <modules>
         <module>nhs-app</module>
         <module>nhs-api</module>
+        <module>nhs-payment</module>
     </modules>
     <properties>
         <java.version>17</java.version>

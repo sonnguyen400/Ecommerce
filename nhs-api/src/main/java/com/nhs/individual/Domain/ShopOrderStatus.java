@@ -1,6 +1,6 @@
 package com.nhs.individual.Domain;
 
-import com.nhs.individual.Constant.OrderStatus;
+import com.nhs.individual.constant.OrderStatus;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import lombok.Getter;

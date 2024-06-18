@@ -15,3 +15,11 @@ spring:
                 scope:
                   - email
                   - profile
+payment:
+  zalo:
+    appid: 2553
+    key1: PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL
+    key2: kLtgPl8HHhfvMuDHPwKfgfsY4Ydm9eIz
+    endpoint:
+      create: https://sb-openapi.zalopay.vn/v2/create
+      query: https://sb-openapi.zalopay.vn/v2/query

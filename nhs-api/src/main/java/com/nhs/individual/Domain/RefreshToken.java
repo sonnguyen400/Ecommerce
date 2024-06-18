@@ -1,7 +1,7 @@
 package com.nhs.individual.Domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.nhs.individual.Exception.InvalidTokenException;
+import com.nhs.individual.exception.InvalidTokenException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

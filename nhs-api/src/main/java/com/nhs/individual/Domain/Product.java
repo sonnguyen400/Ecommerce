@@ -2,7 +2,7 @@ package com.nhs.individual.Domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.nhs.individual.Constant.ProductStatus;
+import com.nhs.individual.constant.ProductStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

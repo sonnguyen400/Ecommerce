@@ -1,8 +1,8 @@
 package com.nhs.individual.Security.Filter;
 
-import com.nhs.individual.Service.AccountService;
-import com.nhs.individual.Secure.IUserDetail;
-import com.nhs.individual.Utils.RequestUtils;
+import com.nhs.individual.service.AccountService;
+import com.nhs.individual.secure.IUserDetail;
+import com.nhs.individual.utils.RequestUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,7 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static com.nhs.individual.Utils.Constant.AUTH_TOKEN;
+import static com.nhs.individual.utils.Constant.AUTH_TOKEN;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     @Autowired

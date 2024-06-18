@@ -1,12 +1,12 @@
 package com.nhs.individual.Security.Oauth2;
 
-import com.nhs.individual.Constant.AccountProvider;
+import com.nhs.individual.constant.AccountProvider;
 import com.nhs.individual.Domain.Account;
 import com.nhs.individual.Domain.Role;
 import com.nhs.individual.Domain.User;
-import com.nhs.individual.Service.AccountService;
-import com.nhs.individual.Service.AuthService;
-import com.nhs.individual.Secure.IUserDetail;
+import com.nhs.individual.service.AccountService;
+import com.nhs.individual.service.AuthService;
+import com.nhs.individual.secure.IUserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

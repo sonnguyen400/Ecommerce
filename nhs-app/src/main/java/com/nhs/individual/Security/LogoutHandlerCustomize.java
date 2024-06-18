@@ -1,7 +1,7 @@
 package com.nhs.individual.Security;
 
-import com.nhs.individual.Service.RefreshTokenService;
-import com.nhs.individual.Utils.RequestUtils;
+import com.nhs.individual.service.RefreshTokenService;
+import com.nhs.individual.utils.RequestUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,8 +12,8 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
-import static com.nhs.individual.Utils.Constant.AUTH_TOKEN;
-import static com.nhs.individual.Utils.Constant.REFRESH_AUTH_TOKEN;
+import static com.nhs.individual.utils.Constant.AUTH_TOKEN;
+import static com.nhs.individual.utils.Constant.REFRESH_AUTH_TOKEN;
 
 @Component
 public class LogoutHandlerCustomize implements LogoutHandler {
