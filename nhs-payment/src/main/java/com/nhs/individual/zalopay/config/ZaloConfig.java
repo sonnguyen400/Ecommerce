@@ -15,8 +15,8 @@ public class ZaloConfig {
     public String key2;
     @Value("${payment.zalo.endpoint.create}")
     public String createOrderEndpoint;
-    @Value("${payment.zalo.callback}")
-    public String callback;
+//    @Value("${payment.zalo.callback}")
+//    public String callback;
     @Value("${payment.zalo.endpoint.query}")
     public String queryOrderEndpoint;
     @Value("${payment.zalo.appid}")

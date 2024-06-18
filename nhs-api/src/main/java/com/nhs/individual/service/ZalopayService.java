@@ -49,10 +49,6 @@ public class ZalopayService {
     private Mac HmacSHA256;
     private final Logger logger= LoggerFactory.getLogger(this.getClass());
 
-    public ZalopayService() throws NoSuchAlgorithmException, InvalidKeyException {
-        HmacSHA256=Mac.getInstance("HmacSHA256");
-        HmacSHA256.init(new SecretKeySpec(zalopayconfig.key2.getBytes(),"HmacSHA256"));
-    }
 
 
     public OrderPurchaseInfo purchaseZalo(Integer orderId){
@@ -84,10 +80,11 @@ public class ZalopayService {
             }
         }).orElseThrow(()->new RuntimeException("Error occurred while creating charging information"));
     }
-    public String zalopayHandlerCallBack(OrderCallback callBack) throws JsonProcessingException {
+    public String zalopayHandlerCallBack(OrderCallback callBack) throws JsonProcessingException, NoSuchAlgorithmException, InvalidKeyException {
+        HmacSHA256=Mac.getInstance("HmacSHA256");
+        HmacSHA256.init(new SecretKeySpec(zalopayconfig.key2.getBytes(),"HmacSHA256"));
         JSONObject result = new JSONObject();
         byte[] hashBytes=HmacSHA256.doFinal(callBack.getData().getBytes());
-
         if(callBack.getMac().equals(DatatypeConverter.printHexBinary(hashBytes).toLowerCase())){
             OrderCallbackData orderCallbackData=JSON.parse(callBack.getData(), OrderCallbackData.class);
             logger.info("update order's status = success where app_trans_id = " + orderCallbackData.getApp_trans_id());
@@ -96,7 +93,6 @@ public class ZalopayService {
 
             ShopOrderStatus shopOrderStatus=new ShopOrderStatus();
             shopOrderStatus.setStatus(OrderStatus.CANCEL);
-
         }else{
             result.put("return_code", -1);
             result.put("return_message", "mac not equal");
