@@ -1,4 +1,4 @@
-package com.nhs.individual.Domain.EmbeddedId;
+package com.nhs.individual.domain.EmbeddedId;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

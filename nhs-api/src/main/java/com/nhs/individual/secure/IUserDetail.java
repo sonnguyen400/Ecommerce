@@ -1,6 +1,7 @@
 package com.nhs.individual.secure;
 
-import com.nhs.individual.Domain.Account;
+import com.nhs.individual.constant.AccountStatus;
+import com.nhs.individual.domain.Account;
 import lombok.Data;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +11,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 
 @Data
 public class IUserDetail implements UserDetails,OAuth2User {
@@ -20,6 +22,7 @@ public class IUserDetail implements UserDetails,OAuth2User {
     @Setter
     private Collection<SimpleGrantedAuthority> authorities;
     private OAuth2User oAuth2User;
+    private Integer status;
 
     @Override
     public Map<String, Object> getAttributes() {
@@ -56,7 +59,7 @@ public class IUserDetail implements UserDetails,OAuth2User {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !Objects.equals(status, AccountStatus.LOCKED.id);
     }
 
     @Override
@@ -68,7 +71,7 @@ public class IUserDetail implements UserDetails,OAuth2User {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return Objects.equals(status, AccountStatus.ACTIVE.id);
     }
 
 
@@ -80,6 +83,7 @@ public class IUserDetail implements UserDetails,OAuth2User {
         if(account.getRoles() != null&& !account.getRoles().isEmpty()){
             this.setAuthorities(account.getRoles().stream().map(e->new SimpleGrantedAuthority(e.getName())).toList());
         }
+        this.status=account.getStatus();
     }
 
 

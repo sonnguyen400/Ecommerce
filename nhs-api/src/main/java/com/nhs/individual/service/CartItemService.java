@@ -1,7 +1,7 @@
 package com.nhs.individual.service;
 
-import com.nhs.individual.Domain.CartItem;
-import com.nhs.individual.Domain.User;
+import com.nhs.individual.domain.CartItem;
+import com.nhs.individual.domain.User;
 import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.repository.CartItemRepository;
 import com.nhs.individual.utils.ObjectUtils;

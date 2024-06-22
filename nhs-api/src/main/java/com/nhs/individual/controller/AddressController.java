@@ -1,6 +1,6 @@
 package com.nhs.individual.controller;
 
-import com.nhs.individual.Domain.Address;
+import com.nhs.individual.domain.Address;
 import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;

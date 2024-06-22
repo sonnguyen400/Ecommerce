@@ -1,7 +1,7 @@
 package com.nhs.individual.repository;
 
 import com.nhs.individual.constant.ProductStatus;
-import com.nhs.individual.Domain.Product;
+import com.nhs.individual.domain.Product;
 import io.micrometer.common.lang.NonNull;
 import io.micrometer.common.lang.Nullable;
 import org.springframework.data.domain.Page;

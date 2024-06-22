@@ -2,15 +2,14 @@ package com.nhs.individual.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.nhs.individual.Domain.ShopOrder;
-import com.nhs.individual.Domain.ShopOrderStatus;
 import com.nhs.individual.constant.OrderStatus;
+import com.nhs.individual.domain.ShopOrder;
+import com.nhs.individual.domain.ShopOrderStatus;
 import com.nhs.individual.repository.ShopOrderRepository;
-import com.nhs.individual.specification.SpecificationImp.ShopOrderSpecificationImp;
 import com.nhs.individual.zalopay.config.ZaloConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -25,21 +24,30 @@ public class ShopOrderService {
     @Autowired
     ShopOrderRepository orderRepository;
     @Autowired
-    ShopOrderSpecificationImp shopOrderSpecificationImp;
-    @Autowired
     AuthService authService;
     public Optional<ShopOrder> findById(Integer id){
         return orderRepository.findById(id);
     }
-    public List<ShopOrder> findAll(Integer userId, String dateFrom, String dateTo, Integer page, Integer size, OrderStatus orderStatus, String orderBy, Sort.Direction direction){
-        return shopOrderSpecificationImp.findAll(userId,dateFrom,dateTo,page,size,orderStatus,orderBy,direction);
+//    public List<ShopOrder> findAll(Integer userId, String dateFrom, String dateTo, Integer page, Integer size, OrderStatus orderStatus, String orderBy, Sort.Direction direction){
+//        return shopOrderSpecificationImp.findAll(userId,dateFrom,dateTo,page,size,orderStatus,orderBy,direction);
+//    }
+    public List<ShopOrder> findAll(List<Specification<ShopOrder>> specifications,Pageable pageable){
+        if(specifications.isEmpty()) return orderRepository.findAll(pageable).getContent();
+        Specification<ShopOrder> specification=specifications.get(0);
+        for(int i=1;i<specifications.size();i++){
+            specification=specification.and(specifications.get(i));
+        }
+
+        return orderRepository.findAll(specification,pageable).getContent();
     }
     public ShopOrder createOrder(ShopOrder order) {
         ShopOrderStatus shopOrderStatus=new ShopOrderStatus();
-        shopOrderStatus.setStatus(OrderStatus.PENDING);
+        shopOrderStatus.setStatus(OrderStatus.PENDING.id);
         shopOrderStatus.setOrder(order);
+        shopOrderStatus.setNote("Create order");
         order.setStatus(List.of(shopOrderStatus));
         order.getOrderLines().forEach(line->line.setOrder(order));
+        order.getPayment().setOrder(order);
         return orderRepository.save(order);
     }
 

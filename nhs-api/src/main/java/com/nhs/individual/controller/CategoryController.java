@@ -1,7 +1,7 @@
 package com.nhs.individual.controller;
 
-import com.nhs.individual.Domain.Category;
-import com.nhs.individual.Domain.Product;
+import com.nhs.individual.domain.Category;
+import com.nhs.individual.domain.Product;
 import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.service.CategoryService;
 import com.nhs.individual.service.ProductService;

@@ -1,6 +1,6 @@
 package com.nhs.individual.service;
 
-import com.nhs.individual.Domain.PaymentMethod;
+import com.nhs.individual.domain.PaymentMethod;
 import com.nhs.individual.repository.PaymentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

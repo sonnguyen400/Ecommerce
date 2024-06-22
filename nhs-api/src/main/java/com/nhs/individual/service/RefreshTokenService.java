@@ -1,7 +1,7 @@
 package com.nhs.individual.service;
 
-import com.nhs.individual.Domain.Account;
-import com.nhs.individual.Domain.RefreshToken;
+import com.nhs.individual.domain.Account;
+import com.nhs.individual.domain.RefreshToken;
 import com.nhs.individual.repository.RefreshTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

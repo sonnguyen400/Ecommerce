@@ -1,27 +1,21 @@
 package com.nhs.individual.specification.ISpecification;
 
 import com.nhs.individual.constant.OrderStatus;
-import com.nhs.individual.Domain.ShopOrder;
-import com.nhs.individual.Domain.ShopOrderStatus;
-import com.nhs.individual.Domain.ShopOrderStatus_;
-import com.nhs.individual.Domain.ShopOrder_;
+import com.nhs.individual.domain.*;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.sql.Timestamp;
+
 public interface IShopOrderSpecification extends GeneralSpecification<ShopOrder>{
-    static Specification<ShopOrder> fromToDate(String from, String to){
-        return (shopOrder,cp,cq)->cq.between(shopOrder.get("order_date"),from,to);
+    static Specification<ShopOrder> fromToDate(Timestamp from, Timestamp to){
+        return (shopOrder,cp,cq)->cq.between(shopOrder.get(ShopOrder_.ORDER_DATE),from,to);
     }
 
-//    static Specification<Order> orderBy(String propertyName, Sort.Direction direction){
-//        return (shopOrder,cp,cq)->{
-//            if(direction== Sort.Direction.ASC) return cq.desc(shopOrder.get(propertyName));
-//            else return cq.desc(shopOrder.get(propertyName));
-//        };
-//    }
 
-    static Specification<ShopOrder> withStatus(OrderStatus status){
+    static Specification<ShopOrder> byStatus(OrderStatus status){
         return (shopOrder,cq,cb)->{
             Subquery<Integer> orderStatusSubquery=cb.createQuery().subquery(Integer.class);
             Root<ShopOrderStatus> orderStatusRoot=orderStatusSubquery.from(ShopOrderStatus.class);
@@ -32,12 +26,22 @@ public interface IShopOrderSpecification extends GeneralSpecification<ShopOrder>
             Root<ShopOrderStatus> orderStatusRoot1=orderStatusSubquery1.from(ShopOrderStatus.class);
             orderStatusSubquery1
                     .select(orderStatusRoot1.get(ShopOrderStatus_.ID))
-                    .where(cb.equal(orderStatusRoot1.get(ShopOrderStatus_.STATUS),status),
+                    .where(cb.equal(orderStatusRoot1.get(ShopOrderStatus_.STATUS),status.id),
                             orderStatusRoot1.get(ShopOrderStatus_.ID).in(orderStatusSubquery));
             return cb.exists(orderStatusSubquery1);
         };
     }
     static Specification<ShopOrder> byUser(Integer userId){
-        return (shopOrder,cp,cq)->cq.equal(shopOrder.get(ShopOrder_.USER_ID),userId);
+        return (shopOrder,cp,cb)->cb.equal(shopOrder.get(ShopOrder_.USER_ID),userId);
+    }
+    static Specification<ShopOrder> byAddress(String address){
+        return (root,cq,cb)->{
+            Join<ShopOrder, Address> orderAddressJoin=root.join(ShopOrder_.ADDRESS);
+            return cb.or(cb.like(orderAddressJoin.get(Address_.ADDRESS_LINE1),"%"+address+"%"),
+                    cb.like(orderAddressJoin.get(Address_.ADDRESS_LINE2),"%"+address+"%"),
+                    cb.like(orderAddressJoin.get(Address_.BUILDING),"%"+address+"%"),
+                    cb.like(orderAddressJoin.get(Address_.CITY),"%"+address+"%"),
+                    cb.like(orderAddressJoin.get(Address_.POSTAL_CODE),"%"+address+"%"));
+        };
     }
 }

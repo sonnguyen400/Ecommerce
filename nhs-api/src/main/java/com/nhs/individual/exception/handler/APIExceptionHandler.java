@@ -1,5 +1,6 @@
 package com.nhs.individual.exception.handler;
 
+import com.nhs.individual.exception.DataException;
 import com.nhs.individual.exception.DuplicateElementException;
 import com.nhs.individual.exception.InvalidTokenException;
 import com.nhs.individual.exception.ResourceNotFoundException;
@@ -37,6 +38,16 @@ public class APIExceptionHandler {
                .details(e.getClass().getName())
                .error()
                .ok();
+    }
+    @ExceptionHandler(DataException.class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    public ResponseMessage handlerException(DataException e){
+        return ResponseMessage
+                .builder()
+                .message(e.getLocalizedMessage())
+                .error()
+                .details(e.getClass().getName())
+                .ok();
     }
     @ExceptionHandler(InsufficientAuthenticationException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)

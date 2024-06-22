@@ -1,7 +1,7 @@
 package com.nhs.individual.controller;
 
-import com.nhs.individual.Domain.UserAddress;
-import com.nhs.individual.Domain.UserAddressId;
+import com.nhs.individual.domain.UserAddress;
+import com.nhs.individual.domain.UserAddressId;
 import com.nhs.individual.service.AddressService;
 import com.nhs.individual.service.UserAddressService;
 import org.springframework.beans.factory.annotation.Autowired;

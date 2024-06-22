@@ -2,7 +2,7 @@ package com.nhs.individual.service;
 
 import com.nhs.individual.constant.AccountProvider;
 import com.nhs.individual.constant.AccountRole;
-import com.nhs.individual.Domain.User;
+import com.nhs.individual.domain.User;
 import com.nhs.individual.repository.UserRepository;
 import com.nhs.individual.specification.DynamicSearch;
 import com.nhs.individual.specification.ISpecification.IUserSpecification;

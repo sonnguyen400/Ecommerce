@@ -1,4 +1,4 @@
-package com.nhs.individual.Domain;
+package com.nhs.individual.domain;
 
 import com.nhs.individual.constant.OrderStatus;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -32,5 +32,5 @@ public class ShopOrderStatus {
     @Column(name = "note")
     private String note;
     @Column(name = "status")
-    private OrderStatus status;
+    private Integer status;
 }

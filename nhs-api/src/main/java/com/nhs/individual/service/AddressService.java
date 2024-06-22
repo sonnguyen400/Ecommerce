@@ -1,6 +1,6 @@
 package com.nhs.individual.service;
 
-import com.nhs.individual.Domain.Address;
+import com.nhs.individual.domain.Address;
 import com.nhs.individual.repository.AddressRepository;
 import com.nhs.individual.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;

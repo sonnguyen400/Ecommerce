@@ -1,6 +1,6 @@
 package com.nhs.individual.controller;
 
-import com.nhs.individual.Domain.CartItem;
+import com.nhs.individual.domain.CartItem;
 import com.nhs.individual.service.AuthService;
 import com.nhs.individual.service.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;

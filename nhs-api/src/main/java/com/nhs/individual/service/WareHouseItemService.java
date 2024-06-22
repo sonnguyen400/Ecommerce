@@ -1,9 +1,9 @@
 package com.nhs.individual.service;
 
-import com.nhs.individual.Domain.EmbeddedId.ProductItemInWarehouseId;
-import com.nhs.individual.Domain.ProductItem;
-import com.nhs.individual.Domain.Warehouse;
-import com.nhs.individual.Domain.WarehouseItem;
+import com.nhs.individual.domain.EmbeddedId.ProductItemInWarehouseId;
+import com.nhs.individual.domain.ProductItem;
+import com.nhs.individual.domain.Warehouse;
+import com.nhs.individual.domain.WarehouseItem;
 import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.repository.WarehouseItemRepository;
 import com.nhs.individual.utils.ObjectUtils;

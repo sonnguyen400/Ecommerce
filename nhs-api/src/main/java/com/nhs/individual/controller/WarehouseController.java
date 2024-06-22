@@ -1,8 +1,8 @@
 package com.nhs.individual.controller;
 
-import com.nhs.individual.Domain.Product;
-import com.nhs.individual.Domain.Warehouse;
-import com.nhs.individual.Domain.WarehouseItem;
+import com.nhs.individual.domain.Product;
+import com.nhs.individual.domain.Warehouse;
+import com.nhs.individual.domain.WarehouseItem;
 import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.service.ProductService;
 import com.nhs.individual.service.WareHouseItemService;

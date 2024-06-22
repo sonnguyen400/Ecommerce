@@ -1,6 +1,6 @@
 package com.nhs.individual.repository;
 
-import com.nhs.individual.Domain.Warehouse;
+import com.nhs.individual.domain.Warehouse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

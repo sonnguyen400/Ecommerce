@@ -1,9 +1,9 @@
 package com.nhs.individual.Security.Oauth2;
 
 import com.nhs.individual.constant.AccountProvider;
-import com.nhs.individual.Domain.Account;
-import com.nhs.individual.Domain.Role;
-import com.nhs.individual.Domain.User;
+import com.nhs.individual.domain.Account;
+import com.nhs.individual.domain.Role;
+import com.nhs.individual.domain.User;
 import com.nhs.individual.service.AccountService;
 import com.nhs.individual.service.AuthService;
 import com.nhs.individual.secure.IUserDetail;

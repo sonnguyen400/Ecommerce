@@ -1,6 +1,6 @@
 package com.nhs.individual.controller;
 
-import com.nhs.individual.Domain.ShippingMethod;
+import com.nhs.individual.domain.ShippingMethod;
 import com.nhs.individual.service.ShippingMethodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

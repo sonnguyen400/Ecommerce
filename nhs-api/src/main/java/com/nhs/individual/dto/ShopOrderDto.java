@@ -1,6 +1,6 @@
 package com.nhs.individual.dto;
 
-import com.nhs.individual.Domain.ShopOrder;
+import com.nhs.individual.domain.ShopOrder;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * DTO for {@link com.nhs.individual.Domain.ShopOrder}
+ * DTO for {@link com.nhs.individual.domain.ShopOrder}
  */
 @AllArgsConstructor
 @Getter

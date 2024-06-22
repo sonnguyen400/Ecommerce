@@ -1,8 +1,8 @@
 package com.nhs.individual.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.nhs.individual.Domain.ShopOrderStatus;
 import com.nhs.individual.constant.OrderStatus;
+import com.nhs.individual.domain.ShopOrderStatus;
 import com.nhs.individual.dto.ShopOrderDto;
 import com.nhs.individual.utils.JSON;
 import com.nhs.individual.utils.ResponseUtils;
@@ -12,9 +12,10 @@ import com.nhs.individual.zalopay.model.OrderCallback;
 import com.nhs.individual.zalopay.model.OrderCallbackData;
 import com.nhs.individual.zalopay.model.OrderInfo;
 import com.nhs.individual.zalopay.model.OrderPurchaseInfo;
-import com.nimbusds.jose.crypto.impl.HMAC;
+import io.netty.util.concurrent.CompleteFuture;
 import jakarta.xml.bind.DatatypeConverter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -36,6 +37,8 @@ import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -52,28 +55,29 @@ public class ZalopayService {
 
 
     public OrderPurchaseInfo purchaseZalo(Integer orderId){
-        final Map<String,Object> embed_data = new HashMap<String,Object>(){{}};
+        final Map embed_data = new HashMap(){{}};
         return orderService.findById(orderId).map(shopOrder_ -> {
-            int random_id = new Random().nextInt(100000);
-
             try(CloseableHttpClient client = HttpClients.createDefault()) {
                 OrderInfo orderInfom = new OrderInfo(zalopayconfig.appId,
                         shopOrder_.getUser().getId().toString(),
-                        String.valueOf(random_id),
+                        String.valueOf(shopOrder_.getId()),
                         (long)900,
                         (long)50000,
-                        " ",
-                        null, JSON.stringify(new ShopOrderDto(shopOrder_)), JSON.stringify(embed_data),
+                        "testdgf  ",
+                        null,
+                        JSON.stringify(new ShopOrderDto(shopOrder_)),
+                        JSON.stringify(embed_data),
                         zalopayconfig.key1, null, null);
-
-                HttpPost post = new HttpPost(zalopayconfig.createOrderEndpoint);
                 Map<String,Object> mapParams=orderInfom.toMap();
+
+                HttpPost post = new HttpPost("https://sb-openapi.zalopay.vn/v2/create");
                 List<NameValuePair> params = new ArrayList<>();
                 for (Map.Entry<String, Object> e : mapParams.entrySet()) {
                     params.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
                 }
                 post.setEntity(new UrlEncodedFormEntity(params));
                 CloseableHttpResponse res = client.execute(post);
+
                 return ResponseUtils.parseObject(res, OrderPurchaseInfo.class);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -90,9 +94,11 @@ public class ZalopayService {
             logger.info("update order's status = success where app_trans_id = " + orderCallbackData.getApp_trans_id());
             result.put("return_code", 1);
             result.put("return_message", "success");
-
             ShopOrderStatus shopOrderStatus=new ShopOrderStatus();
-            shopOrderStatus.setStatus(OrderStatus.CANCEL);
+            shopOrderStatus.setStatus(OrderStatus.PAID.id);
+            OrderCallbackData data=JSON.parse(callBack.getData(),OrderCallbackData.class);
+            ShopOrderDto shopOrderDto=JSON.parse(data.getItem(),ShopOrderDto.class);
+            shopOrderStatusService.updateOrderStatus(shopOrderDto.getId(),shopOrderStatus);
         }else{
             result.put("return_code", -1);
             result.put("return_message", "mac not equal");

@@ -1,12 +1,12 @@
 package com.nhs.individual.controller;
 
-import com.nhs.individual.Domain.Account;
-import com.nhs.individual.Domain.User;
+import com.nhs.individual.domain.Account;
+import com.nhs.individual.domain.User;
 import com.nhs.individual.responsemessage.ResponseMessage;
 import com.nhs.individual.secure.CurrentUser;
+import com.nhs.individual.secure.IUserDetail;
 import com.nhs.individual.service.AuthService;
 import com.nhs.individual.service.UserService;
-import com.nhs.individual.secure.IUserDetail;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

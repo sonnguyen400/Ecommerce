@@ -1,7 +1,7 @@
 package com.nhs.individual.controller;
 
-import com.nhs.individual.Domain.Product;
-import com.nhs.individual.Domain.ProductItem;
+import com.nhs.individual.domain.Product;
+import com.nhs.individual.domain.ProductItem;
 import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.service.CloudinaryService;
 import com.nhs.individual.service.ProductItemService;
@@ -75,7 +75,7 @@ public class ProductController {
 
     @RequestMapping(method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Product createProduct(
-            @RequestPart("image") MultipartFile image ,
+            @RequestPart(value = "image",required = false) MultipartFile image ,
             Product product) {
         product.setPicture((String) cloudinaryService.upload(image).get("url"));
         return productService.create(product);

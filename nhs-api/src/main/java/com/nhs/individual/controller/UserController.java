@@ -2,8 +2,9 @@ package com.nhs.individual.controller;
 
 import com.nhs.individual.constant.AccountProvider;
 import com.nhs.individual.constant.AccountRole;
+import com.nhs.individual.domain.User;
 import com.nhs.individual.dto.AccountDto;
-import com.nhs.individual.Domain.User;
+import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +18,10 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public User findById(@PathVariable(value = "id") Integer id) {
+        return userService.findById(id).orElseThrow(()-> new ResourceNotFoundException("User with id " + id + " not found"));
+    }
     @RequestMapping(value = "/{id}",method=RequestMethod.DELETE)
     public void delete(@PathVariable(value = "id") Integer id) {
         userService.deleteById(id);
@@ -26,18 +31,7 @@ public class UserController {
         user.setId(id);
         return userService.save(user);
     }
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    @RequestMapping(method=RequestMethod.GET)
-//    public List<User> findAllUser(@RequestParam(name = "page", defaultValue = "0") Integer page,
-//                                  @RequestParam(name = "size",defaultValue = "10") Integer size,
-//                                  HttpServletRequest request) {
-//        List<UserSpecification> userSpecifications=new ArrayList<UserSpecification>();
-//        request.getParameterMap().forEach((key,value)->{
-//            String[] operationValue=value[0].split("[()]");
-//            if(operationValue.length==2) userSpecifications.add(new UserSpecification(new DynamicSearch(key,operationValue[0], DynamicSearch.Operator.valueOf(operationValue[1]))));
-//        });
-//        return userService.findAll(userSpecifications, PageRequest.of(page, size));
-//    }
+
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(method = RequestMethod.GET)

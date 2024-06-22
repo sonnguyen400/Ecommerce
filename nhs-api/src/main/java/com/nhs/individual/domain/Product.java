@@ -1,4 +1,4 @@
-package com.nhs.individual.Domain;
+package com.nhs.individual.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -43,6 +43,7 @@ public class Product {
     @OneToMany(mappedBy = "product",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonIgnoreProperties("product_")
     private Collection<ProductItem> productItems;
+
     @Column(name = "status")
     ProductStatus status;
 

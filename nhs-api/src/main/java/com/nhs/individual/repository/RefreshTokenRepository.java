@@ -1,6 +1,6 @@
 package com.nhs.individual.repository;
 
-import com.nhs.individual.Domain.RefreshToken;
+import com.nhs.individual.domain.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

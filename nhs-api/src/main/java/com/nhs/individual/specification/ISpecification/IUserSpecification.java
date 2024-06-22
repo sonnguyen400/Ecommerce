@@ -3,7 +3,7 @@ package com.nhs.individual.specification.ISpecification;
 import com.nhs.individual.constant.AccountProvider;
 import com.nhs.individual.constant.AccountRole;
 import com.nhs.individual.constant.AccountStatus;
-import com.nhs.individual.Domain.*;
+import com.nhs.individual.domain.*;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -17,6 +17,7 @@ public interface IUserSpecification extends GeneralSpecification<User> {
             return cb.equal(accountRoleJoin.get(Role_.NAME),role.role);
         };
     }
+
     static Specification<User> byAddress(String address){
         return (root,cq,cb)->{
             Join<User,UserAddress> userAddressJoin=root.join(User_.ACCOUNT);

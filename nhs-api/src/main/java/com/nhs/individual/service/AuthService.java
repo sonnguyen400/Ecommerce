@@ -1,8 +1,8 @@
 package com.nhs.individual.service;
 
-import com.nhs.individual.Domain.Account;
-import com.nhs.individual.Domain.RefreshToken;
-import com.nhs.individual.Domain.User;
+import com.nhs.individual.domain.Account;
+import com.nhs.individual.domain.RefreshToken;
+import com.nhs.individual.domain.User;
 import com.nhs.individual.exception.InvalidTokenException;
 import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.responsemessage.ResponseMessage;

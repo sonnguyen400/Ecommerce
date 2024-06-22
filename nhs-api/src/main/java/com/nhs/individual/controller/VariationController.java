@@ -1,7 +1,7 @@
 package com.nhs.individual.controller;
 
-import com.nhs.individual.Domain.Variation;
-import com.nhs.individual.Domain.VariationOption;
+import com.nhs.individual.domain.Variation;
+import com.nhs.individual.domain.VariationOption;
 import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.service.VariationOptionService;
 import com.nhs.individual.service.VariationService;

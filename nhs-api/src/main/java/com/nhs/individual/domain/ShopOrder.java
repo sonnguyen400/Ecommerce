@@ -1,4 +1,4 @@
-package com.nhs.individual.Domain;
+package com.nhs.individual.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -10,7 +10,6 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.Collection;
 import java.util.Date;
 
@@ -37,8 +36,6 @@ public class ShopOrder implements Serializable {
     @NotNull(message = "Address Information is required")
     private Address address;
 
-    @Column(name = "payment_id")
-    private Integer paymentId;
 
     @Column(name = "order_date",insertable = false,columnDefinition = "DATETIME default now()")
     private Date orderDate;
@@ -63,4 +60,7 @@ public class ShopOrder implements Serializable {
     @JsonIgnoreProperties({"order","hibernateLazyInitializer", "handler"})
     private Collection<OrderLine> orderLines;
 
+    @OneToOne(fetch = FetchType.EAGER,cascade =CascadeType.ALL)
+    @JoinColumn(name = "payment_id", nullable = false)
+    private ShopOrderPayment payment;
 }

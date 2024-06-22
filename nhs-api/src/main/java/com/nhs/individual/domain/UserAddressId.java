@@ -1,4 +1,4 @@
-package com.nhs.individual.Domain;
+package com.nhs.individual.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

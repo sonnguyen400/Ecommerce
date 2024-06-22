@@ -1,6 +1,6 @@
 package com.nhs.individual.specification.ISpecification;
 
-import com.nhs.individual.Domain.*;
+import com.nhs.individual.domain.*;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;

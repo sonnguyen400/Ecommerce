@@ -1,7 +1,7 @@
 package com.nhs.individual.service;
 
-import com.nhs.individual.Domain.Product;
-import com.nhs.individual.Domain.ProductItem;
+import com.nhs.individual.domain.Product;
+import com.nhs.individual.domain.ProductItem;
 import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.repository.ProductItemRepository;
 import com.nhs.individual.utils.ObjectUtils;

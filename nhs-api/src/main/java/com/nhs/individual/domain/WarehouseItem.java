@@ -1,9 +1,9 @@
-package com.nhs.individual.Domain;
+package com.nhs.individual.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.nhs.individual.Domain.EmbeddedId.ProductItemInWarehouseId;
+import com.nhs.individual.domain.EmbeddedId.ProductItemInWarehouseId;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package com.nhs.individual.service;
 
-import com.nhs.individual.Domain.Variation;
-import com.nhs.individual.Domain.VariationOption;
+import com.nhs.individual.domain.Variation;
+import com.nhs.individual.domain.VariationOption;
 import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.repository.VariationOptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;

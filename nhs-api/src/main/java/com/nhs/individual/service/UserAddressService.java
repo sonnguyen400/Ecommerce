@@ -1,8 +1,8 @@
 package com.nhs.individual.service;
 
-import com.nhs.individual.Domain.Address;
-import com.nhs.individual.Domain.UserAddress;
-import com.nhs.individual.Domain.UserAddressId;
+import com.nhs.individual.domain.Address;
+import com.nhs.individual.domain.UserAddress;
+import com.nhs.individual.domain.UserAddressId;
 import com.nhs.individual.repository.UserAddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

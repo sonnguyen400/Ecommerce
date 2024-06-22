@@ -1,6 +1,6 @@
 package com.nhs.individual.service;
 
-import com.nhs.individual.Domain.Category;
+import com.nhs.individual.domain.Category;
 import com.nhs.individual.exception.DuplicateElementException;
 import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.repository.CategoryRepository;

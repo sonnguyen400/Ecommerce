@@ -23,6 +23,8 @@ values (2,"Laptop",1,"Collection of laptop devices"),
        (15,"Oppo",3,"Oppo phones"),
        (16,"Sony",3,"Sony phones"),
        (17,"Sony",5,"Sony speakers"),
-       (18,"Beat",5,"Speakers")
+       (18,"Beat",5,"Speakers");
 
+insert into payment(name,provider) values("COD","");
 
+select * from payment

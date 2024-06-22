@@ -1,6 +1,6 @@
 package com.nhs.individual.specification.SpecificationImp;
 
-import com.nhs.individual.Domain.Product;
+import com.nhs.individual.domain.Product;
 import com.nhs.individual.specification.ISpecification.IProductSpecification;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

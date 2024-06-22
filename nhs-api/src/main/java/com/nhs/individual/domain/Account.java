@@ -1,4 +1,4 @@
-package com.nhs.individual.Domain;
+package com.nhs.individual.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -32,8 +32,8 @@ public class Account {
     @Column(name = "password")
     @NotBlank
     private String password;
-    @Column(name="status")
-    AccountStatus status;
+    @Column(name="status",columnDefinition = "TINYINT(1)")
+    Integer status;
     @Column(name = "provider")
     AccountProvider provider;
     @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.REFRESH,CascadeType.DETACH,CascadeType.MERGE})

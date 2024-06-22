@@ -2,8 +2,8 @@ package com.nhs.individual.dto;
 
 import com.nhs.individual.constant.AccountProvider;
 import com.nhs.individual.constant.AccountStatus;
-import com.nhs.individual.Domain.Account;
-import com.nhs.individual.Domain.Role;
+import com.nhs.individual.domain.Account;
+import com.nhs.individual.domain.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -20,7 +20,7 @@ import java.util.Collection;
 public class AccountDto  extends Account implements Serializable {
     private Integer id;
     private String username;
-    private AccountStatus status;
+    private Integer status;
     private AccountProvider provider;
     private Collection<Role> roles;
     public AccountDto(Account account){

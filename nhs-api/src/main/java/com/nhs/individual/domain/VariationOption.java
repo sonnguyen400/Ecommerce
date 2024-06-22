@@ -1,4 +1,4 @@
-package com.nhs.individual.Domain;
+package com.nhs.individual.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -17,7 +17,7 @@ public class VariationOption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false,cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false,cascade = CascadeType.MERGE)
     @JoinColumn(name = "variation_id", nullable = false)
     @JsonIgnoreProperties("options")
     private Variation variation;

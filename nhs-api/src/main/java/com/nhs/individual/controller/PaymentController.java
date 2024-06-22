@@ -1,7 +1,7 @@
 package com.nhs.individual.controller;
 
-import com.nhs.individual.Domain.PaymentMethod;
-import com.nhs.individual.Domain.UserPayment;
+import com.nhs.individual.domain.PaymentMethod;
+import com.nhs.individual.domain.UserPayment;
 import com.nhs.individual.service.PaymentService;
 import com.nhs.individual.service.UserPaymentService;
 import lombok.AllArgsConstructor;

@@ -57,7 +57,7 @@ public class OrderInfo implements Mapable {
     public OrderInfo(int app_id, String app_user, String app_trans_id, Long app_time, Long amount, String description, String bank_code, String item, String embed_data, String key1, String callback_url, String title) {
         this.app_id = app_id;
         this.app_user = app_user;
-        this.app_trans_id = ZaloConfig.getCurrentTimeString("yyMMdd")+app_trans_id;
+        this.app_trans_id = ZaloConfig.getCurrentTimeString("yyMMdd")+"_"+app_trans_id;
         this.app_time = app_time;
         this.amount = amount;
         this.description = description;
@@ -69,7 +69,7 @@ public class OrderInfo implements Mapable {
         this.callback_url = callback_url;
         this.title = title;
         this.app_time=System.currentTimeMillis();
-        this.mac = getMac(key1);
+        this.mac = HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256,key1,getHmacInput());
     }
 
     @JsonIgnore
@@ -78,12 +78,9 @@ public class OrderInfo implements Mapable {
 
     public String getHmacInput(){
         if(hmacInput==null){
-            hmacInput=app_id+"|"+app_trans_id+"|"+app_user+"|"+amount+"|"+app_time+"|"+embed_data+"|"+item;
+            hmacInput=this.app_id+"|"+this.app_trans_id+"|"+this.app_user+"|"+this.amount+"|"+this.app_time+"|"+this.embed_data+"|"+this.item;
         }
         return hmacInput;
-    }
-    public String getMac(String key){
-        return HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256,key,getHmacInput());
     }
 
 
