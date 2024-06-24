@@ -7,6 +7,7 @@ import com.nhs.individual.repository.UserRepository;
 import com.nhs.individual.specification.DynamicSearch;
 import com.nhs.individual.specification.ISpecification.IUserSpecification;
 import com.nhs.individual.specification.UserSpecification;
+import com.nhs.individual.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -30,6 +31,14 @@ public class UserService {
     }
     public User save(User user){
         return userRepository.save(user);
+    }
+
+    public User update(User user){
+        userRepository.findAllByEmailOrPhoneNumber(user.getId(),user.getPhoneNumber(),user.getEmail())
+                 .ifPresent((user_)->{
+                     throw new IllegalArgumentException("Phone or email is existed");});
+        return userRepository.findById(user.getId()).map(oldUser-> userRepository.save(ObjectUtils.merge(oldUser,user,User.class)))
+                .orElseThrow(()-> new IllegalArgumentException("Invalid UserId"));
     }
     public void deleteById(Integer id){
         userRepository.deleteById(id);
@@ -71,5 +80,8 @@ public class UserService {
             return userRepository.findAll(specification,PageRequest.of(page,size)).getContent();
         }
         return userRepository.findAll(PageRequest.of(page,size)).getContent();
+    }
+    public Optional<User> findAllByEmailOrPhoneNumber(String email,String phoneNumber){
+        return userRepository.findAllByEmailOrPhoneNumber(email,phoneNumber);
     }
 }

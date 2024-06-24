@@ -4,13 +4,21 @@ import com.nhs.individual.domain.Product;
 import com.nhs.individual.domain.Warehouse;
 import com.nhs.individual.domain.WarehouseItem;
 import com.nhs.individual.exception.ResourceNotFoundException;
+import com.nhs.individual.service.CloudinaryService;
 import com.nhs.individual.service.ProductService;
 import com.nhs.individual.service.WareHouseItemService;
 import com.nhs.individual.service.WareHouseService;
+import com.nhs.individual.workbook.WarehouseItemXLSX;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/warehouse")
@@ -21,6 +29,8 @@ public class WarehouseController {
     ProductService productService;
     @Autowired
     WareHouseItemService wareHouseItemService;
+    @Autowired
+    CloudinaryService cloudinaryService;
     @RequestMapping(method = RequestMethod.GET)
     public Collection<Warehouse> findAll(){
         return wareHouseService.findAll();
@@ -45,6 +55,10 @@ public class WarehouseController {
     @RequestMapping(value="/{warehouse_id}/product",method = RequestMethod.GET)
     public Collection<Product> findAllProduct(@PathVariable(name = "warehouse_id") Integer id){
         return productService.findAllByWarehouseId(id);
+    }
+    @RequestMapping(value = "/{warehouse_id}/importXLSX",method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Collection<WarehouseItem> importGoods(@RequestPart(name = "file") MultipartFile file) throws IOException {
+        return wareHouseItemService.importGoods(WarehouseItemXLSX.read(file.getInputStream()));
     }
     //Product Item In warehouse
     @RequestMapping(value ="/{warehouse_id}/item/{id}",method = RequestMethod.GET)
@@ -71,5 +85,6 @@ public class WarehouseController {
                                     @PathVariable(name = "id") Integer id){
         wareHouseItemService.deleteItemFromWarehouse(id,warehouseId);
     }
+
 
 }

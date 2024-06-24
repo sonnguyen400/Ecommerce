@@ -1,6 +1,7 @@
 package com.nhs.individual.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.nhs.individual.validation.ProductItemValidation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -21,7 +22,7 @@ public class ProductItem {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_id")
     @JsonIgnoreProperties("productItems")
-    @NotNull(message = "Product Information is required")
+    @NotNull(message = "Product Information is required",groups = ProductItemValidation.onCreate.class)
     private Product product;
 
     @Column(name = "product_id", insertable = false,updatable = false)
@@ -38,10 +39,12 @@ public class ProductItem {
     private String picture;
 
     @Column(name = "price",nullable = true)
+    @NotNull(message = "Price is required",groups = ProductItemValidation.onCreate.class)
     private BigDecimal price;
 
     @Column(name = "original_price")
-    @NotNull(message = "ORIGINAL is required!")
+    @NotNull(message = "ORIGINAL price is required!",groups = ProductItemValidation.onCreate.class)
+
     private BigDecimal originalPrice;
 
     @OneToMany(mappedBy = "productItem")

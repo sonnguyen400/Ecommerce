@@ -6,11 +6,11 @@ import com.nhs.individual.utils.Mapable;
 import com.nhs.individual.zalopay.config.ZaloConfig;
 import com.nhs.individual.zalopay.crypto.HMACUtil;
 import lombok.Getter;
-
-import java.util.Map;
+import lombok.ToString;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
+@ToString
 public class OrderInfo implements Mapable {
     //(REQUIRED) Định danh cho ứng dụng đã được cấp khi đăng ký ứng dụng với ZaloPay
     private int app_id;
@@ -69,6 +69,8 @@ public class OrderInfo implements Mapable {
         this.callback_url = callback_url;
         this.title = title;
         this.app_time=System.currentTimeMillis();
+        System.out.println(key1);
+        System.out.println(getHmacInput());
         this.mac = HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256,key1,getHmacInput());
     }
 
@@ -82,6 +84,8 @@ public class OrderInfo implements Mapable {
         }
         return hmacInput;
     }
+
+
 
 
 }

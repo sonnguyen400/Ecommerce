@@ -12,10 +12,8 @@ import com.nhs.individual.zalopay.model.OrderCallback;
 import com.nhs.individual.zalopay.model.OrderCallbackData;
 import com.nhs.individual.zalopay.model.OrderInfo;
 import com.nhs.individual.zalopay.model.OrderPurchaseInfo;
-import io.netty.util.concurrent.CompleteFuture;
 import jakarta.xml.bind.DatatypeConverter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -37,8 +35,6 @@ import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -56,26 +52,32 @@ public class ZalopayService {
 
     public OrderPurchaseInfo purchaseZalo(Integer orderId){
         final Map embed_data = new HashMap(){{}};
+        int rand=new Random().nextInt(100000);
+        final Map[] item = {
+                new HashMap(){{}}
+        };
+
         return orderService.findById(orderId).map(shopOrder_ -> {
             try(CloseableHttpClient client = HttpClients.createDefault()) {
                 OrderInfo orderInfom = new OrderInfo(zalopayconfig.appId,
-                        shopOrder_.getUser().getId().toString(),
-                        String.valueOf(shopOrder_.getId()),
+                        "user"+shopOrder_.getUser().getId(),
+                        String.valueOf(shopOrder_.getId())+rand,
                         (long)900,
                         (long)50000,
-                        "testdgf  ",
+                        "Lazada - Payment for the order #"+ shopOrder_.getId()+rand,
                         null,
-                        JSON.stringify(new ShopOrderDto(shopOrder_)),
+                        new JSONObject(item).toString(),
                         JSON.stringify(embed_data),
                         zalopayconfig.key1, null, null);
                 Map<String,Object> mapParams=orderInfom.toMap();
-
-                HttpPost post = new HttpPost("https://sb-openapi.zalopay.vn/v2/create");
+                HttpPost post = new HttpPost(zalopayconfig.createOrderEndpoint);
                 List<NameValuePair> params = new ArrayList<>();
                 for (Map.Entry<String, Object> e : mapParams.entrySet()) {
                     params.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
                 }
+                System.out.println(mapParams);
                 post.setEntity(new UrlEncodedFormEntity(params));
+
                 CloseableHttpResponse res = client.execute(post);
 
                 return ResponseUtils.parseObject(res, OrderPurchaseInfo.class);

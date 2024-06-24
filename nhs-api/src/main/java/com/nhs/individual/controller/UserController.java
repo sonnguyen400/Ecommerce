@@ -20,24 +20,28 @@ public class UserController {
     private UserService userService;
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public User findById(@PathVariable(value = "id") Integer id) {
-        return userService.findById(id).orElseThrow(()-> new ResourceNotFoundException("User with id " + id + " not found"));
+        return userService.findById(id).map(user->{
+            user.setAccount(new AccountDto(user.getAccount()));
+            return user;
+        }).orElseThrow(()-> new ResourceNotFoundException("User with id " + id + " not found"));
     }
     @RequestMapping(value = "/{id}",method=RequestMethod.DELETE)
     public void delete(@PathVariable(value = "id") Integer id) {
         userService.deleteById(id);
     }
     @RequestMapping(value = "/{id}",method=RequestMethod.PUT)
+    @PreAuthorize("#id==authentication.principal.userId or hasRole('ROLE_ADMIN')")
     public User update(@PathVariable(value = "id") Integer id, @RequestBody User user) {
         user.setId(id);
-        return userService.save(user);
+        return userService.update(user);
     }
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(method = RequestMethod.GET)
     public List<User> findAllUser(@RequestParam Map<String,String> propertiesMap){
-        Integer page= 0;
-        Integer size=10;
+        int page= 0;
+        int size=10;
         AccountRole role=null;
         AccountProvider provider=null;
         propertiesMap.remove("size");

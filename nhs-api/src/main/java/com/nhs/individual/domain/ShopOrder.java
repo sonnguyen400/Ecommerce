@@ -10,8 +10,8 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -54,11 +54,11 @@ public class ShopOrder implements Serializable {
 
     @OneToMany(mappedBy = "order",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonIgnoreProperties("order")
-    private Collection<ShopOrderStatus> status;
+    private List<ShopOrderStatus> status;
 
     @OneToMany(mappedBy = "order",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"order","hibernateLazyInitializer", "handler"})
-    private Collection<OrderLine> orderLines;
+    private List<OrderLine> orderLines;
 
     @OneToOne(fetch = FetchType.EAGER,cascade =CascadeType.ALL)
     @JoinColumn(name = "payment_id", nullable = false)

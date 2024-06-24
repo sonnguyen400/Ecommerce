@@ -10,7 +10,7 @@ public enum OrderStatus {
     CANCEL(6,"CANCEL"),
     RETURN(7,"RETURN");
 
-    public final Integer id;
+    public final int id;
     public final String value;
     OrderStatus(Integer id, String value) {
         this.id=id;

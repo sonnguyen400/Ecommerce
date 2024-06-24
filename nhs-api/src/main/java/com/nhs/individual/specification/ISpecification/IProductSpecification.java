@@ -14,11 +14,11 @@ public interface IProductSpecification extends GeneralSpecification<Product> {
     static Specification<Product> inCategory(Integer categoryId){
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get(Product_.CATEGORY_ID),categoryId);
     }
-    static Specification<Product> inWarehouse(Integer warehouseId,Integer quantity){
+    static Specification<Product> inWarehouse(Integer warehouseId){
         return (root, criteriaQuery, criteriaBuilder) -> {
             Join<Product, ProductItem> productProductItem=root.join("product_item");
             Join<ProductItem, WarehouseItem> productWarehouseItem=productProductItem.join("product_item_in_warehouse");
-            return criteriaBuilder.greaterThan(productWarehouseItem.get(WarehouseItem_.QTY),quantity);
+            return criteriaBuilder.equal(productWarehouseItem.get(WarehouseItem_.WAREHOUSE),warehouseId);
         };
     }
     static Specification<Product> priceLimit(BigDecimal minPrice, BigDecimal maxPrice) {

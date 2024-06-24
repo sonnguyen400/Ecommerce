@@ -18,38 +18,38 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    protected Integer id;
 
     @Column(name = "firstname", length = 45)
     @Length(min=1,max = 45,message = "First name is between 1 and 45 characters in length")
-    private String firstname;
+    protected String firstname;
 
     @Column(name = "lastname", length = 45)
     @Length(min=1,max = 45,message = "Last name is between 1 and 45 characters in length")
 
-    private String lastname;
+    protected String lastname;
 
     @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+    protected Date dateOfBirth;
 
     @Column(name = "gender", length = 10)
-    private String gender;
+    protected String gender;
 
     @Column(name = "phone_number", length = 12)
-    private String phoneNumber;
+    protected String phoneNumber;
 
     @Column(name = "email")
-    private String email;
+    protected String email;
 
     @Column(name = "picture")
-    private String picture;
+    protected String picture;
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JsonIgnore
-    private Collection<UserAddress> userAddresses;
+    protected Collection<UserAddress> userAddresses;
     @OneToOne(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
-    private Account account;
+    protected Account account;
 
 
 }

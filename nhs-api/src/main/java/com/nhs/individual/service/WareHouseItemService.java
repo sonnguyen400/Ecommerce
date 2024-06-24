@@ -7,9 +7,14 @@ import com.nhs.individual.domain.WarehouseItem;
 import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.repository.WarehouseItemRepository;
 import com.nhs.individual.utils.ObjectUtils;
+import com.nhs.individual.validation.WarehouseValidation;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,5 +45,12 @@ public class WareHouseItemService {
         WarehouseItem warehouseItem1=repository.save(warehouseItem);
         return warehouseItem1;
     }
-
+    @Transactional
+    public List<WarehouseItem> importGoods(@Validated(WarehouseValidation.onCreate.class) List<@Valid WarehouseItem> warehouseItems){
+        warehouseItems.forEach(System.out::println);
+        return warehouseItems.stream().map(item-> repository.findById(item.getId()).map(item_ -> {
+            item_.setQty(item.getQty()+item_.getQty());
+            return repository.save(item_);
+        }).orElseGet(()-> repository.save(item))).toList();
+    }
 }

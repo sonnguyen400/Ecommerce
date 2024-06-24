@@ -6,6 +6,7 @@ import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.service.CategoryService;
 import com.nhs.individual.service.ProductService;
 import com.nhs.individual.service.VariationOptionService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,12 +15,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/category")
+@AllArgsConstructor
 public class CategoryController {
-    @Autowired
-    private CategoryService categoryService;
-    @Autowired
+    CategoryService categoryService;
     VariationOptionService variationOptionService;
-    @Autowired
     ProductService productService;
     @RequestMapping(method = RequestMethod.GET)
     public Collection<Category> findAll(){

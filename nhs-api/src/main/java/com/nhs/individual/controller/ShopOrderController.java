@@ -3,11 +3,12 @@ package com.nhs.individual.controller;
 import com.nhs.individual.constant.OrderStatus;
 import com.nhs.individual.domain.ShopOrder;
 import com.nhs.individual.domain.ShopOrderStatus;
-import com.nhs.individual.domain.ShopOrder_;
 import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.service.ShopOrderService;
 import com.nhs.individual.service.ShopOrderStatusService;
 import com.nhs.individual.specification.ISpecification.IShopOrderSpecification;
+import com.nhs.individual.workbook.ShopOrdersXLSX;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,15 +17,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/api/v1/order")
@@ -40,14 +39,60 @@ public class ShopOrderController {
         return shopOrderService.createOrder(order);
     }
     @PreAuthorize("(#params.get('userId')!=null and #params.get('userId')==authentication.principal.userId) or hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/xlsx", method = RequestMethod.GET)
+    public void exportExcel(@RequestParam Map<String,String> params,
+                                             HttpServletResponse response) throws IOException {
+        List<ShopOrder> orders = findAllWithParams(params);
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=student" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+        ShopOrdersXLSX.from(orders).write(response.getOutputStream());
+    }
+
+
+    @PreAuthorize("(#params.get('userId')!=null and #params.get('userId')==authentication.principal.userId) or hasRole('ROLE_ADMIN')")
     @RequestMapping(method = RequestMethod.GET)
     public Collection<ShopOrder> findAll(@RequestParam Map<String,String> params) {
-        Integer page= 0;
-        Integer size=10;
+        return findAllWithParams(params);
+    }
+
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
+    public ShopOrder getOrderById(@PathVariable(name = "id") Integer id) {
+        return shopOrderService.findById(id).orElseThrow(()-> new ResourceNotFoundException("Could not find order with id " + id));
+    }
+
+//    ShopOrderStatus control
+    @RequestMapping(value = "/{orderId}/status",method = RequestMethod.POST)
+    public ShopOrderStatus updateStatus(@PathVariable(name = "orderId") Integer orderId,
+            @RequestBody ShopOrderStatus shopOrderStatus){
+        return shopOrderStatusService.updateOrderStatus(orderId,shopOrderStatus);
+    }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/{orderId}/status/APPROVE",method = RequestMethod.POST)
+    public ShopOrderStatus approveOrder(@PathVariable(name = "orderId") Integer orderId,
+                                        @RequestBody ShopOrderStatus shopOrderStatus){
+        shopOrderStatus.setStatus(OrderStatus.PREPARING.id);
+        return shopOrderStatusService.updateOrderStatus(orderId,shopOrderStatus);
+    }
+
+    @RequestMapping(value = "/{orderId}/status/CANCEL",method = RequestMethod.POST)
+    public ShopOrderStatus cancelOrder(@PathVariable(name = "orderId") Integer orderId,
+                                      @RequestBody ShopOrderStatus shopOrderStatus){
+        shopOrderStatus.setStatus(OrderStatus.DELIVERING.id);
+        return shopOrderStatusService.updateOrderStatus(orderId,shopOrderStatus);
+    }
+
+
+    private List<ShopOrder> findAllWithParams(Map<String,String> params){
+        int page= 0;
+        int size=10;
         if(params.get("page")!=null){
             try{
-                page=Integer.valueOf(params.get("page"));
-                size=Integer.valueOf(params.get("size"));
+                page= Integer.parseInt(params.get("page"));
+                size= Integer.parseInt(params.get("size"));
             }catch (NumberFormatException e){
                 throw new IllegalArgumentException("Page or size must be number");
             }
@@ -90,32 +135,4 @@ public class ShopOrderController {
         Pageable pageable=PageRequest.of(page,size,sort);
         return shopOrderService.findAll(specifications, pageable);
     }
-
-    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public ShopOrder getOrderById(@PathVariable(name = "id") Integer id) {
-        return shopOrderService.findById(id).orElseThrow(()-> new ResourceNotFoundException("Could not find order with id " + id));
-    }
-
-//    ShopOrderStatus control
-    @RequestMapping(value = "/{orderId}/status",method = RequestMethod.POST)
-    public ShopOrderStatus updateStatus(@PathVariable(name = "orderId") Integer orderId,
-            @RequestBody ShopOrderStatus shopOrderStatus){
-        return shopOrderStatusService.updateOrderStatus(orderId,shopOrderStatus);
-    }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/{orderId}/status/APPROVE",method = RequestMethod.POST)
-    public ShopOrderStatus approveOrder(@PathVariable(name = "orderId") Integer orderId,
-                                        @RequestBody ShopOrderStatus shopOrderStatus){
-        shopOrderStatus.setStatus(OrderStatus.PREPARING.id);
-        return shopOrderStatusService.updateOrderStatus(orderId,shopOrderStatus);
-    }
-
-    @RequestMapping(value = "/{orderId}/status/CANCEL",method = RequestMethod.POST)
-    public ShopOrderStatus cancelOrder(@PathVariable(name = "orderId") Integer orderId,
-                                      @RequestBody ShopOrderStatus shopOrderStatus){
-        shopOrderStatus.setStatus(OrderStatus.DELIVERING.id);
-        return shopOrderStatusService.updateOrderStatus(orderId,shopOrderStatus);
-    }
-
-
 }

@@ -31,7 +31,8 @@ public class Oauth2Service extends DefaultOAuth2UserService {
             Account account=new Account();
             account.setUsername(oAuth2User.getName());
             account.setPassword(UUID.randomUUID().toString());
-            account.setProvider(AccountProvider.valueOf((String) oAuth2User.getAttributes().get("provider")));
+
+            account.setProvider(AccountProvider.GOOGLE);
             Role role=new Role();
             role.setId(1);
             account.setRoles(List.of(role));

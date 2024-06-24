@@ -9,6 +9,7 @@ import com.nhs.individual.service.ProductService;
 import com.nhs.individual.specification.DynamicSearch;
 import com.nhs.individual.specification.ProductSpecification;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,12 +24,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/product")
+@AllArgsConstructor
 public class ProductController {
-    @Autowired
     private ProductService productService;
-    @Autowired
     private ProductItemService productItemService;
-    @Autowired
     CloudinaryService cloudinaryService;
     @RequestMapping( method = RequestMethod.GET)
     public Collection<Product> getAllProduct(
@@ -69,7 +68,7 @@ public class ProductController {
                         list.add(new ProductSpecification(new DynamicSearch(key, extract[1], DynamicSearch.Operator.valueOf(extract[0]))));
                     }
                 });
-        Pageable pageable= (Pageable) PageRequest.of(page,size);
+        Pageable pageable=PageRequest.of(page,size);
         return productService.findAll(list,pageable);
     }
 
@@ -132,4 +131,8 @@ public class ProductController {
         productItemService.deleteById(itemId);
     }
 
+    @RequestMapping(value = "/warehouse/{warehouseId}",method = RequestMethod.GET)
+    public Collection<Product> getAllByWarehouse(@PathVariable(name = "warehouseId") Integer warehouseId){
+        return productService.findAllByWarehouseId(warehouseId);
+    }
 }

@@ -4,6 +4,7 @@ import com.nhs.individual.domain.Account;
 import com.nhs.individual.domain.RefreshToken;
 import com.nhs.individual.domain.User;
 import com.nhs.individual.exception.InvalidTokenException;
+import com.nhs.individual.exception.RegisterUserException;
 import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.responsemessage.ResponseMessage;
 import com.nhs.individual.secure.IUserDetail;
@@ -64,7 +65,11 @@ public class AuthService {
                         .ok());
     }
     public Account register(Account account){
-        return accountService.create(account);
+         userService.findAllByEmailOrPhoneNumber(account.getUser().getEmail(),account.getUser().getPhoneNumber())
+                 .ifPresent(value->{
+                     throw new RegisterUserException("Either Email or phone number is registered by other user");
+                 });
+         return accountService.create(account);
     }
     public ResponseEntity<ResponseMessage> refresh(HttpServletRequest request){
         Cookie cookie= WebUtils.getCookie(request,REFRESH_AUTH_TOKEN);

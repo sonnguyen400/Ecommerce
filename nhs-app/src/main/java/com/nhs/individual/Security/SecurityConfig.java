@@ -5,6 +5,7 @@ import com.nhs.individual.Security.Oauth2.Oauth2Service;
 import com.nhs.individual.Security.Oauth2.Oauth2SuccessHandler;
 import com.nhs.individual.service.AccountService;
 import com.nhs.individual.secure.IUserDetail;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,8 +36,8 @@ import java.util.List;
 
 @EnableWebSecurity
 @Configuration
+@AllArgsConstructor
 public class SecurityConfig {
-    @Autowired
     AccountService service;
     @Bean
     public JwtFilter jwtFilter(){
@@ -82,7 +83,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req->{
                     req.requestMatchers("/test/**").permitAll()
                             .requestMatchers("/login").anonymous()
-                            .requestMatchers("/register").anonymous()
+                            .requestMatchers("/register").permitAll()
                             .requestMatchers("/refresh").anonymous()
                             .requestMatchers("/logout").permitAll()
                             .requestMatchers("/swagger-ui/**").permitAll()

@@ -1,9 +1,6 @@
 package com.nhs.individual.exception.handler;
 
-import com.nhs.individual.exception.DataException;
-import com.nhs.individual.exception.DuplicateElementException;
-import com.nhs.individual.exception.InvalidTokenException;
-import com.nhs.individual.exception.ResourceNotFoundException;
+import com.nhs.individual.exception.*;
 import com.nhs.individual.responsemessage.ResponseMessage;
 import com.nhs.individual.secure.JwtProvider;
 import com.nhs.individual.utils.RequestUtils;
@@ -31,13 +28,21 @@ public class APIExceptionHandler {
     @ExceptionHandler(NoResourceFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseMessage handleNoResourceFoundException(NoResourceFoundException e) {
-        e.printStackTrace();
         return ResponseMessage
                .builder()
                .message(e.getLocalizedMessage())
                .details(e.getClass().getName())
                .error()
                .ok();
+    }
+    @ExceptionHandler(RegisterUserException.class)
+    public ResponseMessage handleRegisterUserException(RegisterUserException e) {
+        return ResponseMessage
+                .builder()
+                .message(e.getMessage())
+                .details(e.getClass().getName())
+                .error()
+                .ok();
     }
     @ExceptionHandler(DataException.class)
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
@@ -76,7 +81,7 @@ public class APIExceptionHandler {
     public ResponseMessage validateException(ConstraintViolationException e) {
         return ResponseMessage
                 .builder()
-                .message(e.getLocalizedMessage())
+                .message(e.getMessage())
                 .details(e.getClass().getName())
                 .error()
                 .ok();

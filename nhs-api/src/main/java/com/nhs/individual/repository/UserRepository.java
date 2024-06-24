@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User,Integer> {
@@ -19,5 +20,8 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     User findByAccount_id(int accountId);
     @NonNull
     Page<User> findAll(@Nullable Specification<User> specification, @NonNull Pageable pageable);
-    List<User> findAllByEmailOrPhoneNumber(String email, String phoneNumber);
+    Optional<User> findAllByEmailOrPhoneNumber(String email, String phoneNumber);
+
+    @Query(value = "select * from user where id=?1 and (email=?2 or phone_number=?3) ",nativeQuery = true)
+    Optional<User> findAllByEmailOrPhoneNumber(Integer userId,String email, String phoneNumber);
 }

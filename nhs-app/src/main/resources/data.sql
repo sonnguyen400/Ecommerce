@@ -24,7 +24,7 @@ values (2,"Laptop",1,"Collection of laptop devices"),
        (16,"Sony",3,"Sony phones"),
        (17,"Sony",5,"Sony speakers"),
        (18,"Beat",5,"Speakers");
-
-insert into payment(name,provider) values("COD","");
-
-select * from payment
+insert into warehouse(id,name,detail) values
+(1,"Sample warehouse 1","This is a sample warehouse object"),
+(2,"Sample warehouse 2","This is a sample warehouse object"),
+(3,"Sample warehouse 3","This is a sample warehouse object");

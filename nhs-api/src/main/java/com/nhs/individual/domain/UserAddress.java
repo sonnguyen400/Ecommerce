@@ -25,6 +25,8 @@ public class UserAddress {
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
     @Column(name = "is_default")
     private Boolean isDefault;

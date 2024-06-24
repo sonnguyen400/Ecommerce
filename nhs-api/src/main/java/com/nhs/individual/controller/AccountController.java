@@ -3,14 +3,15 @@ package com.nhs.individual.controller;
 import com.nhs.individual.constant.AccountStatus;
 import com.nhs.individual.responsemessage.ResponseMessage;
 import com.nhs.individual.service.AccountService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/v1/account")
+@AllArgsConstructor
 public class AccountController {
-    @Autowired
     AccountService accountService;
     @RequestMapping(value = "/{id}/status/INACTIVE",method = RequestMethod.PUT)
     @PreAuthorize("hasRole('ROLE_ADMIN') or authentication.principal.id==#id ")
