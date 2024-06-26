@@ -9,11 +9,13 @@ import com.nhs.individual.service.ShopOrderStatusService;
 import com.nhs.individual.specification.ISpecification.IShopOrderSpecification;
 import com.nhs.individual.workbook.ShopOrdersXLSX;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,12 +36,12 @@ public class ShopOrderController {
     ShopOrderStatusService shopOrderStatusService;
 
     @RequestMapping(method = RequestMethod.POST)
-    @PreAuthorize("#order.userId==authentication.principal.userId")
+    @PreAuthorize("#order.user.id==authentication.principal.userId")
     public ShopOrder createOrder(@RequestBody ShopOrder order) {
         return shopOrderService.createOrder(order);
     }
-    @PreAuthorize("(#params.get('userId')!=null and #params.get('userId')==authentication.principal.userId) or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/xlsx", method = RequestMethod.GET)
+    @Secured("ADMIN")
     public void exportExcel(@RequestParam Map<String,String> params,
                                              HttpServletResponse response) throws IOException {
         List<ShopOrder> orders = findAllWithParams(params);
@@ -47,13 +49,15 @@ public class ShopOrderController {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=student" + currentDateTime + ".xlsx";
+        String headerValue = "attachment; filename=orders" + currentDateTime + ".xlsx";
         response.setHeader(headerKey, headerValue);
-        ShopOrdersXLSX.from(orders).write(response.getOutputStream());
+        try(Workbook workbook=ShopOrdersXLSX.from(orders)){
+            workbook.write(response.getOutputStream());
+        }
     }
 
 
-    @PreAuthorize("(#params.get('userId')!=null and #params.get('userId')==authentication.principal.userId) or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or #params.get('userId')==authentication.principal.userId.toString()")
     @RequestMapping(method = RequestMethod.GET)
     public Collection<ShopOrder> findAll(@RequestParam Map<String,String> params) {
         return findAllWithParams(params);

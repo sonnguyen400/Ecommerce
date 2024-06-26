@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Collection;
 
@@ -11,6 +12,7 @@ import java.util.Collection;
 @Table(name = "role")
 @Getter
 @Setter
+@ToString
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,5 +21,6 @@ public class Role {
     private String name;
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.DETACH,mappedBy = "roles")
     @JsonIgnoreProperties("roles")
+    @ToString.Exclude
     private Collection<Account> accounts;
 }

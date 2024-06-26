@@ -5,8 +5,11 @@ import com.nhs.individual.constant.AccountRole;
 import com.nhs.individual.domain.User;
 import com.nhs.individual.dto.AccountDto;
 import com.nhs.individual.exception.ResourceNotFoundException;
+import com.nhs.individual.secure.CurrentUser;
+import com.nhs.individual.secure.IUserDetail;
 import com.nhs.individual.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,10 +39,9 @@ public class UserController {
         return userService.update(user);
     }
 
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(method = RequestMethod.GET)
-    public List<User> findAllUser(@RequestParam Map<String,String> propertiesMap){
+    @Secured("ADMIN")
+    public List<User> findAllUser(@CurrentUser IUserDetail userDea, @RequestParam Map<String, String> propertiesMap){
         int page= 0;
         int size=10;
         AccountRole role=null;

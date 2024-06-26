@@ -3,16 +3,16 @@ package com.nhs.individual.Security;
 import com.nhs.individual.Security.Filter.JwtFilter;
 import com.nhs.individual.Security.Oauth2.Oauth2Service;
 import com.nhs.individual.Security.Oauth2.Oauth2SuccessHandler;
-import com.nhs.individual.service.AccountService;
 import com.nhs.individual.secure.IUserDetail;
+import com.nhs.individual.service.AccountService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
@@ -37,6 +37,7 @@ import java.util.List;
 @EnableWebSecurity
 @Configuration
 @AllArgsConstructor
+@EnableMethodSecurity(prePostEnabled = true,securedEnabled = true,jsr250Enabled = true)
 public class SecurityConfig {
     AccountService service;
     @Bean
@@ -61,6 +62,13 @@ public class SecurityConfig {
         return new Oauth2Service();
     }
 
+//    @Bean
+//    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+//    static Advisor preAuthorizeMethodInterceptor() {
+//        Advisor advisor=AuthorizationManagerBeforeMethodInterceptor.preAuthorize();
+//        System.out.println(advisor.getAdvice());
+//        return advisor;
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -125,11 +133,9 @@ public class SecurityConfig {
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
                 return service.findByUsername(username)
                         .map(IUserDetail::new)
-                        .orElseThrow(()->{
-                            System.out.println("Find 0 match");
-                            return new UsernameNotFoundException(username+"Not found");
-                        });
+                        .orElseThrow(()-> new UsernameNotFoundException(username+"Not found"));
             }
+
         };
     }
     @Bean

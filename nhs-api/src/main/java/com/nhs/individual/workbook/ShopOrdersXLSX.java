@@ -106,20 +106,28 @@ public class ShopOrdersXLSX {
         XSSFCellStyle style = workbook.createCellStyle();
         if (status == OrderStatus.PAID.id) {
             style.setFillForegroundColor(IndexedColors.WHITE.index);
+            style.setFillBackgroundColor(IndexedColors.WHITE.index);
         } else if (status == OrderStatus.PENDING.id) {
             style.setFillForegroundColor(IndexedColors.CORAL.index);
+            style.setFillBackgroundColor(IndexedColors.CORAL.index);
         } else if (status == OrderStatus.PREPARING.id) {
             style.setFillForegroundColor(IndexedColors.YELLOW.index);
+            style.setFillBackgroundColor(IndexedColors.YELLOW.index);
         } else if (status == OrderStatus.DELIVERING.id) {
             style.setFillForegroundColor(IndexedColors.BLUE.index);
+            style.setFillBackgroundColor(IndexedColors.BLUE.index);
         } else if (status == OrderStatus.DELIVERED.id) {
             style.setFillForegroundColor(IndexedColors.OLIVE_GREEN.index);
+            style.setFillBackgroundColor(IndexedColors.OLIVE_GREEN.index);
         } else if (status == OrderStatus.COMPLETED.id) {
             style.setFillForegroundColor(IndexedColors.GREEN.index);
+            style.setFillBackgroundColor(IndexedColors.GREEN.index);
         } else if (status == OrderStatus.CANCEL.id) {
             style.setFillForegroundColor(IndexedColors.ROSE.index);
+            style.setFillBackgroundColor(IndexedColors.ROSE.index);
         } else if (status == OrderStatus.RETURN.id) {
             style.setFillForegroundColor(IndexedColors.RED.index);
+            style.setFillBackgroundColor(IndexedColors.RED.index);
         }
         return style;
     }

@@ -20,8 +20,9 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     User findByAccount_id(int accountId);
     @NonNull
     Page<User> findAll(@Nullable Specification<User> specification, @NonNull Pageable pageable);
+    @Query(value = "select * from user where (email=?1 or phone_number=?2) and ?1 is not null and ?2 is not null and trim(?1)<>'' and trim(?2)<>''",nativeQuery = true)
     Optional<User> findAllByEmailOrPhoneNumber(String email, String phoneNumber);
 
-    @Query(value = "select * from user where id=?1 and (email=?2 or phone_number=?3) ",nativeQuery = true)
+    @Query(value = "select * from user where id<>?1 and (email=?2 or phone_number=?3) and ?2 is not null and ?3 is not null and trim(?2)<>'' and trim(?3)<>''",nativeQuery = true)
     Optional<User> findAllByEmailOrPhoneNumber(Integer userId,String email, String phoneNumber);
 }

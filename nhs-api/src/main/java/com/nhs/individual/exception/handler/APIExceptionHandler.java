@@ -56,7 +56,7 @@ public class APIExceptionHandler {
     }
     @ExceptionHandler(InsufficientAuthenticationException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseMessage handlerException(AccessDeniedException e){
+    public ResponseMessage handlerException(InsufficientAuthenticationException e){
         return ResponseMessage
                .builder()
                .message(e.getLocalizedMessage())

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,7 +29,7 @@ public class ProductItemService {
             return productItemRepository.save(productItem);
         }).orElseThrow(()->new ResourceNotFoundException("product with id"+productId+" not found"));
     }
-    public Product saveAll(Integer productId, Collection<ProductItem> productItems){
+    public Product saveAll(Integer productId, List<ProductItem> productItems){
         return productService.findById(productId).map(product -> {
             product.setProductItems(productItems);
             productItems.forEach(productItem ->{

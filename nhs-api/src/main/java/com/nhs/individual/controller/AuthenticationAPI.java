@@ -41,7 +41,7 @@ public class AuthenticationAPI {
     }
     @RequestMapping(value = "/auth/user",method = RequestMethod.GET)
     public User getcurrentUser(@CurrentUser IUserDetail userDetail){
-        return userService.findById(userDetail.getId()).get();
+        return userService.findById(userDetail.getUserId()).get();
     }
 
 }

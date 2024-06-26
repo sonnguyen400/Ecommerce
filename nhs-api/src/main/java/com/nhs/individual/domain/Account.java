@@ -7,6 +7,7 @@ import com.nhs.individual.constant.AccountStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.Collection;
 
@@ -23,6 +24,7 @@ public class Account {
     @OneToOne(fetch = FetchType.EAGER, optional = false,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties("account")
+    @ToString.Exclude
     private User user;
 
     @Column(name = "username", length = 45)
@@ -36,6 +38,8 @@ public class Account {
     Integer status;
     @Column(name = "provider")
     AccountProvider provider;
+
+
     @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.REFRESH,CascadeType.DETACH,CascadeType.MERGE})
     @JoinTable(name = "account_role",
     joinColumns = @JoinColumn(name = "account_id"),

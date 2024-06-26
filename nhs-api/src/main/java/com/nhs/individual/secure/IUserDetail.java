@@ -42,6 +42,7 @@ public class IUserDetail implements UserDetails,OAuth2User {
 
     }
 
+
     @Override
     public String getPassword() {
         return password;
@@ -73,20 +74,14 @@ public class IUserDetail implements UserDetails,OAuth2User {
     public boolean isEnabled() {
         return Objects.equals(status, AccountStatus.ACTIVE.id);
     }
-
-
     public  IUserDetail(Account account){
         this.username=account.getUsername();
         this.id=account.getId();
         this.password=account.getPassword();
         this.userId=account.getUser().getId();
-        if(account.getRoles() != null&& !account.getRoles().isEmpty()){
-            this.setAuthorities(account.getRoles().stream().map(e->new SimpleGrantedAuthority(e.getName())).toList());
-        }
+        this.authorities=account.getRoles().stream().map(e->new SimpleGrantedAuthority(e.getName().trim().toUpperCase())).toList();
         this.status=account.getStatus();
     }
-
-
     @Override
     public String getName() {
         return oAuth2User.getName();

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 import java.sql.Date;
@@ -14,6 +15,7 @@ import java.util.Collection;
 @Setter
 @Entity
 @Table(name = "user")
+@ToString
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,9 +48,11 @@ public class User {
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JsonIgnore
+    @ToString.Exclude
     protected Collection<UserAddress> userAddresses;
     @OneToOne(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
+    @ToString.Exclude
     protected Account account;
 
 

@@ -28,3 +28,5 @@ insert into warehouse(id,name,detail) values
 (1,"Sample warehouse 1","This is a sample warehouse object"),
 (2,"Sample warehouse 2","This is a sample warehouse object"),
 (3,"Sample warehouse 3","This is a sample warehouse object");
+
+insert into payment(id,name,provider) values (1,"COD","DEFAULT");

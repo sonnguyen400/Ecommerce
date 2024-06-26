@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,7 +35,7 @@ public class Product {
     @NotNull(message = "Product's name is required")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description",columnDefinition = "text")
     private String description;
 
     @Column(name = "picture", length = 512)
@@ -42,7 +43,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JsonIgnoreProperties("product_")
-    private Collection<ProductItem> productItems;
+    private List<ProductItem> productItems;
 
     @Column(name = "status")
     ProductStatus status;
