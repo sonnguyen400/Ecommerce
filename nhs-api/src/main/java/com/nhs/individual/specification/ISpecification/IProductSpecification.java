@@ -8,11 +8,21 @@ import jakarta.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface IProductSpecification extends GeneralSpecification<Product> {
-    static Specification<Product> inCategory(Integer categoryId){
-        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get(Product_.CATEGORY_ID),categoryId);
+    static Specification<Product> inCategory(List<Integer> categoryId){
+        return (root, criteriaQuery, criteriaBuilder) -> {
+            Predicate[] predicates = new Predicate[categoryId.size()];
+            for(int i = 0; i < categoryId.size(); i++){
+                predicates[i] = criteriaBuilder.equal(root.get(Product_.CATEGORY_ID),categoryId.get(i));
+            }
+            return criteriaBuilder.or(predicates);
+        };
+    }
+    static Specification<Product> hasName(String name){
+        return (root,cq,cb)->cb.like(root.get(Product_.NAME),"%"+name+"%");
     }
     static Specification<Product> inWarehouse(Integer warehouseId){
         return (root, criteriaQuery, criteriaBuilder) -> {
