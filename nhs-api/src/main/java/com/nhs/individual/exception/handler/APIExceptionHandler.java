@@ -36,6 +36,7 @@ public class APIExceptionHandler {
                .ok();
     }
     @ExceptionHandler(RegisterUserException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseMessage handleRegisterUserException(RegisterUserException e) {
         return ResponseMessage
                 .builder()

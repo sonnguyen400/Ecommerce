@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nhs.individual.domain.EmbeddedId.ProductItemInWarehouseId;
 import com.nhs.individual.validation.WarehouseValidation;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;

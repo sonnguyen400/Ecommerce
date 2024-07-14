@@ -54,11 +54,11 @@ public class OrderInfo implements Mapable {
     private String email;
     private String address;
 
-    public OrderInfo(int app_id, String app_user, String app_trans_id, Long app_time, Long amount, String description, String bank_code, String item, String embed_data, String key1, String callback_url, String title) {
+    public OrderInfo(int app_id, String app_user, String app_trans_id,Long amount, String description, String bank_code, String item, String embed_data, String key1, String callback_url, String title) {
         this.app_id = app_id;
         this.app_user = app_user;
         this.app_trans_id = ZaloConfig.getCurrentTimeString("yyMMdd")+"_"+app_trans_id;
-        this.app_time = app_time;
+        this.app_time = System.currentTimeMillis();
         this.amount = amount;
         this.description = description;
         if(bank_code==null||bank_code.isEmpty()){
@@ -71,7 +71,7 @@ public class OrderInfo implements Mapable {
         this.app_time=System.currentTimeMillis();
         System.out.println(key1);
         System.out.println(getHmacInput());
-        this.mac = HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256,key1,getHmacInput());
+        this.mac = HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256,key1.trim(),getHmacInput());
     }
 
     @JsonIgnore

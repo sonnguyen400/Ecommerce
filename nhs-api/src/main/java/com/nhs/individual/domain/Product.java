@@ -42,7 +42,7 @@ public class Product {
     private String picture;
 
     @OneToMany(mappedBy = "product",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("product_")
+    @JsonIgnoreProperties("product")
     private List<ProductItem> productItems;
 
     @Column(name = "status")

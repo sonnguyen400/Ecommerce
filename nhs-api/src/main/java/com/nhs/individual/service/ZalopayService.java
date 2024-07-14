@@ -62,24 +62,21 @@ public class ZalopayService {
                 OrderInfo orderInfom = new OrderInfo(zalopayconfig.appId,
                         "user"+shopOrder_.getUser().getId(),
                         String.valueOf(shopOrder_.getId())+rand,
-                        (long)900,
                         (long)50000,
                         "Lazada - Payment for the order #"+ shopOrder_.getId()+rand,
-                        null,
+                        "zalopayapp",
                         new JSONObject(item).toString(),
                         JSON.stringify(embed_data),
-                        zalopayconfig.key1, null, null);
+                        zalopayconfig.key1,
+                        null, null);
                 Map<String,Object> mapParams=orderInfom.toMap();
                 HttpPost post = new HttpPost(zalopayconfig.createOrderEndpoint);
                 List<NameValuePair> params = new ArrayList<>();
                 for (Map.Entry<String, Object> e : mapParams.entrySet()) {
                     params.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
                 }
-                System.out.println(mapParams);
                 post.setEntity(new UrlEncodedFormEntity(params));
-
                 CloseableHttpResponse res = client.execute(post);
-
                 return ResponseUtils.parseObject(res, OrderPurchaseInfo.class);
             } catch (IOException e) {
                 throw new RuntimeException(e);

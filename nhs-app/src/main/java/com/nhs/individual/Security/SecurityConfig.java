@@ -8,6 +8,7 @@ import com.nhs.individual.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -28,6 +29,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -98,6 +100,8 @@ public class SecurityConfig {
                             .requestMatchers("/auth/**").permitAll()
                             .requestMatchers("/oauth2/**").permitAll()
                             .requestMatchers("/auth/**").permitAll()
+                            .requestMatchers(HttpMethod.GET,"/api/v1/product/**").permitAll()
+                            .requestMatchers(HttpMethod.GET,"/api/v1/category/**").permitAll()
                             .anyRequest().authenticated();
                 })
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {

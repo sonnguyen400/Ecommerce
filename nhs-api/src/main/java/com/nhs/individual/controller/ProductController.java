@@ -54,15 +54,14 @@ public class ProductController {
             @RequestParam(name = "size", defaultValue = "20", required = false) Integer size,
             @RequestParam(name = "options", required = false) List<Integer> optionsId,
             @RequestParam(name = "name", required = false) String name,
-            HttpServletRequest request) {
-        List<Specification<Product>> specifications = new ArrayList<>();
-        Map<String,String[]> params = request.getParameterMap();
+            @RequestParam Map<String,String> request) {
+            List<Specification<Product>> specifications = new ArrayList<>();
         if (category != null) specifications.add(IProductSpecification.inCategory(category));
         if (priceMin != null && priceMax != null)
             specifications.add(IProductSpecification.priceLimit(priceMin, priceMax));
         if (optionsId != null) specifications.add(IProductSpecification.hasOption(optionsId));
         if(name!=null) specifications.add(IProductSpecification.hasName(name));
-        return productService.findAll(specifications,PageRequest.of(page,size));
+        return productService.findAll(specifications,PageRequest.of(0,10));
     }
 
     @RequestMapping(value = "/xlsx",method = RequestMethod.GET)

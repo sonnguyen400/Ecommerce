@@ -5,6 +5,7 @@ import com.nhs.individual.domain.Product;
 import com.nhs.individual.domain.ProductItem;
 import com.nhs.individual.domain.ShopOrder;
 import com.nhs.individual.dto.ProductDto;
+import com.nhs.individual.views.EmbeddedId.ProductDateId;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,22 +18,29 @@ import java.sql.Date;
 @Setter
 @Immutable
 @Entity
-@Subselect("select count(product_item.product_id) as number_products,\n" +
-        "           product_id,date_format(shop_order.order_date,\"%Y-%m-%d\") as date from shop_order\n" +
-        "    join order_line                                                                                                                join product_item\n" +
-        "    where shop_order.id=order_line.order_id\n" +
-        "      and order_line.product_item_id=product_item.id\n" +
-        "    group by product_item.product_id")
+@Subselect("select sum(qty) as qty,\n" +
+        "       product_item.product_id,\n" +
+        "       date_format(shop_order.order_date,\"%Y-%m-%d\")\n" +
+        "    as date\n" +
+        "from shop_order\n" +
+        "join order_line\n" +
+        "     on shop_order.id=order_line.order_id\n" +
+        "join product_item\n" +
+        "on order_line.product_item_id=product_item.id\n" +
+        "group by product_item.product_id,date")
 public class MostProductOrder {
     @Id
-    @Column(name = "date")
-    private Date date;
-    private Integer number_products;
+    ProductDateId id;
+    private Integer qty;
+
+    @MapsId("productId")
     @OneToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", insertable = false,updatable = false)
     Product product;
+
+    @MapsId("date")
     @ManyToOne
-    @JoinColumn(name = "date", insertable = false,updatable = false,referencedColumnName = "date")
+    @JoinColumn(name = "date", insertable = false,updatable = false)
     @JsonIgnore
     private OrderPerDay orderPerDay;
 

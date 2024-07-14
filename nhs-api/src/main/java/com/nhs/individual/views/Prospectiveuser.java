@@ -58,8 +58,8 @@ public class Prospectiveuser {
     private BigDecimal totalAmount;
 
     @NotNull
-    @Column(name = "total", nullable = false)
-    private Long total;
+    @Column(name = "total_order", nullable = false)
+    private Long totalOrders;
 
     @Column(name = "user_id")
     private Integer userId;

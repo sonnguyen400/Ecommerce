@@ -59,8 +59,37 @@ public class ShopOrderController {
 
     @PreAuthorize("hasAuthority('ADMIN') or #params.get('userId')==authentication.principal.userId.toString()")
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<ShopOrder> findAll(@RequestParam Map<String,String> params) {
-        return findAllWithParams(params);
+    public Collection<ShopOrder> findAll(
+            @RequestParam(name = "page",defaultValue = "0") Integer page,
+            @RequestParam(name = "size",defaultValue = "10") Integer size,
+            @RequestParam(name = "userId",required = false) Integer userId,
+            @RequestParam(name = "status",required = false) OrderStatus status,
+            @RequestParam(name = "address",required = false) String address,
+            @RequestParam(name = "from",required = false) Date from,
+            @RequestParam(name = "to",required = false) Date to,
+            @RequestParam(name = "newest",required = false) String newest,
+            @RequestParam Map<String,String> params) {
+        params.remove("page");
+        params.remove("size");
+        params.remove("userId");
+        params.remove("status");
+        params.remove("address");
+        params.remove("from");
+        params.remove("to");
+        params.remove("newest");
+        List<Specification<ShopOrder>> shopOrderSpecifications = new ArrayList<>();
+        if(userId!=null) shopOrderSpecifications.add(IShopOrderSpecification.byUser(userId));
+        if(status!=null) shopOrderSpecifications.add(IShopOrderSpecification.byStatus(status));
+        if(address!=null) shopOrderSpecifications.add(IShopOrderSpecification.byAddress(address));
+        if(from!=null&&to!=null) shopOrderSpecifications.add(IShopOrderSpecification.fromToDate(Timestamp.from(from.toInstant()),Timestamp.from(to.toInstant())));
+        Pageable pageable=null;
+        if(newest!=null){
+            pageable=PageRequest.of(page, size, Sort.by("id").descending());
+        }else {
+            pageable=PageRequest.of(page, size);
+        }
+
+        return shopOrderService.findAll(shopOrderSpecifications,pageable);
     }
 
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)

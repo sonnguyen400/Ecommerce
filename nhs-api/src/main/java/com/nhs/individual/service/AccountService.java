@@ -31,7 +31,7 @@ public class AccountService {
         findByUsername(account.getUsername()).ifPresent((account1)->{
             throw new NonUniqueObjectException("Account's username already exists",account.getUsername());
         });
-
+        account.setStatus(AccountStatus.ACTIVE.id);
         account.setRoles(List.of(role));
         return repository.save(account);
     }
