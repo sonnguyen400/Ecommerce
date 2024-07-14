@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    url: jdbc:mysql://127.0.0.1:3306/ecommerce?createDatabaseIfNotExist=true
+    password:
+  security:
+    oauth2:
+          client:
+            registration:
+              google:
+                client-id: "164335260283-p34snad9i8k1chtgrsg3ji0ragptluul.apps.googleusercontent.com"
+                client-secret: "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"
+                authorization-grant-type: authorization_code
+                scope:
+                  - email
+                  - profile
+payment:
+  zalo:
+    appid: 2553
+    key1: PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL
+    key2: trMrHtvjo6myautxDUiAcYsVtaeQ8nhf
+    endpoint:
+      create: https://sb-openapi.zalopay.vn/v2/create
+      query: https://sb-openapi.zalopay.vn/v2/query
