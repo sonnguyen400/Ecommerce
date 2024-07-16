@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    url: jdbc:mysql://127.0.0.1:3306/ecommerce?createDatabaseIfNotExist=true
-    password:
+    username: user1
+    url: jdbc:mysql://${HOST:localhost}:${PORT:3306}/${DATABASE}?createDatabaseIfNotExist=true
+    password: HoangSon1603
   security:
     oauth2:
           client:

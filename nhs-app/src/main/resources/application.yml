@@ -1,10 +1,6 @@
 #application.yml
 spring:
   profiles:
-    default: local
----
-spring:
-  profiles:
     group:
       local: local,common
       test: test,common
