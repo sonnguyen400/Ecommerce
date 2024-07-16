@@ -24,4 +24,4 @@ payment:
       create: https://sb-openapi.zalopay.vn/v2/create
       query: https://sb-openapi.zalopay.vn/v2/query
 server:
-  port: 8085
+  port: 8086

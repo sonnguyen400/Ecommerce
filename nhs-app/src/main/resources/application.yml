@@ -7,3 +7,4 @@ spring:
   profiles:
     group:
       local: local,common
+      test: test,common
