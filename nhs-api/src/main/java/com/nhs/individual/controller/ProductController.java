@@ -48,8 +48,8 @@ public class ProductController {
     @PermitAll
     public Page<Product> getProducts(
             @RequestParam(name = "category", required = false) List<Integer> category,
-            @RequestParam(name = "priceMax", required = false) BigDecimal priceMax,
-            @RequestParam(name = "priceMin", required = false) BigDecimal priceMin,
+            @RequestParam(name = "price-max", required = false) BigDecimal priceMax,
+            @RequestParam(name = "price-min", required = false) BigDecimal priceMin,
             @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
             @RequestParam(name = "size", defaultValue = "20", required = false) Integer size,
             @RequestParam(name = "options", required = false) List<Integer> optionsId,

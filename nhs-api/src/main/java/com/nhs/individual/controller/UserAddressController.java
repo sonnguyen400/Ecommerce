@@ -15,8 +15,6 @@ import java.util.Collection;
 public class UserAddressController {
     @Autowired
     private UserAddressService userAddressService;
-    @Autowired
-    private AddressService addressService;
 
     @RequestMapping( value="/{userId}/address",method = RequestMethod.GET)
     public Collection<UserAddress> findAllByUserId( @PathVariable(name = "userId") Integer userId) {

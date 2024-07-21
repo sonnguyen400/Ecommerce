@@ -1,6 +1,9 @@
 package com.nhs.individual.repository;
 
 import com.nhs.individual.domain.CartItem;
+import lombok.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,7 +12,8 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface CartItemRepository extends JpaRepository<CartItem,Integer> {
-    Collection<CartItem> findAllByUser_id(Integer id);
+    @NonNull
+    Page<CartItem> findAllByUser_id(Integer id,Pageable pageable);
     @Modifying
     @Query(value = "update cart_item set qty=?2 where id=?1",nativeQuery = true)
     void updateQty(Integer cartItemId,Integer quantity);

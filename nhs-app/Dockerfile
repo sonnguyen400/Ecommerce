@@ -1,4 +1,4 @@
-FROM amazoncorretto:17
+FROM openjdk:17-slim
 LABEL name=app developer=NguyenHoangSon
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar

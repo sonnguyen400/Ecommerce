@@ -9,6 +9,7 @@ import com.nhs.individual.specification.ISpecification.IUserSpecification;
 import com.nhs.individual.specification.UserSpecification;
 import com.nhs.individual.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -62,7 +63,7 @@ public class UserService {
     }
 
 
-    public List<User> findAll(Integer page, Integer size, String name, String address, AccountRole role, AccountProvider provider, Map<String, String> propertiesMap) throws IllegalArgumentException{
+    public Page<User> findAll(Integer page, Integer size, String name, String address, AccountRole role, AccountProvider provider, Map<String, String> propertiesMap) throws IllegalArgumentException{
         List<Specification<User>> specifications=new ArrayList<Specification<User>>();
         if(name!=null) specifications.add(IUserSpecification.byName(name));
         if(address!=null) specifications.add(IUserSpecification.byAddress(address));
@@ -78,9 +79,9 @@ public class UserService {
             for(int i=1;i<specifications.size();i++){
                 specification=specification.or(specifications.get(i));
             }
-            return userRepository.findAll(specification,PageRequest.of(page,size)).getContent();
+            return userRepository.findAll(specification,PageRequest.of(page,size));
         }
-        return userRepository.findAll(PageRequest.of(page,size)).getContent();
+        return userRepository.findAll(PageRequest.of(page,size));
     }
     public Optional<User> findAllByEmailOrPhoneNumber(String email,String phoneNumber){
         return userRepository.findAllByEmailOrPhoneNumber(email,phoneNumber);

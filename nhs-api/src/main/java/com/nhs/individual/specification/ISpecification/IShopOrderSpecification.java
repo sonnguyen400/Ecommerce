@@ -19,7 +19,7 @@ public interface IShopOrderSpecification extends GeneralSpecification<ShopOrder>
         return (shopOrder,cq,cb)->{
             Subquery<Integer> orderStatusSubquery=cb.createQuery().subquery(Integer.class);
             Root<ShopOrderStatus> orderStatusRoot=orderStatusSubquery.from(ShopOrderStatus.class);
-            orderStatusSubquery.select(cb.max(orderStatusRoot.get(ShopOrderStatus_.ID)))
+            orderStatusSubquery.select(cb.max(orderStatusRoot.get(ShopOrderStatus_.id)))
                     .where(cb.equal(orderStatusRoot.get(ShopOrderStatus_.SHOP_ORDER_ID),shopOrder.get(ShopOrder_.ID)));
 
             Subquery<Integer> orderStatusSubquery1=cq.subquery(Integer.class);

@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: user1
     url: jdbc:mysql://${HOST:localhost}:${PORT:3306}/${DATABASE}?createDatabaseIfNotExist=true
-    password: HoangSon1603
+    username: ${USER}
+    password: ${PASSWORD}
   security:
     oauth2:
           client:
@@ -24,4 +24,4 @@ payment:
       create: https://sb-openapi.zalopay.vn/v2/create
       query: https://sb-openapi.zalopay.vn/v2/query
 server:
-  port: 8086
+  port: 8085

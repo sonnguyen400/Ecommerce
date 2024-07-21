@@ -11,6 +11,7 @@ import com.nhs.individual.workbook.ShopOrdersXLSX;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -59,7 +60,7 @@ public class ShopOrderController {
 
     @PreAuthorize("hasAuthority('ADMIN') or #params.get('userId')==authentication.principal.userId.toString()")
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<ShopOrder> findAll(
+    public Page<ShopOrder> findAll(
             @RequestParam(name = "page",defaultValue = "0") Integer page,
             @RequestParam(name = "size",defaultValue = "10") Integer size,
             @RequestParam(name = "userId",required = false) Integer userId,
@@ -114,8 +115,7 @@ public class ShopOrderController {
     @RequestMapping(value = "/{orderId}/status/CANCEL",method = RequestMethod.POST)
     public ShopOrderStatus cancelOrder(@PathVariable(name = "orderId") Integer orderId,
                                       @RequestBody ShopOrderStatus shopOrderStatus){
-        shopOrderStatus.setStatus(OrderStatus.DELIVERING.id);
-        return shopOrderStatusService.updateOrderStatus(orderId,shopOrderStatus);
+        return shopOrderStatusService.cancelOrder(orderId,shopOrderStatus);
     }
 
 
@@ -166,6 +166,6 @@ public class ShopOrderController {
             sort.ascending();
         }
         Pageable pageable=PageRequest.of(page,size,sort);
-        return shopOrderService.findAll(specifications, pageable);
+        return shopOrderService.findAll(specifications, pageable).getContent();
     }
 }

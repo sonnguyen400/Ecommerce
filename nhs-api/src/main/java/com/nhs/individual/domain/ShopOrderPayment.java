@@ -30,8 +30,7 @@ public class ShopOrderPayment {
     @Column(name = "order_number", length = 45)
     private String orderNumber;
 
-    @ColumnDefault("current_timestamp()")
-    @Column(name = "update_at")
+    @Column(name = "update_at",columnDefinition = "datetime default now()")
     private Instant updateAt;
 
     @Lob

@@ -9,6 +9,7 @@ import com.nhs.individual.secure.CurrentUser;
 import com.nhs.individual.secure.IUserDetail;
 import com.nhs.individual.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET)
     @Secured("ADMIN")
-    public List<User> findAllUser(@CurrentUser IUserDetail userDea, @RequestParam Map<String, String> propertiesMap){
+    public Page<User> findAllUser(@CurrentUser IUserDetail userDea, @RequestParam Map<String, String> propertiesMap){
         int page= 0;
         int size=10;
         AccountRole role=null;
@@ -62,10 +63,7 @@ public class UserController {
         }
         String name=propertiesMap.get("name");propertiesMap.remove("name");
         String address=propertiesMap.get("address");propertiesMap.remove("address");
-        return userService.findAll(page,size,name,address,role,provider,propertiesMap).stream().map(user->{
-            user.setAccount(new AccountDto(user.getAccount()));
-            return user;
-        }).toList();
+        return userService.findAll(page,size,name,address,role,provider,propertiesMap);
     }
 
 }

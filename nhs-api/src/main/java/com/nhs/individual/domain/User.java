@@ -2,6 +2,7 @@ package com.nhs.individual.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.nhs.individual.dto.AccountDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,5 +56,7 @@ public class User {
     @ToString.Exclude
     protected Account account;
 
-
+    public Account getAccount() {
+        return new AccountDto(account);
+    }
 }

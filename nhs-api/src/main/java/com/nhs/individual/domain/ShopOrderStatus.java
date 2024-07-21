@@ -3,6 +3,7 @@ package com.nhs.individual.domain;
 import com.nhs.individual.constant.OrderStatus;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,8 +11,7 @@ import java.sql.Date;
 
 @Entity
 @Table(name = "shop_order_status")
-@Getter
-@Setter
+@Data
 public class ShopOrderStatus {
 
     @Id
@@ -33,4 +33,5 @@ public class ShopOrderStatus {
     private String note;
     @Column(name = "status")
     private Integer status;
+
 }
