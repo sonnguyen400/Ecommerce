@@ -1,5 +1,5 @@
 use eCommerce;
-insert into role(name) values ("USER"),("ADMIN");
+insert into role(name) values ("USER"),("ADMIN"),("SUPER_ADMIN");
 insert into shipping_method(name,price) values("STANDARD",5),("FAST",10),("EXPRESS",20);
 insert into country(name) values("Viet Name"),("USA"),("China");
 insert into payment_method(id, name, provider) values(1,"COD","NONE")

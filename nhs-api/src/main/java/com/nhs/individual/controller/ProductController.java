@@ -15,10 +15,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.hibernate.sql.ast.tree.select.SortSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
@@ -54,6 +56,8 @@ public class ProductController {
             @RequestParam(name = "size", defaultValue = "20", required = false) Integer size,
             @RequestParam(name = "options", required = false) List<Integer> optionsId,
             @RequestParam(name = "name", required = false) String name,
+            @RequestParam(name="orderBy",required=false) List<String> orderBy,
+            @RequestParam(name="order",required=false,defaultValue = "ASC") Sort.Direction order,
             @RequestParam Map<String,String> request) {
             List<Specification<Product>> specifications = new ArrayList<>();
         if (category != null) specifications.add(IProductSpecification.inCategory(category));
@@ -61,7 +65,16 @@ public class ProductController {
             specifications.add(IProductSpecification.priceLimit(priceMin, priceMax));
         if (optionsId != null) specifications.add(IProductSpecification.hasOption(optionsId));
         if(name!=null) specifications.add(IProductSpecification.hasName(name));
-        return productService.findAll(specifications,PageRequest.of(0,10));
+        PageRequest pageRequest=PageRequest.of(page,size);
+        Sort sort;
+        if(orderBy!=null&&!orderBy.isEmpty()) {
+            String[] orders = orderBy.toArray(new String[orderBy.size()]);
+            sort= Sort.by(orders);
+            if(order==Sort.Direction.ASC) sort=sort.ascending();
+            else if(order==Sort.Direction.DESC) sort=sort.descending();
+            pageRequest=pageRequest.withSort(sort);
+        }
+        return productService.findAll(specifications,pageRequest);
     }
 
     @RequestMapping(value = "/xlsx",method = RequestMethod.GET)

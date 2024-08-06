@@ -23,6 +23,7 @@ public class ResponseMessage {
         return new ResponseMessageBuilder();
     }
     public static class ResponseMessageBuilder{
+
         private ResponseMessage responseMessage;
         public ResponseMessageBuilder(){
             responseMessage=new ResponseMessage();

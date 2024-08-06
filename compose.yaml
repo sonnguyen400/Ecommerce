@@ -17,7 +17,7 @@ services:
     environment:
       HOST: 'mysql'
       PORT: '3306'
-      DATABASE: 'eCommerce'
+      DATABASE: 'ecommerce'
       USER: 'user1'
       PASSWORD: 'HoangSon1603'
     working_dir: '/nhs-app'

@@ -1,6 +1,8 @@
-package com.nhs.individual.vnpay;
+package com.nhs.individual.vnpay.config;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Mac;
@@ -13,12 +15,18 @@ import java.util.*;
 
 @Component
 public class VNPayConfig {
-    public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_Returnurl = "/vnpay-payment";
-    public static String vnp_TmnCode = "";
-    public static String vnp_HashSecret = "";
-    public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
-
+    @Value("${payment.vnpay.payurl}")
+    public String vnp_PayUrl;
+    @Value("${payment.vnpay.returnurl}")
+    public String vnp_Returnurl;
+    @Value("${payment.vnpay.tmnCode}")
+    public String vnp_TmnCode;
+    @Value("${payment.vnpay.vnp_HashSecret}")
+    public String vnp_HashSecret;
+    @Value("${payment.vnpay.apiUrl}")
+    public String vnp_apiUrl;
+    @Value("${payment.vnpay.version}")
+    public String vnpay_version;
     public static String md5(String message) {
         String digest = null;
         try {
@@ -56,7 +64,7 @@ public class VNPayConfig {
     }
 
     //Util for VNPAY
-    public static String hashAllFields(Map fields) {
+    public String hashAllFields(Map fields) {
         List fieldNames = new ArrayList(fields.keySet());
         Collections.sort(fieldNames);
         StringBuilder sb = new StringBuilder();

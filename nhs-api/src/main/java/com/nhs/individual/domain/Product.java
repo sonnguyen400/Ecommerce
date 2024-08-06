@@ -2,13 +2,11 @@ package com.nhs.individual.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.nhs.individual.constant.ProductStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Collection;
 import java.util.List;
 
 @Getter
@@ -45,8 +43,6 @@ public class Product {
     @JsonIgnoreProperties("product")
     private List<ProductItem> productItems;
 
-    @Column(name = "status")
-    ProductStatus status;
 
     @Column(name = "manufacturer", length =512)
     private String manufacturer;

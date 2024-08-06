@@ -19,7 +19,6 @@ import java.util.Collection;
 public class PaymentController {
     private final PaymentService paymentService;
     private final UserPaymentService userPaymentService;
-
     @RequestMapping(method = RequestMethod.GET)
     public Collection<PaymentMethod> findAllSupportedPaymentsMethods(){
         return paymentService.findAll();
