@@ -12,6 +12,7 @@ import com.nhs.individual.workbook.WarehouseItemXLSX;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
-
+@PreAuthorize("hasAuthority('ADMIN')")
 @RestController
 @RequestMapping("/api/v1/warehouse")
 public class WarehouseController {
@@ -29,8 +30,6 @@ public class WarehouseController {
     ProductService productService;
     @Autowired
     WareHouseItemService wareHouseItemService;
-    @Autowired
-    CloudinaryService cloudinaryService;
     @RequestMapping(method = RequestMethod.GET)
     public Collection<Warehouse> findAll(){
         return wareHouseService.findAll();

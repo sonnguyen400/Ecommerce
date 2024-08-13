@@ -26,14 +26,14 @@ public class UserAddressController {
         return userAddressService.create(userAddress);
     }
     @RequestMapping(value="/{userId}/address/{id}/default",method = RequestMethod.PUT)
-    @PreAuthorize("#userId==authentication.principal.userId or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#userId==authentication.principal.userId or hasAuthority('ROLE_ADMIN')")
     public UserAddress getById(@PathVariable(name = "id") Integer id,
                         @PathVariable(name = "userId") Integer userId) {
         return userAddressService.setDefaultAddress(userId,id);
     }
 
     @RequestMapping(value="/{userId}/address/{id}",method = RequestMethod.DELETE)
-    @PreAuthorize("#userId==authentication.principal.userId or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#userId==authentication.principal.userId or hasAuthority('ROLE_ADMIN')")
     public UserAddressId deleteUserAddress(@PathVariable Integer id,
                                   @PathVariable(name = "userId") Integer userId) {
         return userAddressService.deleteById(new UserAddressId(userId,id));

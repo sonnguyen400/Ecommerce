@@ -20,17 +20,19 @@ public class CartController {
     AuthService authService;
 
     @RequestMapping( method = RequestMethod.GET)
-    @PreAuthorize("#userId==authentication.principal.userId or hasRole('ADMIN')")
+    @PreAuthorize("#userId==authentication.principal.userId or hasAuthority('ADMIN')")
     public Page<CartItem> getUserCarts(
             @RequestParam(name = "size",required = false,defaultValue = "0") Integer page,
             @RequestParam(name = "size",required = false,defaultValue = "10") Integer size,
             @RequestParam Integer userId){
         return cartItemService.findAllByUserId(userId, PageRequest.of(page,size));
     }
+    @PreAuthorize("#cart.user.id==authentication.principal.userId or hasAuthority('ADMIN')")
     @RequestMapping(method = RequestMethod.POST)
     public CartItem create(@RequestBody CartItem cart){
         return cartItemService.save(cart);
     }
+    @PreAuthorize("#cart.user.id==authentication.principal.userId or hasAuthority('ADMIN')")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public CartItem updateById(@PathVariable Integer id, @RequestBody CartItem cart){
         cart.setId(id);

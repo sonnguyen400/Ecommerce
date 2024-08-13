@@ -50,12 +50,13 @@ public class AuthService {
     Logger log= LoggerFactory.getLogger(AuthService.class);
 
     public ResponseEntity<ResponseMessage> signIn(Account account){
+//        System.out.println(account);
         Authentication authentication=new UsernamePasswordAuthenticationToken(account.getUsername(),account.getPassword());
         Authentication auth = authenticationManager.authenticate(authentication);
         SecurityContextHolder.getContext().setAuthentication(auth);
         IUserDetail userDetail= (IUserDetail) auth.getPrincipal();
         HttpHeaders headers=new HttpHeaders();
-        headers.add(HttpHeaders.ORIGIN,"127.0.0.1");
+//        headers.add(HttpHeaders.ORIGIN,"127.0.0.1");
         headers.add(HttpHeaders.SET_COOKIE,accessTokenCookie(account.getUsername()).toString());
         headers.add(HttpHeaders.SET_COOKIE,refreshTokenCookie(userDetail.getId()).toString());
         headers.add("Withcredentials","true");
@@ -94,9 +95,8 @@ public class AuthService {
     }
     public ResponseCookie accessTokenCookie(String subject){
         return ResponseCookie.from(AUTH_TOKEN,jwtProvider.generateToken(subject))
-                .secure(true)
                 .path("/")
-                .sameSite("None")
+//                .sameSite("None")
                 .httpOnly(true)
                 .maxAge((int) ACCESS_TOKEN_EXPIRED)
                 .build();
@@ -106,16 +106,14 @@ public class AuthService {
         account.setId(accountId);
         RefreshToken refreshToken= refreshTokenService.generateRefreshToken(account);
         return ResponseCookie.from(REFRESH_AUTH_TOKEN,refreshToken.getToken())
-                .sameSite("None")
+//                .sameSite("None")
                 .path("/")
                 .httpOnly(true)
-                .secure(true)
                 .maxAge(REFRESH_TOKEN_EXPIRED)
                 .build();
     }
 
     public IUserDetail getCurrentAccount(){
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return (IUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
     public User getCurrentUser(){

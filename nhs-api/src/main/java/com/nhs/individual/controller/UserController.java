@@ -34,7 +34,7 @@ public class UserController {
         userService.deleteById(id);
     }
     @RequestMapping(value = "/{id}",method=RequestMethod.PUT)
-    @PreAuthorize("#id==authentication.principal.userId or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#id==authentication.principal.userId or hasAuthority('ROLE_ADMIN')")
     public User update(@PathVariable(value = "id") Integer id, @RequestBody User user) {
         user.setId(id);
         return userService.update(user);

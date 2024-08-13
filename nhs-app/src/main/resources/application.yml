@@ -4,3 +4,4 @@ spring:
     group:
       local: local,common
       test: test,common
+      ec2: ec2, common

@@ -11,6 +11,7 @@ import com.nhs.individual.views.OverviewStatistic;
 import com.nhs.individual.views.Prospectiveuser;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +23,6 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/v1/statistic")
 @AllArgsConstructor
-@Secured("ADMIN")
 public class StatisticsController {
     OrderPerdayService orderPerdayService;
     AccountStatisticService accountStatisticService;

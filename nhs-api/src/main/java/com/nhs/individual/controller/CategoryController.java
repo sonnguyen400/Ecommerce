@@ -8,6 +8,7 @@ import com.nhs.individual.service.ProductService;
 import com.nhs.individual.service.VariationOptionService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -33,6 +34,7 @@ public class CategoryController {
         return categoryService.findById(id).orElseThrow(()->  new ResourceNotFoundException("Could not find category with id: "+id));
     }
     @RequestMapping(method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Category create(@RequestBody Category category){
         return categoryService.create(category);
     }
@@ -43,11 +45,13 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/{category_id}",method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Category updateById(@RequestBody Category category,
             @PathVariable(name = "category_id") Integer id){
         return categoryService.updateCategory(id,category);
     }
     @RequestMapping(value = "/{category_id}",method = RequestMethod.DELETE)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteById(@PathVariable(name = "category_id") Integer id){
         categoryService.deleteById(id);
     }
@@ -62,6 +66,7 @@ public class CategoryController {
         return productService.findAllByCategoryId(id);
     }
     @RequestMapping(value="/{category_id}/product",method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Product createProductInCategory(@PathVariable(name = "category_id") Integer categoryId,
                                            @RequestBody Product product){
         Category category=new Category();

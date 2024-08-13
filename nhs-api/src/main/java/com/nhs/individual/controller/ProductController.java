@@ -24,6 +24,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -125,6 +126,7 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Product createProduct(
             @RequestPart(value = "image", required = false) MultipartFile image,
             Product product) {
@@ -135,12 +137,14 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Product updateProduct(@PathVariable(name = "id") Integer id,
                                  @RequestBody Product product) {
         return productService.update(id, product);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteProduct(@PathVariable(name = "id") Integer id) {
         productService.delete(id);
     }

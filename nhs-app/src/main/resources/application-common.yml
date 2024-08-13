@@ -16,4 +16,3 @@ nhs:
   token:
     accessTokenms: 720000000
     refreshTokenms: 6048000
-debug: true

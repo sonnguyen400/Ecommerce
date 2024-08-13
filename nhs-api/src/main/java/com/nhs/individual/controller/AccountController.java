@@ -14,21 +14,21 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
     AccountService accountService;
     @RequestMapping(value = "/{id}/status/INACTIVE",method = RequestMethod.PUT)
-    @PreAuthorize("hasRole('ROLE_ADMIN') or authentication.principal.id==#id ")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or authentication.principal.id==#id ")
     public ResponseMessage inactiveAccount(@PathVariable Integer id){
         return accountService.updateAccountStatus(id,AccountStatus.INACTIVE);
     }
     @RequestMapping(value = "/{id}/status/ACTIVE",method = RequestMethod.PUT)
-    @PreAuthorize("hasRole('ROLE_ADMIN') or authentication.principal.id==#id")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or authentication.principal.id==#id")
     public ResponseMessage activeAccount(@PathVariable Integer id){
         return accountService.updateAccountStatus(id,AccountStatus.ACTIVE);
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN') or authentication.principal.id==#id")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or authentication.principal.id==#id")
     @RequestMapping(value = "/{id}/status/LOCK",method = RequestMethod.PUT)
     public ResponseMessage lockAccount(@PathVariable(name = "id") Integer id){
         return accountService.updateAccountStatus(id,AccountStatus.LOCKED);
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN') or authentication.principal.id==#id")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or authentication.principal.id==#id")
     @RequestMapping(value = "/{id}/status/VERIFYING",method = RequestMethod.PUT)
     public ResponseMessage verifyingAccount(@PathVariable(name = "id") Integer id){
         return accountService.updateAccountStatus(id,AccountStatus.VERIFYING);

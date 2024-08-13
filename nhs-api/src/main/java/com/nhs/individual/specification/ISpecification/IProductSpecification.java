@@ -26,8 +26,8 @@ public interface IProductSpecification extends GeneralSpecification<Product> {
     }
     static Specification<Product> inWarehouse(Integer warehouseId){
         return (root, criteriaQuery, criteriaBuilder) -> {
-            Join<Product, ProductItem> productProductItem=root.join("product_item");
-            Join<ProductItem, WarehouseItem> productWarehouseItem=productProductItem.join("product_item_in_warehouse");
+            Join<Product, ProductItem> productProductItem=root.join(Product_.PRODUCT_ITEMS);
+            Join<ProductItem, WarehouseItem> productWarehouseItem=productProductItem.join(ProductItem_.WAREHOUSES);
             return criteriaBuilder.equal(productWarehouseItem.get(WarehouseItem_.WAREHOUSE),warehouseId);
         };
     }
@@ -49,12 +49,6 @@ public interface IProductSpecification extends GeneralSpecification<Product> {
             return criteriaBuilder.or(predicates);
         };
     }
-    //    select distinct pia.product_id from product_item pia
-//    where not exists((select pi1.variation_option_id
-//            from product_item_options pi1
-//            where pi1.product_item_id=pia.id
-//            and pi1.variation_option_id not in (2,4,16,18)
-//      ));
     static Specification<Product> hasOption(List<Integer> optionIds){
         return ((root, cq, cb) -> {
             Subquery<Integer> productIdQuery=cq.subquery(Integer.class);

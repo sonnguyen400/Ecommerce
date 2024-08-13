@@ -5,6 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@Deprecated
 public class GeneralSpecificationImp {
     @PersistenceContext
     EntityManager entityManager;

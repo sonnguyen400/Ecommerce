@@ -26,6 +26,7 @@ public class ShopOrder implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @NotNull(message = "User Information is required")
+    @JsonIgnoreProperties({"account","userAddresses"})
     private User user;
 
     @Column(name = "user_id",insertable = false,updatable = false)

@@ -35,11 +35,11 @@ public class AuthenticationAPI {
     public ResponseEntity<ResponseMessage> refreshToken(HttpServletRequest request){
         return authService.refresh(request);
     }
-    @RequestMapping(value = "/auth/account",method = RequestMethod.GET)
+    @RequestMapping(value = "/api/v1/auth/account",method = RequestMethod.GET)
     public IUserDetail getcurrentAccount(){
         return authService.getCurrentAccount();
     }
-    @RequestMapping(value = "/auth/user",method = RequestMethod.GET)
+    @RequestMapping(value = "/api/v1/auth/user",method = RequestMethod.GET)
     public User getcurrentUser(@CurrentUser IUserDetail userDetail){
         return userService.findById(userDetail.getUserId()).get();
     }

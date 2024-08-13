@@ -56,7 +56,7 @@ public class APIExceptionHandler {
                 .ok();
     }
     @ExceptionHandler(InsufficientAuthenticationException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseMessage handlerException(InsufficientAuthenticationException e){
         return ResponseMessage
                .builder()
@@ -88,7 +88,7 @@ public class APIExceptionHandler {
                 .ok();
     }
     @ExceptionHandler(NonUniqueObjectException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     public ResponseMessage handleNonUniqueObjectException(NonUniqueObjectException e) {
         return ResponseMessage
                 .builder()
@@ -121,7 +121,7 @@ public class APIExceptionHandler {
     }
 
     @ExceptionHandler(DuplicateElementException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     public ResponseMessage handleNonUniqueObjectException(DuplicateElementException e) {
         return ResponseMessage
                 .builder()
@@ -141,7 +141,7 @@ public class APIExceptionHandler {
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public ResponseEntity<ResponseMessage> handleAuthenticationException(BadCredentialsException e) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
@@ -153,6 +153,7 @@ public class APIExceptionHandler {
     }
 
     @ExceptionHandler(InvalidTokenException.class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     public ResponseEntity<ResponseMessage> handleInvalidTokenException(InvalidTokenException e) {
         return ResponseEntity
                 .status(HttpStatus.NOT_ACCEPTABLE)
@@ -162,6 +163,7 @@ public class APIExceptionHandler {
                         .error()
                         .ok());
     }
+
 
 
 
