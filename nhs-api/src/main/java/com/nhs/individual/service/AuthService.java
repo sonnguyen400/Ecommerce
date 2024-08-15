@@ -95,8 +95,9 @@ public class AuthService {
     }
     public ResponseCookie accessTokenCookie(String subject){
         return ResponseCookie.from(AUTH_TOKEN,jwtProvider.generateToken(subject))
+                .secure(true)
                 .path("/")
-//                .sameSite("None")
+                .sameSite("None")
                 .httpOnly(true)
                 .maxAge((int) ACCESS_TOKEN_EXPIRED)
                 .build();
@@ -106,7 +107,8 @@ public class AuthService {
         account.setId(accountId);
         RefreshToken refreshToken= refreshTokenService.generateRefreshToken(account);
         return ResponseCookie.from(REFRESH_AUTH_TOKEN,refreshToken.getToken())
-//                .sameSite("None")
+                .secure(true)
+                .sameSite("None")
                 .path("/")
                 .httpOnly(true)
                 .maxAge(REFRESH_TOKEN_EXPIRED)

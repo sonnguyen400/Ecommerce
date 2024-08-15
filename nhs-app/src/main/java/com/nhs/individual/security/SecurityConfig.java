@@ -91,7 +91,7 @@ public class SecurityConfig {
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(req->{
                     req.requestMatchers("/test/**").permitAll()
-                            .requestMatchers("/login").permitAll()
+                            .requestMatchers("/login/**").permitAll()
                             .requestMatchers("/register").permitAll()
                             .requestMatchers("/refresh").anonymous()
                             .requestMatchers("/logout").permitAll()

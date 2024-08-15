@@ -162,6 +162,7 @@ public class ProductController {
         return productItemService.findById(itemId).orElseThrow(() -> new ResourceNotFoundException("product item not found"));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{product_id}/items", method = RequestMethod.POST)
     public Product createAllByProduct(@PathVariable(name = "product_id") Integer productId,
                                       @RequestBody List<ProductItem> productItem) {
@@ -180,6 +181,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/item/{item_id}", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ProductItem updateProductItem(@PathVariable(name = "product_id", required = false) Integer productId,
                                          @PathVariable(name = "item_id") Integer itemId,
                                          @RequestBody ProductItem productItem) {
@@ -187,6 +189,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{product_id}/item/{item_id}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteProductItemById(@PathVariable(name = "product_id", required = false) Integer productId,
                                       @PathVariable(name = "item_id") Integer itemId) {
         productItemService.deleteById(itemId);

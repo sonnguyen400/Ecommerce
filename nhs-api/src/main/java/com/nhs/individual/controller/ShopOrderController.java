@@ -58,7 +58,7 @@ public class ShopOrderController {
     }
 
 
-    @PreAuthorize("hasAuthority('ADMIN') or #params.get('userId')==authentication.principal.userId.toString()")
+//    @PreAuthorize("hasAuthority('ADMIN') or #params.get('userId')==authentication.principal.userId.toString()")
     @RequestMapping(method = RequestMethod.GET)
     public Page<ShopOrder> findAll(
             @RequestParam(name = "page",defaultValue = "0") Integer page,
@@ -104,7 +104,7 @@ public class ShopOrderController {
             @RequestBody ShopOrderStatus shopOrderStatus){
         return shopOrderStatusService.updateOrderStatus(orderId,shopOrderStatus);
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @RequestMapping(value = "/{orderId}/status/APPROVE",method = RequestMethod.POST)
     public ShopOrderStatus approveOrder(@PathVariable(name = "orderId") Integer orderId,
                                         @RequestBody ShopOrderStatus shopOrderStatus){
@@ -117,7 +117,6 @@ public class ShopOrderController {
                                       @RequestBody ShopOrderStatus shopOrderStatus){
         return shopOrderStatusService.cancelOrder(orderId,shopOrderStatus);
     }
-
 
     private List<ShopOrder> findAllWithParams(Map<String,String> params){
         int page= 0;

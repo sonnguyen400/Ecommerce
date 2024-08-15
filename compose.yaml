@@ -1,28 +1,30 @@
 services:
-  mysql:
-    image: 'mysql:latest'
-    container_name: 'mysql'
-    environment:
-      - 'MYSQL_DATABASE=ecommerce'
-      - 'MYSQL_PASSWORD=HoangSon1603'
-      - 'MYSQL_ROOT_PASSWORD=root'
-      - 'MYSQL_USER=user1'
-    ports:
-      - '3306:3306'
+#  mysql:
+#    image: 'mysql:latest'
+#    container_name: 'mysql'
+#    environment:
+#      - 'MYSQL_DATABASE=ecommerce'
+#      - 'MYSQL_PASSWORD=HoangSon1603'
+#      - 'MYSQL_ROOT_PASSWORD=root'
+#      - 'MYSQL_USER=user1'
+#    ports:
+#      - '3306:3306'
   app:
-    image: 'spring-ecommerce:latest'
     build:
       dockerfile: './Dockerfile'
       context: './nhs-app'
     environment:
-      HOST: 'mysql'
+      HOST: 'mysql.c9a2o4e84bhd.ap-southeast-1.rds.amazonaws.com'
       PORT: '3306'
       DATABASE: 'ecommerce'
-      USER: 'user1'
-      PASSWORD: 'HoangSon1603'
+      USER: 'root'
+      PASSWORD: '2003hoangbao'
+      GOOGLE_CLIENT_ID: '164335260283-p34snad9i8k1chtgrsg3ji0ragptluul.apps.googleusercontent.com'
+      GOOGLE_CLIENT_SECRET: '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'
     working_dir: '/nhs-app'
     command: './mvnw spring-boot:run'
-    depends_on:
-      - mysql
     ports:
-      - '8086:8085'
+      - '8085:8085'
+    network_mode: "host"
+    #    depends_on:
+    #      - mysql

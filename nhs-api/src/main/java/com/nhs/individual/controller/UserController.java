@@ -30,6 +30,7 @@ public class UserController {
         }).orElseThrow(()-> new ResourceNotFoundException("User with id " + id + " not found"));
     }
     @RequestMapping(value = "/{id}",method=RequestMethod.DELETE)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void delete(@PathVariable(value = "id") Integer id) {
         userService.deleteById(id);
     }

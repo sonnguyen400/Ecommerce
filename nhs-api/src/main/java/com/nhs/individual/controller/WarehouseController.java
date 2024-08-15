@@ -46,6 +46,7 @@ public class WarehouseController {
     public Warehouse update(@PathVariable(name = "warehouse_id") Integer id, Warehouse wareHouse){
         return wareHouseService.update(id,wareHouse);
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{warehouse_id}",method = RequestMethod.DELETE)
     public void deleteById(@PathVariable(name = "warehouse_id") Integer id){
         wareHouseService.deleteById(id);
@@ -55,6 +56,7 @@ public class WarehouseController {
     public Collection<Product> findAllProduct(@PathVariable(name = "warehouse_id") Integer id){
         return productService.findAllByWarehouseId(id);
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{warehouse_id}/importXLSX",method = RequestMethod.POST,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Collection<WarehouseItem> importGoods(@RequestPart(name = "file") MultipartFile file) throws IOException {
         return wareHouseItemService.importGoods(WarehouseItemXLSX.read(file.getInputStream()));
@@ -67,18 +69,21 @@ public class WarehouseController {
                 ()->new ResourceNotFoundException("Warehouse item not found")
         );
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{warehouseId}/item/{id}", method = RequestMethod.POST)
     public WarehouseItem createItem(@PathVariable(name = "warehouseId") Integer warehouseId,
                                     @PathVariable(name = "id") Integer id,
                                     @RequestBody WarehouseItem warehouseItem){
         return wareHouseItemService.importNewItem(warehouseId,id,warehouseItem);
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{warehouseId}/item/{id}", method = RequestMethod.PUT)
     public void updateItem(@PathVariable(name = "warehouseId") Integer warehouseId,
                                     @PathVariable(name = "id") Integer id,
                                     @RequestBody WarehouseItem warehouseItem){
         wareHouseItemService.update(warehouseId, id,warehouseItem);
     }
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{warehouseId}/item/{id}",method = RequestMethod.DELETE)
     public void deleteItem(@PathVariable(name = "warehouseId") Integer warehouseId,
                                     @PathVariable(name = "id") Integer id){

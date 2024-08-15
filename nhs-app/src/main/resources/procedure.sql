@@ -17,7 +17,7 @@ begin
     declare continue  handler for sqlexception
         set err=true;
     start transaction;
-    update user_address set is_default=false where user_id=user_id_param;
+    update user_address set is_default=false where user_id=user_id_param and is_default=true;
     update user_address set is_default=true where address_id=address_id_param and user_id=user_id_param;
     if err then
         rollback;

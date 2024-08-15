@@ -22,7 +22,7 @@ public class Oauth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         IUserDetail account=(IUserDetail)authentication.getPrincipal();
         response.addHeader(HttpHeaders.SET_COOKIE,authService.accessTokenCookie(account.getUsername()).toString());
         response.addHeader(HttpHeaders.SET_COOKIE,authService.refreshTokenCookie(account.getId()).toString());
-        response.sendRedirect("http://localhost:3000");
+        response.sendRedirect("https://hub.gadgetsource.click");
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }
