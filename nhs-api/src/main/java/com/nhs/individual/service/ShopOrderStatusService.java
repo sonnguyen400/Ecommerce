@@ -8,7 +8,7 @@ import com.nhs.individual.repository.ShopOrderStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ShopOrderStatusService {
@@ -19,7 +19,7 @@ public class ShopOrderStatusService {
         shopOrder.setId(orderId);
         status.setOrder(shopOrder);
         return repository.findCurrentStatusByOrderId(orderId).map(shopOrderStatus -> {
-            if(status.getStatus()>shopOrderStatus.getStatus()){
+            if(status.getStatus()>shopOrderStatus.getStatus()||status.getStatus()==OrderStatus.PAID.id){
                 return repository.save(status);
             }else throw new DataException("Illegal status value");
         }).orElse(repository.save(status));
@@ -36,4 +36,10 @@ public class ShopOrderStatusService {
         }).orElse(repository.save(status));
     }
 
+    public Optional<ShopOrderStatus> findByOrderIdAndStatus(Integer orderId, OrderStatus status){
+        return repository.findByShopOrderIdAndStatus(orderId,status.id);
+    }
+    public ShopOrderStatus save(ShopOrderStatus status){
+        return repository.save(status);
+    }
 }

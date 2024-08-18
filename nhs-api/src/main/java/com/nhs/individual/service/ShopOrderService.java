@@ -3,6 +3,7 @@ package com.nhs.individual.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.nhs.individual.constant.OrderStatus;
+import com.nhs.individual.constant.PaymentStatus;
 import com.nhs.individual.domain.ShopOrder;
 import com.nhs.individual.domain.ShopOrderStatus;
 import com.nhs.individual.repository.ShopOrderRepository;
@@ -49,6 +50,7 @@ public class ShopOrderService {
         order.setStatus(List.of(shopOrderStatus));
         order.getOrderLines().forEach(line->line.setOrder(order));
         order.getPayment().setOrder(order);
+        order.getPayment().setStatus(PaymentStatus.PENDING.value);
         return orderRepository.save(order);
     }
 

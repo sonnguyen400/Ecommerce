@@ -1,31 +1,22 @@
 package com.nhs.individual.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.nhs.individual.responsemessage.ResponseMessage;
+import com.nhs.individual.secure.IUserDetail;
 import com.nhs.individual.service.ShopOrderService;
 import com.nhs.individual.service.ZalopayService;
 import com.nhs.individual.vnpay.VNPayService;
-import com.nhs.individual.vnpay.config.Config;
 import com.nhs.individual.vnpay.config.VNPayConfig;
 import com.nhs.individual.zalopay.model.OrderCallback;
 import com.nhs.individual.zalopay.model.OrderPurchaseInfo;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.apache.coyote.Request;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 @RestController
 @RequestMapping(value = "/api/v1/purchase")
@@ -43,6 +34,15 @@ public class PurchaseController {
         return zalopayService.zalopayHandlerCallBack(callback);
     }
 
+    @RequestMapping(value = "/zalopay/status",method = RequestMethod.GET)
+    public String getzaloOrderStatus(@RequestParam String app_trans_id) throws URISyntaxException {
+        return zalopayService.getOrderStatus(app_trans_id);
+    }
+    @RequestMapping(value = "/zalopay/refund",method = RequestMethod.GET)
+    public ResponseMessage zalopayRefund(@RequestParam(name = "orderId") Integer orderId){
+        IUserDetail userDetail= (IUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return zalopayService.refund(orderId,userDetail);
+    }
     @RequestMapping(value="/{orderId}/vnpay",method= RequestMethod.GET)
     public String purchaseByVNPay(@PathVariable(name = "orderId") Integer orderId,
                                   @RequestParam(name="bankcode",defaultValue = "QRONLY") String bankcode,

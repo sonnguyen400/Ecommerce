@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,18 +22,16 @@ public class ShopOrder implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
-    @NotNull(message = "User Information is required")
     @JsonIgnoreProperties({"account","userAddresses"})
     private User user;
 
     @Column(name = "user_id",insertable = false,updatable = false)
     @Hidden
     private Integer userId;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
     @JoinColumn(name = "address_id")
-    @NotNull(message = "Address Information is required")
     private Address address;
 
 

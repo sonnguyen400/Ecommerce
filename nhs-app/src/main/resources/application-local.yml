@@ -19,7 +19,7 @@ payment:
   zalo:
     appid: 2553
     key1: PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL
-    key2: trMrHtvjo6myautxDUiAcYsVtaeQ8nhf
+    key2: Iyz2habzyr7AG8SgvoBCbKwKi3UzlLi3
     endpoint:
       create: https://sb-openapi.zalopay.vn/v2/create
       query: https://sb-openapi.zalopay.vn/v2/query

@@ -47,10 +47,6 @@ public class WareHouseItemService {
     }
     @Transactional
     public List<WarehouseItem> importGoods(@Validated(WarehouseValidation.onCreate.class) List<@Valid WarehouseItem> warehouseItems){
-        List<WarehouseItem> newResult= warehouseItems.stream().map(item-> repository.findById(item.getId()).map(item_ -> {
-            item_.setQty(item.getQty()+item_.getQty());
-            return item_;
-        }).orElseThrow(()-> new ResourceNotFoundException(item.getId().toString()))).toList();
-        return repository.saveAll(newResult);
+        return repository.saveAll(warehouseItems);
     }
 }

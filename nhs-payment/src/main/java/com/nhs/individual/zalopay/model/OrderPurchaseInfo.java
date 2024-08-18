@@ -1,6 +1,5 @@
 package com.nhs.individual.zalopay.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -13,6 +12,16 @@ public class OrderPurchaseInfo{
     private String order_url;
     private String order_token;
     private String qr_code;
+    private String app_trans_id;
+
+
+    public String getApp_trans_id() {
+        return app_trans_id;
+    }
+
+    public void setApp_trans_id(String app_trans_id) {
+        this.app_trans_id = app_trans_id;
+    }
 
     public Integer getReturn_code() {
         return return_code;

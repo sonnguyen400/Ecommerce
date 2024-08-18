@@ -4,14 +4,12 @@ import com.nhs.individual.domain.CartItem;
 import com.nhs.individual.domain.User;
 import com.nhs.individual.exception.ResourceNotFoundException;
 import com.nhs.individual.repository.CartItemRepository;
-import com.nhs.individual.utils.ObjectUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -24,7 +22,7 @@ public class CartItemService {
     AuthService authService;
 
     public Page<CartItem> findAllByUserId(Integer userId, PageRequest page) {
-        return cartItemRepository.findAllByUser_id(userId, page);
+        return cartItemRepository.findAllByUser_idOrderByIdDesc(userId, page);
     }
 
     @Transactional

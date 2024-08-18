@@ -9,8 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-
 @RestController
 @RequestMapping(value = "/api/v1/cart")
 public class CartController {
@@ -32,7 +30,6 @@ public class CartController {
     public CartItem create(@RequestBody CartItem cart){
         return cartItemService.save(cart);
     }
-    @PreAuthorize("#cart.user.id==authentication.principal.userId or hasAuthority('ADMIN')")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public CartItem updateById(@PathVariable Integer id, @RequestBody CartItem cart){
         cart.setId(id);

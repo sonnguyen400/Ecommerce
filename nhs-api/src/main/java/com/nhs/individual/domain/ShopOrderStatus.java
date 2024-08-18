@@ -1,11 +1,8 @@
 package com.nhs.individual.domain;
 
-import com.nhs.individual.constant.OrderStatus;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.sql.Date;
 
@@ -17,7 +14,7 @@ public class ShopOrderStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "shop_order_id")
     private ShopOrder order;
 

@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.Instant;
 
@@ -22,7 +24,8 @@ public class ShopOrderPayment {
     @JoinColumn(name = "payment_id", nullable = true)
     private Payment type;
 
-    @OneToOne(mappedBy = "payment", optional = false)
+
+    @OneToOne(mappedBy = "payment", optional = false,cascade = CascadeType.MERGE)
     @JsonIgnore
     private ShopOrder order;
 
@@ -30,11 +33,15 @@ public class ShopOrderPayment {
     @Column(name = "order_number", length = 45)
     private String orderNumber;
 
-    @Column(name = "update_at",columnDefinition = "datetime default now()")
+    @ColumnDefault("now()")
+    @Column(name = "update_at",columnDefinition = "datetime")
+    @LastModifiedDate
     private Instant updateAt;
 
-    @Lob
+    @CreatedDate
+    private Instant createdAt;
+
     @Column(name = "status")
-    private String status;
+    private Integer status;
 
 }

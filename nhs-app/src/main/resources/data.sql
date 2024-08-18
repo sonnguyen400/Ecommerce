@@ -1,9 +1,8 @@
 use eCommerce;
 insert into role(name) values ("USER"),("ADMIN"),("SUPER_ADMIN");
-insert into shipping_method(name,price) values("STANDARD",5),("FAST",10),("EXPRESS",20);
+insert into shipping_method(name,price) values("STANDARD",50000),("FAST",10000),("EXPRESS",20000);
 insert into country(name) values("Viet Name"),("USA"),("China");
-insert into payment_method(id, name, provider) values(1,"COD","NONE")
-
+insert into payment_method(id, name, provider) values(1,"COD","NONE");
 
 insert into category(id,name,description) values(1,"root","This is root category! Don't add anything");
 insert into category(id,name,parent_category_id,description)
@@ -29,4 +28,5 @@ insert into warehouse(id,name,detail) values
 (2,"Sample warehouse 2","This is a sample warehouse object"),
 (3,"Sample warehouse 3","This is a sample warehouse object");
 
-insert into payment(id,name,provider) values (1,"COD","DEFAULT");
+insert into payment(id,name,provider) values (1,"COD","DEFAULT"),(2,"ZaloPay","ZaloPay");
+

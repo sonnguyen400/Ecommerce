@@ -5,9 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.TimeZone;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @NoArgsConstructor
@@ -47,14 +47,15 @@ public class OrderInfo implements Mapable{
         return new Builder();
     }
     public static class Builder{
-        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        public static final DateTimeFormatter formatter2=DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        public static final ZonedDateTime zonedDateTime=ZonedDateTime.now(ZoneId.of("Etc/GMT-7"));
+//        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         private final OrderInfo orderInfo;
         public Builder(){
             orderInfo=new OrderInfo();
-            orderInfo.setVnp_CreateDate(formatter.format(cld.getTime()));
-            cld.add(Calendar.MINUTE,15);
-            orderInfo.setVnp_ExpireDate(formatter.format(cld.getTime()));
+            orderInfo.setVnp_CreateDate(zonedDateTime.format(formatter2));
+            orderInfo.setVnp_ExpireDate(zonedDateTime.plusMinutes(15).format(formatter2));
         }
         public Builder vnp_Version(String vnp_Version){
             orderInfo.setVnp_Version(vnp_Version);

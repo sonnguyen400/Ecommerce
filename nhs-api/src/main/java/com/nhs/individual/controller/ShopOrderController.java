@@ -26,7 +26,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/v1/order")
@@ -69,27 +72,17 @@ public class ShopOrderController {
             @RequestParam(name = "from",required = false) Date from,
             @RequestParam(name = "to",required = false) Date to,
             @RequestParam(name = "newest",required = false) String newest,
+            @RequestParam(name = "sortBy",required = false,defaultValue = "id") List<String> sortBy,
+            @RequestParam(name = "sort",required = false,defaultValue = "DESC") Sort.Direction sort,
             @RequestParam Map<String,String> params) {
-        params.remove("page");
-        params.remove("size");
-        params.remove("userId");
-        params.remove("status");
-        params.remove("address");
-        params.remove("from");
-        params.remove("to");
-        params.remove("newest");
         List<Specification<ShopOrder>> shopOrderSpecifications = new ArrayList<>();
         if(userId!=null) shopOrderSpecifications.add(IShopOrderSpecification.byUser(userId));
         if(status!=null) shopOrderSpecifications.add(IShopOrderSpecification.byStatus(status));
         if(address!=null) shopOrderSpecifications.add(IShopOrderSpecification.byAddress(address));
         if(from!=null&&to!=null) shopOrderSpecifications.add(IShopOrderSpecification.fromToDate(Timestamp.from(from.toInstant()),Timestamp.from(to.toInstant())));
-        Pageable pageable=null;
-        if(newest!=null){
-            pageable=PageRequest.of(page, size, Sort.by("id").descending());
-        }else {
-            pageable=PageRequest.of(page, size);
-        }
-
+        String[] arr=new String[sortBy.size()];
+        Sort sorts=Sort.by(sort,sortBy.toArray(sortBy.toArray(arr)));
+        Pageable pageable=PageRequest.of(page,size,sorts);
         return shopOrderService.findAll(shopOrderSpecifications,pageable);
     }
 

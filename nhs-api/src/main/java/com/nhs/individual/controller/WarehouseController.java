@@ -4,22 +4,20 @@ import com.nhs.individual.domain.Product;
 import com.nhs.individual.domain.Warehouse;
 import com.nhs.individual.domain.WarehouseItem;
 import com.nhs.individual.exception.ResourceNotFoundException;
-import com.nhs.individual.service.CloudinaryService;
 import com.nhs.individual.service.ProductService;
 import com.nhs.individual.service.WareHouseItemService;
 import com.nhs.individual.service.WareHouseService;
 import com.nhs.individual.workbook.WarehouseItemXLSX;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
-import java.util.List;
 @PreAuthorize("hasAuthority('ADMIN')")
 @RestController
 @RequestMapping("/api/v1/warehouse")
@@ -61,6 +59,16 @@ public class WarehouseController {
     public Collection<WarehouseItem> importGoods(@RequestPart(name = "file") MultipartFile file) throws IOException {
         return wareHouseItemService.importGoods(WarehouseItemXLSX.read(file.getInputStream()));
     }
+    @RequestMapping(value = "/importXLSX/sample")
+    public void downloadSampleImportXlsx(HttpServletResponse response) throws IOException {
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=sample.xlsx";
+        response.setHeader(headerKey, headerValue);
+        try (InputStream fileInputStream = this.getClass().getResourceAsStream("/warehouseImportSample.xlsx")) {
+            assert fileInputStream != null;
+            fileInputStream.transferTo(response.getOutputStream());
+        }
+    }
     //Product Item In warehouse
     @RequestMapping(value ="/{warehouse_id}/item/{id}",method = RequestMethod.GET)
     public WarehouseItem findItemByWarehouseId(@PathVariable(name = "warehouse_id")Integer warehouseId,
@@ -89,6 +97,7 @@ public class WarehouseController {
                                     @PathVariable(name = "id") Integer id){
         wareHouseItemService.deleteItemFromWarehouse(id,warehouseId);
     }
+
 
 
 }

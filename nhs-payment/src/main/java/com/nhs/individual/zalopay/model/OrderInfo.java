@@ -1,6 +1,5 @@
 package com.nhs.individual.zalopay.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nhs.individual.utils.Mapable;
 import com.nhs.individual.zalopay.config.ZaloConfig;
@@ -55,37 +54,21 @@ public class OrderInfo implements Mapable {
     private String address;
 
     public OrderInfo(int app_id, String app_user, String app_trans_id,Long amount, String description, String bank_code, String item, String embed_data, String key1, String callback_url, String title) {
+        this.expire_duration_seconds= 900L;
         this.app_id = app_id;
         this.app_user = app_user;
         this.app_trans_id = ZaloConfig.getCurrentTimeString("yyMMdd")+"_"+app_trans_id;
         this.app_time = System.currentTimeMillis();
         this.amount = amount;
         this.description = description;
-        if(bank_code==null||bank_code.isEmpty()){
-            this.bank_code="zalopayapp";
-        }
+        this.bank_code=bank_code;
         this.item = item;
         this.embed_data = embed_data;
         this.callback_url = callback_url;
         this.title = title;
         this.app_time=System.currentTimeMillis();
-        System.out.println(key1);
-        System.out.println(getHmacInput());
-        this.mac = HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256,key1.trim(),getHmacInput());
+        String hmacInput=this.app_id+"|"+this.app_trans_id+"|"+this.app_user+"|"+this.amount+"|"+this.app_time+"|"+this.embed_data+"|"+this.item;
+        this.mac = HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256,key1.trim(),hmacInput);
     }
-
-    @JsonIgnore
-    private String hmacInput;
-
-
-    public String getHmacInput(){
-        if(hmacInput==null){
-            hmacInput=this.app_id+"|"+this.app_trans_id+"|"+this.app_user+"|"+this.amount+"|"+this.app_time+"|"+this.embed_data+"|"+this.item;
-        }
-        return hmacInput;
-    }
-
-
-
 
 }
