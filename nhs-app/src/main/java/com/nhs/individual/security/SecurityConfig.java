@@ -1,9 +1,9 @@
 package com.nhs.individual.security;
 
+import com.nhs.individual.secure.IUserDetail;
 import com.nhs.individual.security.Filter.JwtFilter;
 import com.nhs.individual.security.Oauth2.Oauth2Service;
 import com.nhs.individual.security.Oauth2.Oauth2SuccessHandler;
-import com.nhs.individual.secure.IUserDetail;
 import com.nhs.individual.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

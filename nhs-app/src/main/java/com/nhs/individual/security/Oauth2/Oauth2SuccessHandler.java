@@ -1,7 +1,7 @@
 package com.nhs.individual.security.Oauth2;
 
-import com.nhs.individual.service.AuthService;
 import com.nhs.individual.secure.IUserDetail;
+import com.nhs.individual.service.AuthService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

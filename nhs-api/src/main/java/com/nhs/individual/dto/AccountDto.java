@@ -1,7 +1,6 @@
 package com.nhs.individual.dto;
 
 import com.nhs.individual.constant.AccountProvider;
-import com.nhs.individual.constant.AccountStatus;
 import com.nhs.individual.domain.Account;
 import com.nhs.individual.domain.Role;
 import lombok.AllArgsConstructor;

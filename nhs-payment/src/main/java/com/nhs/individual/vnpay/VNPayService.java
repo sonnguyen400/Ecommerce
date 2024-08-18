@@ -1,6 +1,5 @@
 package com.nhs.individual.vnpay;
 
-import com.nhs.individual.utils.MapableImp;
 import com.nhs.individual.vnpay.config.VNPayConfig;
 import com.nhs.individual.vnpay.model.OrderInfo;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,10 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service

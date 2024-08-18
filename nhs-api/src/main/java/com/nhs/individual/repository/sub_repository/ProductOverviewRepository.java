@@ -1,6 +1,5 @@
 package com.nhs.individual.repository.sub_repository;
 
-import com.nhs.individual.domain.Product;
 import com.nhs.individual.views.ProductOverView;
 import io.micrometer.common.lang.NonNull;
 import io.micrometer.common.lang.Nullable;

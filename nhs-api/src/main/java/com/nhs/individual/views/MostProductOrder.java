@@ -2,8 +2,6 @@ package com.nhs.individual.views;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nhs.individual.domain.Product;
-import com.nhs.individual.domain.ProductItem;
-import com.nhs.individual.domain.ShopOrder;
 import com.nhs.individual.dto.ProductDto;
 import com.nhs.individual.views.EmbeddedId.ProductDateId;
 import jakarta.persistence.*;
@@ -11,8 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Subselect;
-
-import java.sql.Date;
 
 @Getter
 @Setter

@@ -1,7 +1,6 @@
 package com.nhs.individual.repository;
 
 import com.nhs.individual.domain.ShopOrder;
-import com.nhs.individual.domain.User;
 import io.micrometer.common.lang.NonNull;
 import io.micrometer.common.lang.Nullable;
 import org.springframework.data.domain.Page;

@@ -6,14 +6,13 @@
 package com.nhs.individual.zalopay.crypto;
 
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.LinkedList;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 
 public class HMACUtil {
 

@@ -3,7 +3,6 @@ package com.nhs.individual.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nhs.individual.constant.AccountProvider;
-import com.nhs.individual.constant.AccountStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

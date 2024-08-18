@@ -1,13 +1,9 @@
 package com.nhs.individual.controller;
 
-import com.nhs.individual.domain.*;
 import com.nhs.individual.service.sub_service.ProductOverviewService;
 import com.nhs.individual.specification.ISpecification.IProductSpecificationV2;
 import com.nhs.individual.views.ProductOverView;
 import jakarta.annotation.security.PermitAll;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.Root;
-import jakarta.persistence.criteria.Subquery;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/v2/product")

@@ -1,6 +1,5 @@
 package com.nhs.individual.repository;
 
-import com.nhs.individual.domain.Account;
 import com.nhs.individual.domain.User;
 import io.micrometer.common.lang.NonNull;
 import io.micrometer.common.lang.Nullable;
@@ -11,7 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
